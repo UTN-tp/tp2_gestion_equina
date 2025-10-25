@@ -64,24 +64,6 @@ El sistema permite:
 
 ---
 
-## 💾 Estructura del proyecto
-
-├── src/
-│ ├── main.cpp
-│ ├── Agenda.h
-│ ├── Archivos.h
-│ ├── Caballo.h
-│ ├── Cliente.h
-│ ├── Material.h
-│ ├── MaterialesUsados.h
-│ ├── Trabajo.h
-│ └── Usuario.h
-├── bin/
-├── obj/
-├── gestion equina.cbp
-└── README.md
-
-
 ## 🧠 Tecnologías utilizadas
 - **Lenguaje:** C++  
 - **Entorno:** Code::Blocks  
