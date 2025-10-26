@@ -1,37 +1,41 @@
 #ifndef ARCHIVOS_H
 #define ARCHIVOS_H
+#include <Cliente.h>
+#include <Material.h>
+#include <Agenda.h>
+#include <Caballo.h>
+#include <MaterialesUsados.h>
+#include <Usuario.h>
+#include <Trabajo.h>
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include "Usuario.h"
-#include "Cliente.h"
-#include "Caballo.h"
-#include "Material.h"
-#include "MaterialesUsados.h"
-#include "Trabajo.h"
-#include "Agenda.h"
 
-class Archivos {
-public:
-    Archivos();
-    ~Archivos();
+class Archivos
+{
+    public:
+    bool guardarArchivoCaballo(Caballo caballo);
+    bool guardarArchivoAgenda(Agenda agenda);
+    bool guardarArchivoMaterial (Material material);
+    bool guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados);
+    bool guardarArchivoCliente (Cliente cliente);
+    bool guardarArchivoTrabajo (Trabajo trabajo);
+    bool guardarArchivoUsuario (Usuario usuario);
 
-    void crearArchivo(const std::string& nombreArchivo);
-    void leerArchivo(const std::string& nombreArchivo);
-    void modificarArchivo(const std::string& nombreArchivo);
-    void eliminarArchivo(const std::string& nombreArchivo);
+    int cantidadRegistrosCaballo();
+    int cantidadRegistrosAgenda();
+    int cantidadRegistrosMaterial();
+    int cantidadRegistrosMaterialesUsados();
+    int cantidadRegistrosCliente();
+    int cantidadRegistrosTrabajo();
+    int cantidadRegistrosUsuario();
 
-    void guardarCliente(const Cliente& cliente, const std::string& nombreArchivo);
-    void cargarClientes(const std::string& nombreArchivo);
-    void guardarCaballo(const Caballo& caballo, const std::string& nombreArchivo);
-    void cargarCaballos(const std::string& nombreArchivo);
-    void guardarMaterial(const Material& material, const std::string& nombreArchivo);
-    void cargarMateriales(const std::string& nombreArchivo);
-    void guardarTrabajo(const Trabajo& trabajo, const std::string& nombreArchivo);
-    void cargarTrabajos(const std::string& nombreArchivo);
-    void guardarAgenda(const Agenda& agenda, const std::string& nombreArchivo);
-    void cargarAgendas(const std::string& nombreArchivo);
+    Caballo leerRegistroCaballo(int pos);
+    Agenda leerRegistroAgenda(int pos);
+    Material leerRegistroMaterial(int pos);
+    MaterialesUsados leerRegistroMaterialesUsados(int pos);
+    Cliente leerRegistroCliente(int pos);
+    Trabajo leerRegistroTrabajo(int pos);
+    Usuario leerRegistroUsuario(int pos);
+
 };
 
-#endif
+#endif // ARCHIVOS_H
