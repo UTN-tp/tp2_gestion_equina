@@ -5,6 +5,8 @@
 bin/
 obj/
 
+CMakeLists.txt
+
 
 .idea/
 
@@ -46,3 +48,5 @@ obj/
 
 # debug information files
 *.dwo
+*.cbp
+
