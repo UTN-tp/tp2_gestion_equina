@@ -7,16 +7,16 @@ using namespace std;
 
 class Trabajo {
 private:
-    int id; 
-    int idCaballo; 
-    char fecha[11]; 
-    char tipoTrabajo[30]; 
+    int id;
+    int idCaballo;
+    char fecha[11];
+    char tipoTrabajo[30];
     float costo;
     float precio;
 
 public:
-    Trabajo();
-    ~Trabajo();
+    Trabajo(){}
+    ~Trabajo(){}
 
     int getID() const;
     int getIDCaballo() const;

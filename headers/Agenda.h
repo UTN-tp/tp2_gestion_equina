@@ -7,14 +7,14 @@ using namespace std;
 
 class Agenda {
 private:
-    int id; 
-    int idCliente; 
-    int idCaballo; 
-    char fechaTrabajo[11]; 
-    char tipoTrabajo[30]; 
+    int id;
+    int idCliente;
+    int idCaballo;
+    char fechaTrabajo[11];
+    char tipoTrabajo[30];
 public:
-    Agenda();
-    ~Agenda();
+    Agenda(){}
+    ~Agenda(){}
 
     int getID() const;
     int getIDCliente() const;

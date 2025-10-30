@@ -9,8 +9,8 @@ private:
     int cantidadCaballos;
 
 public:
-    Cliente();
-    ~Cliente();
+    Cliente(){}
+    ~Cliente(){}
 
     const char* getDireccion() const;
     int getCantidadCaballos() const;
@@ -18,7 +18,7 @@ public:
     void setDireccion(const char* valor);
     void setCantidadCaballos(int valor);
 
-    void mostrar() const override;
+    void mostrar() const override {}
 };
 
 #endif
