@@ -15,6 +15,15 @@ class Agenda {
     public:
         Agenda();
         ~Agenda();
+private:
+    int id;
+    int idCliente;
+    int idCaballo;
+    char fechaTrabajo[11];
+    char tipoTrabajo[30];
+public:
+    Agenda(){}
+    ~Agenda(){}
 
         int getID() const;
         int getIDCliente() const;
@@ -36,3 +45,4 @@ class Agenda {
         void consultasPorIDCaballo();
 
 };
+#endif

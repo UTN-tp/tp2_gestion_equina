@@ -9,14 +9,14 @@ class Material {
 private:
     int id;
     char nombre[40];
-    char tipo[30]; 
+    char tipo[30];
     int stock;
     float precio;
     bool estado;
 
 public:
-    Material();
-    ~Material();
+    Material(){}
+    ~Material(){}
 
     int getID() const;
     const char* getNombre() const;

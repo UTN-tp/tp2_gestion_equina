@@ -7,13 +7,13 @@ using namespace std;
 class MaterialesUsados {
 private:
     int idMaterialUsado;
-    int idTrabajo;   
-    int idMaterial;  
-    int cantidad;    
+    int idTrabajo;
+    int idMaterial;
+    int cantidad;
 
 public:
-    MaterialesUsados();
-    ~MaterialesUsados();
+    MaterialesUsados(){}
+    ~MaterialesUsados(){}
 
     int getIDMaterialUsado() const;
     int getIDTrabajo() const;

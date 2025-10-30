@@ -15,8 +15,8 @@ protected:
     bool estado;
 
 public:
-    Usuario();
-    virtual ~Usuario();
+    Usuario(){}
+    virtual ~Usuario(){}
 
     int getID() const;
     const char* getNombre() const;
@@ -32,7 +32,7 @@ public:
     void setEmail(const char* valor);
     void setEstado(bool valor);
 
-    virtual void mostrar() const;
+    virtual void mostrar() const {}
 };
 
 #endif

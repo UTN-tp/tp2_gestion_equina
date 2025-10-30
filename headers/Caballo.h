@@ -7,19 +7,19 @@ using namespace std;
 
 class Caballo {
 private:
-    int id; 
-    int idCliente; 
-    char nombre[20]; 
-    int edad; 
-    char raza[40]; 
-    char tipoTrabajo[30]; 
-    char ultimaAtencion[11]; 
-    char proximaAtencion[11]; 
-    bool estado; 
+    int id;
+    int idCliente;
+    char nombre[20];
+    int edad;
+    char raza[40];
+    char tipoTrabajo[30];
+    char ultimaAtencion[11];
+    char proximaAtencion[11];
+    bool estado;
 
 public:
-    Caballo();
-    ~Caballo();
+    Caballo(){}
+    ~Caballo(){}
 
     int getID() const;
     int getIDCliente() const;
