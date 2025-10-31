@@ -1,5 +1,4 @@
-#ifndef CABALLO_H
-#define CABALLO_H
+#pragma once
 
 #include <cstring>
 #include <iostream>
@@ -18,8 +17,8 @@ private:
     bool estado;
 
 public:
-    Caballo(){}
-    ~Caballo(){}
+    Caballo();
+    ~Caballo();
 
     int getID() const;
     int getIDCliente() const;
@@ -44,4 +43,4 @@ public:
     void mostrar() const;
 };
 
-#endif
+

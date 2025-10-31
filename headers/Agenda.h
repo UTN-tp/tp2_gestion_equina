@@ -5,25 +5,17 @@
 using namespace std;
 
 class Agenda {
-    private:
+    
+        private:
         int id;
         int idCliente;
         int idCaballo;
         Fecha fechaTrabajo;
         char tipoTrabajo[30];
-        bool trabajoRealizado;
-    public:
-        Agenda();
-        ~Agenda();
-private:
-    int id;
-    int idCliente;
-    int idCaballo;
-    char fechaTrabajo[11];
-    char tipoTrabajo[30];
+         bool trabajoRealizado;
 public:
-    Agenda(){}
-    ~Agenda(){}
+    Agenda();
+    ~Agenda();
 
         int getID() const;
         int getIDCliente() const;
@@ -45,4 +37,4 @@ public:
         void consultasPorIDCaballo();
 
 };
-#endif
+

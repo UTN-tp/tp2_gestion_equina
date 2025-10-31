@@ -1,11 +1,11 @@
-#include <Archivos.h>
-#include <Cliente.h>
-#include <Material.h>
-#include <Agenda.h>
-#include <Caballo.h>
-#include <MaterialesUsados.h>
-#include <Usuario.h>
-#include <Trabajo.h>
+#include "Archivos.h"
+#include "Cliente.h"
+#include "Material.h"
+#include "Agenda.h"
+#include "Caballo.h"
+#include "MaterialesUsados.h"
+#include "Usuario.h"
+#include "Trabajo.h"
 
     //Guardar
     bool Archivos::guardarArchivoCaballo(Caballo caballo){
@@ -35,7 +35,7 @@
         return ok;
     }
 
-    bool guardarArchivoMaterial (Material material){
+    bool Archivos::guardarArchivoMaterial (Material material){
         FILE *pArchivo = fopen("materiales.dat", "ab");
         if(pArchivo == NULL){
 
@@ -48,7 +48,7 @@
         return ok;
     }
 
-    bool guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados){
+    bool Archivos::guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados){
         FILE *pArchivo = fopen("materialesusados.dat", "ab");
         if(pArchivo == NULL){
 
@@ -202,7 +202,7 @@
 
     //Leer
     Caballo Archivos::leerRegistroCaballo(int pos){
-        FILE *pArchivo = fopen("caballo.dat", "rb");
+        FILE *pArchivo = fopen("caballos.dat", "rb");
         if(pArchivo == NULL){
             return Caballo();
         }
@@ -285,3 +285,64 @@
         fclose(pArchivo);
         return usuario;
     }
+
+    // buscar por ID
+
+    int Archivos::buscarCaballoPorID(int idBuscado) {
+    FILE *pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Caballo aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo)) {
+        if (aux.getID() == idBuscado) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
+
+  //modificar registro
+
+  bool Archivos::modificarRegistroCaballo(const Caballo& caballo, int pos) {
+    FILE *pArchivo = fopen("caballos.dat", "rb+");
+    if (pArchivo == NULL) return false;
+
+    fseek(pArchivo, sizeof(Caballo) * pos, SEEK_SET);
+    bool ok = fwrite(&caballo, sizeof(Caballo), 1, pArchivo);
+    fclose(pArchivo);
+
+    return ok;
+}
+
+  //listar caballos por cliente
+
+  void Archivos::listarCaballosPorCliente(int idCliente) {
+    FILE *pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo.\n";
+        return;
+    }
+
+    Caballo aux;
+    bool hay = false;
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo)) {
+        if (aux.getIDCliente() == idCliente) {
+            aux.mostrar();
+            cout << "---------------------\n";
+            hay = true;
+        }
+    }
+
+    fclose(pArchivo);
+
+    if (!hay) {
+        cout << "No se encontraron caballos para ese cliente.\n";
+    }
+}
