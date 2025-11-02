@@ -115,7 +115,6 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosAgenda(){
         FILE *pArchivo = fopen("agenda.dat", "rb");
         if(pArchivo == NULL){
 

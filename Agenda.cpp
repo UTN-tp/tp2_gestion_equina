@@ -88,6 +88,7 @@ void Agenda::mostrar() const {
 void Agenda::registrarNuevoTrabajo(){
 
     Fecha regFecha;
+    Archivos archivoAgenda;
  //   int nuevoID = 0; // lo calcularemos después cuando este el archivo, por ahora en 0
     int idClienteIngresado;
     int idCaballoIngresado;
@@ -128,23 +129,21 @@ void Agenda::registrarNuevoTrabajo(){
     } else {
         setTrabajoRealizado(false);
     }
-
-    /*ArchivoAgenda archivo("agenda.dat");
-
-    if (archivo.Grabar(reg)) {                                   ( comentado hasta que este claseArchivo )
+    // crear o guardar el archivo de agenda
+    if (archivoAgenda.guardarArchivoAgenda(*this) == true ) {
         cout << "Trabajo registrado correctamente." << endl;
     }
     else {
         cout << "No se pudo registrar el trabajo." << endl;
-    }    */
+    }
 }
 
-/*void proximosTrabajos(){
+void Agenda::proximosTrabajos(){
 
-    //Archivo regArchivoAgenda("agenda.dat");
+    Archivos regArchivoAgenda;
     Agenda regAgenda;
     int cantidadTrabajos;
-    // cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
+    cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
     bool trabajosPendientes = false;
 
     if (cantidadTrabajos <= 0) {
@@ -156,10 +155,10 @@ void Agenda::registrarNuevoTrabajo(){
     cout<<"---------------------------"<<endl;
 
     for (int i = 0; i < cantidadTrabajos; i++) {
-        regAgenda = regArchivoAgenda.Leer(i);
+        regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
         // solo mostrara si el trabajo esta pendiente
-        if (reg.getTrabajoRealizado() == false) {
-            reg.mostrar();
+        if (regAgenda.getTrabajoRealizado() == false) {
+            regAgenda.mostrar();
             cout<<"-----------------------------------------"<<endl;
             trabajosPendientes=true;
         }
@@ -168,4 +167,4 @@ void Agenda::registrarNuevoTrabajo(){
     if (trabajosPendientes == false) {
         cout << "No hay trabajos pendientes." << endl;
     }
-}      */
+}
