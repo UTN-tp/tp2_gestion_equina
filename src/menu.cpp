@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits> 
+#include "CaballosManager.h"
 
 using namespace std;
 void menuPrincipal();
@@ -92,6 +93,7 @@ void menuGestionClientes() {
 
 
 void menuGestionCaballos() {
+    CaballosManager obj;
     int opcion;
     do {
         cout << "\n--- MENU GESTION DE CABALLOS ---" << endl;
@@ -107,19 +109,24 @@ void menuGestionCaballos() {
 
         switch (opcion) {
             case 1:
-                // Logica: CargarCaballo()
+                
+                obj.cargarCaballo();
             break;
             case 2: 
-                // Logica: ModificarCaballo()
+                
+                obj.modificarCaballo();
             break;
             case 3: 
-                // Logica: ConsultarCaballo()
+                
+                 obj.consultarPorID();
             break;
             case 4:
-                // Logica: ListarCaballosCliente()
+                
+                 obj.listarPorCliente();
             break;
             case 5: 
-                // Logica: CambiarEstadoCaballo()
+                
+                 obj.cambiarEstado();
             break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
