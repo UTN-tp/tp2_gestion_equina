@@ -115,7 +115,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosAgenda(){
+    int Archivos::cantidadRegistrosAgenda(){
         FILE *pArchivo = fopen("agenda.dat", "rb");
         if(pArchivo == NULL){
 

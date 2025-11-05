@@ -4,6 +4,11 @@
 
 class Fecha
 {
+    private:
+        int dia;
+        int mes;
+        int anio;
+
     public:
         Fecha();
         Fecha (int dia, int mes, int anio);
@@ -17,9 +22,4 @@ class Fecha
         void mostrar() const;
 
     std::string toString() const; // convertir la fecha a formato "DD/MM/YYYY"
-
-    private:
-        int _dia;
-        int _mes;
-        int _anio;
 };
