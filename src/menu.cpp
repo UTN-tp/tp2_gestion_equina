@@ -1,6 +1,8 @@
 #include <iostream>
-#include <limits> 
+#include <limits>
 #include "CaballosManager.h"
+#include "Agenda.h"
+#include "Fecha.h"
 
 using namespace std;
 void menuPrincipal();
@@ -65,21 +67,21 @@ void menuGestionClientes() {
         cin >> opcion;
 
         switch (opcion) {
-            case 1: 
+            case 1:
                  // Logica: CargarCliente()
             break;
-            case 2:  
+            case 2:
                  // Logica: ModificarCliente()
               break;
-            case 3:  
+            case 3:
                  // Logica: ConsultarCliente()
               break;
-            case 4:  
+            case 4:
                  // Logica: ListarClientes()
-              break;   
-            case 5:  
+              break;
+            case 5:
                 // Logica: CambiarEstadoCliente()
-              break;  
+              break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
@@ -109,23 +111,23 @@ void menuGestionCaballos() {
 
         switch (opcion) {
             case 1:
-                
+
                 obj.cargarCaballo();
             break;
-            case 2: 
-                
+            case 2:
+
                 obj.modificarCaballo();
             break;
-            case 3: 
-                
+            case 3:
+
                  obj.consultarPorID();
             break;
             case 4:
-                
+
                  obj.listarPorCliente();
             break;
-            case 5: 
-                
+            case 5:
+
                  obj.cambiarEstado();
             break;
             case 9:
@@ -141,6 +143,7 @@ void menuGestionCaballos() {
 
 void menuGestionAgenda() {
     int opcion;
+    Agenda obj;
     do {
         cout << "\n--- MENU AGENDA Y TRABAJOS ---" << endl;
         cout << "1. Registrar Nuevo Trabajo (Asociar a Caballo)" << endl;
@@ -154,16 +157,16 @@ void menuGestionAgenda() {
 
         switch (opcion) {
             case 1:
-               // Logica: RegistrarTrabajo()
+                obj.registrarNuevoTrabajo();
             break;
             case 2:
-                // Logica: VerAgenda()
+                obj.proximosTrabajos();
             break;
-            case 3: 
-                // Logica: ConsultarHistorialTrabajos()
+            case 3:
+                obj.historialTrabajosRealizados();
             break;
-            case 4: 
-                // Logica: BuscarTrabajo()
+            case 4:
+                obj.buscarTrabajo();
             break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
@@ -190,19 +193,19 @@ void menuGestionMateriales() {
         cin >> opcion;
 
         switch (opcion) {
-            case 1: 
+            case 1:
                 // Logica: CargarMaterial()
             break;
-            case 2: 
+            case 2:
                 // Logica: ModificarStock()
             break;
-            case 3: 
+            case 3:
                 // Logica: RegistrarMaterialesTrabajo()
             break;
             case 4:
                 // Logica: ConsultarStock()
             break;
-            case 5: 
+            case 5:
                 // Logica: ConsultarConsumoPeriodo()
             break;
             case 9:

@@ -50,3 +50,10 @@ CMakeLists.txt
 *.dwo
 *.cbp
 
+agenda.dat
+caballos.dat
+gestionequina.depend
+gestionequina.layout
+main.cpp
+main.cpp
+main.cpp
