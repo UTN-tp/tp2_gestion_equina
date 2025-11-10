@@ -5,7 +5,7 @@
 using namespace std;
 
 class Agenda {
-    
+
         private:
         int id;
         int idCliente;
@@ -35,6 +35,8 @@ public:
         void registrarNuevoTrabajo();    //pendiente 2 validaciones
         void proximosTrabajos();
         void consultasPorIDCaballo();
+        void historialTrabajosRealizados();
+        void buscarTrabajo();
 
 };
 
