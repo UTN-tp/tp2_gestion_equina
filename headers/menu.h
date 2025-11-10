@@ -7,7 +7,8 @@ void menuGestionClientes();
 void menuGestionCaballos();
 void menuGestionAgenda();
 void menuGestionMateriales();
-void menuGestionUsuarios();
+void menuGestionConfiguracion();
+void menuGestionConfiguracion();
 
 
 

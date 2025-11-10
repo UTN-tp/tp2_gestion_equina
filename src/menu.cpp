@@ -1,8 +1,9 @@
 #include <iostream>
-#include <limits>
-#include "CaballosManager.h"
 #include "Agenda.h"
-#include "Fecha.h"
+#include "Cliente.h"
+#include "CaballosManager.h"
+#include "MaterialManager.h"
+#include "Configuracion.h"
 
 using namespace std;
 void menuPrincipal();
@@ -10,51 +11,59 @@ void menuGestionClientes();
 void menuGestionCaballos();
 void menuGestionAgenda();
 void menuGestionMateriales();
+void menuGestionConfiguracion();
 
-void menuPrincipal() {
+void menuPrincipal()
+{
     int opcion;
-    do {
+    do
+    {
         cout << "\n=== MENU PRINCIPAL GESTIONEQUINA ===" << endl;
         cout << "1. Gestion de Clientes" << endl;
         cout << "2. Gestion de Caballos" << endl;
         cout << "3. Agenda y Trabajos" << endl;
         cout << "4. Gestion de Materiales" << endl;
-        cout << "5. algo que falte" << endl;
-        cout << "0. Salir del Programa" << endl;
+        cout << "5. Configuracion" << endl;
+        cout << "9. Salir del Programa" << endl;
         cout << "=====================================" << endl;
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                menuGestionClientes();
-                break;
-            case 2:
-                menuGestionCaballos();
-                break;
-            case 3:
-                menuGestionAgenda();
-                break;
-            case 4:
-                menuGestionMateriales();
-                break;
-            case 5:
-                // para alguna opcion o algun otro menu
-                break;
-            case 0:
-                cout << "Saliendo del programa" << endl;
-                break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo." << endl;
-                break;
+        switch (opcion)
+        {
+        case 1:
+            menuGestionClientes();
+            break;
+        case 2:
+            menuGestionCaballos();
+            break;
+        case 3:
+            menuGestionAgenda();
+            break;
+        case 4:
+            menuGestionMateriales();
+            break;
+        case 5:
+            menuGestionConfiguracion();
+            break;
+        case 9:
+            cout << "Saliendo del programa" << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
         }
-    } while (opcion != 0);
+    }
+    while (opcion != 9);
 }
 
 
-void menuGestionClientes() {
+void menuGestionClientes()
+{
     int opcion;
-    do {
+    Cliente accionesCliente;
+    do
+    {
         cout << "\n--- MENU GESTION DE CLIENTES ---" << endl;
         cout << "1. Cargar Nuevo Cliente" << endl;
         cout << "2. Modificar Datos de Cliente" << endl;
@@ -66,38 +75,41 @@ void menuGestionClientes() {
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                 // Logica: CargarCliente()
+        switch (opcion)
+        {
+        case 1:
+            accionesCliente.cargar();
             break;
-            case 2:
-                 // Logica: ModificarCliente()
-              break;
-            case 3:
-                 // Logica: ConsultarCliente()
-              break;
-            case 4:
-                 // Logica: ListarClientes()
-              break;
-            case 5:
-                // Logica: CambiarEstadoCliente()
-              break;
-            case 9:
-                cout << "-> Volviendo al Menu Principal..." << endl;
-                break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo." << endl;
-                break;
+        case 2:
+            accionesCliente.editarPorID();
+            break;
+        case 3:
+           accionesCliente.buscarPorID();
+            break;
+        case 4:
+            accionesCliente.mostrarListado();
+            break;
+        case 5:
+            accionesCliente.cambiarEstadoPorID();
+            break;
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
         }
-    } while (opcion != 9);
+    }
+    while (opcion != 9);
 }
 
 
-
-void menuGestionCaballos() {
-    CaballosManager obj;
+void menuGestionCaballos()
+{
+    CaballosManager accionesCaballo;
     int opcion;
-    do {
+    do
+    {
         cout << "\n--- MENU GESTION DE CABALLOS ---" << endl;
         cout << "1. Cargar Nuevo Caballo (Asociado a Cliente)" << endl;
         cout << "2. Modificar Datos de Caballo" << endl;
@@ -109,42 +121,46 @@ void menuGestionCaballos() {
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
+        switch (opcion)
+        {
+        case 1:
 
-                obj.cargarCaballo();
+            accionesCaballo.cargarCaballo();
             break;
-            case 2:
+        case 2:
 
-                obj.modificarCaballo();
+            accionesCaballo.modificarCaballo();
             break;
-            case 3:
+        case 3:
 
-                 obj.consultarPorID();
+            accionesCaballo.consultarPorID();
             break;
-            case 4:
+        case 4:
 
-                 obj.listarPorCliente();
+            accionesCaballo.listarPorCliente();
             break;
-            case 5:
+        case 5:
 
-                 obj.cambiarEstado();
+            accionesCaballo.cambiarEstado();
             break;
-            case 9:
-                cout << "-> Volviendo al Menu Principal..." << endl;
-                break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo." << endl;
-                break;
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
         }
-    } while (opcion != 9);
+    }
+    while (opcion != 9);
 }
 
 
-void menuGestionAgenda() {
+void menuGestionAgenda()
+{
     int opcion;
-    Agenda obj;
-    do {
+    Agenda accionesAgenda;
+    do
+    {
         cout << "\n--- MENU AGENDA Y TRABAJOS ---" << endl;
         cout << "1. Registrar Nuevo Trabajo (Asociar a Caballo)" << endl;
         cout << "2. Ver Agenda de Proximos Trabajos" << endl;
@@ -155,32 +171,37 @@ void menuGestionAgenda() {
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                obj.registrarNuevoTrabajo();
+        switch (opcion)
+        {
+        case 1:
+            accionesAgenda.registrarNuevoTrabajo();
             break;
-            case 2:
-                obj.proximosTrabajos();
+        case 2:
+            accionesAgenda.proximosTrabajos();
             break;
-            case 3:
-                obj.historialTrabajosRealizados();
+        case 3:
+            accionesAgenda.historialTrabajosRealizados();
             break;
-            case 4:
-                obj.buscarTrabajo();
+        case 4:
+            accionesAgenda.buscarTrabajo();
             break;
-            case 9:
-                cout << "-> Volviendo al Menu Principal..." << endl;
-                break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo." << endl;
-                break;
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
         }
-    } while (opcion != 9);
+    }
+    while (opcion != 9);
 }
 
-void menuGestionMateriales() {
+void menuGestionMateriales()
+{
     int opcion;
-    do {
+    MaterialManager accionesMateriales;
+    do
+    {
         cout << "\n--- MENU GESTION DE MATERIALES ---" << endl;
         cout << "1. Cargar Nuevo Material al Inventario" << endl;
         cout << "2. Modificar Stock de Material" << endl;
@@ -192,30 +213,66 @@ void menuGestionMateriales() {
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                // Logica: CargarMaterial()
+        switch (opcion)
+        {
+        case 1:
+            accionesMateriales.cargarNuevoMaterial();
             break;
-            case 2:
-                // Logica: ModificarStock()
+        case 2:
+            accionesMateriales.modificarStock();
             break;
-            case 3:
-                // Logica: RegistrarMaterialesTrabajo()
+        case 3:
+            accionesMateriales.registrarMaterialesUsados();
             break;
-            case 4:
-                // Logica: ConsultarStock()
+        case 4:
+            accionesMateriales.consultarStockActual();
             break;
-            case 5:
-                // Logica: ConsultarConsumoPeriodo()
+        case 5:
+            accionesMateriales.consultarConsumoPorPeriodo();
             break;
-            case 9:
-                cout << "-> Volviendo al Menu Principal..." << endl;
-                break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo." << endl;
-                break;
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
         }
-    } while (opcion != 9);
+    }
+    while (opcion != 9);
 }
 
+void menuGestionConfiguracion()
+{
+    Configuracion cfg;
+    int opcion;
+    do {
+        cout << "\n=== MENU CONFIGURACION ===\n";
+        cout << "1. Exportar datos (respaldo)\n";
+        cout << "2. Importar datos\n";
+        cout << "3. Generar CSV\n";
+        cout << "9. Volver\n";
+        cout << "Opcion: ";
+        cin >> opcion;
 
+        switch (opcion) {
+        case 1: cfg.exportarDatos(); break;
+        case 2: cfg.importarDatos(); break;
+        case 3: {
+                string nombreBin, nombreCSV;
+                cout << "Archivo binario (ej: materiales.dat): ";
+                cin >> nombreBin;
+                cout << "Nombre CSV de salida (ej: materiales.csv): ";
+                cin >> nombreCSV;
+                cfg.generarCSV(nombreBin, nombreCSV);
+                break;
+        }
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida. Intente de nuevo." << endl;
+            break;
+        }
+
+    } while (opcion != 9);
+}

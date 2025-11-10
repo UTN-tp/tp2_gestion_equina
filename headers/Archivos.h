@@ -3,27 +3,34 @@
 #include <Cliente.h>
 #include <Material.h>
 #include <Agenda.h>
-#include <Caballo.h>
 #include <MaterialesUsados.h>
 #include <Usuario.h>
 #include <Trabajo.h>
 
+class Caballo;
 
 class Archivos
 {
     public:
     bool guardarArchivoCaballo(Caballo caballo);
     bool guardarArchivoAgenda(Agenda agenda);
-    bool guardarArchivoMaterial (Material material);
-    bool guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados);
-    bool guardarArchivoCliente (Cliente cliente);
-    bool guardarArchivoTrabajo (Trabajo trabajo);
-    bool guardarArchivoUsuario (Usuario usuario);
-    bool modificarRegistroCaballo(const Caballo& caballo, int pos);// agrego
+    bool guardarArchivoMaterial(Material& material);
+    bool guardarArchivoCliente (const Cliente& cliente);
+    bool guardarArchivoCliente (const Usuario& usuario);
+    bool guardarArchivoTrabajo (Trabajo& trabajo);
+    bool guardarArchivoUsuario (const Usuario& usuario);
+    bool modificarRegistroCaballo(const Caballo& caballo, int pos);
+    bool modificarRegistroMaterial(Material& material, int pos);
+    bool guardarArchivoMaterialesUsados(MaterialesUsados& materialesUsados);
+
     
-    void listarCaballosPorCliente(int idCliente); //agrego
+    void listarCaballosPorCliente(int idCliente);
+    void calcularRecaudacionAnualPorMes();
+    void calcularRecaudacionPorCliente();
+    void consumoMaterialesPorAno();
     
-    int buscarCaballoPorID(int idBuscado); //agrego
+    int buscarCaballoPorID(int idBuscado);
+    int buscarMaterialPorID(int id);
     int cantidadRegistrosCaballo();
     int cantidadRegistrosAgenda();
     int cantidadRegistrosMaterial();
@@ -39,6 +46,12 @@ class Archivos
     Cliente leerRegistroCliente(int pos);
     Trabajo leerRegistroTrabajo(int pos);
     Usuario leerRegistroUsuario(int pos);
+
+
+
+
+
+
 
 };
 

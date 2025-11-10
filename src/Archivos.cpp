@@ -7,6 +7,8 @@
 #include "Usuario.h"
 #include "Trabajo.h"
 
+using namespace std;
+
     //Guardar
     bool Archivos::guardarArchivoCaballo(Caballo caballo){
         FILE *pArchivo = fopen("caballos.dat", "ab");
@@ -22,8 +24,21 @@
 
     }
 
+    bool Archivos::guardarArchivoUsuario(const Usuario& usuario) {
+        FILE* pArchivo = fopen("usuarios.dat", "ab");
+        if (pArchivo == nullptr) {
+            perror("Error al abrir el archivo usuario.dat");
+            return false;
+        }
+
+        size_t escritos = fwrite(&usuario, sizeof(Usuario), 1, pArchivo);
+        fclose(pArchivo);
+
+        return escritos == 1;
+    }
+
     bool Archivos::guardarArchivoAgenda(Agenda agenda){
-        FILE *pArchivo = fopen("agenda.dat", "ab");
+        FILE *pArchivo = fopen("agendas.dat", "ab");
         if(pArchivo == NULL){
 
             return false;
@@ -35,20 +50,19 @@
         return ok;
     }
 
-    bool Archivos::guardarArchivoMaterial (Material material){
-        FILE *pArchivo = fopen("materiales.dat", "ab");
-        if(pArchivo == NULL){
-
+    bool Archivos::guardarArchivoMaterial(Material& material){
+        FILE* p = fopen("materiales.dat", "ab");
+        if (p == nullptr) {
+            cout << "Error al abrir el archivo materiales.dat\n";
             return false;
         }
 
-        bool ok = fwrite(&material, sizeof(Material), 1, pArchivo);
-        fclose(pArchivo);
-
+        bool ok = fwrite(&material, sizeof(Material), 1, p);
+        fclose(p);
         return ok;
     }
 
-    bool Archivos::guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados){
+    bool Archivos::guardarArchivoMaterialesUsados (MaterialesUsados &materialesUsados){
         FILE *pArchivo = fopen("materialesusados.dat", "ab");
         if(pArchivo == NULL){
 
@@ -61,21 +75,21 @@
         return ok;
     }
 
-    bool guardarArchivoCliente (Cliente cliente){
-        FILE *pArchivo = fopen("cliente.dat", "ab");
-        if(pArchivo == NULL){
-
+    bool Archivos::guardarArchivoCliente(const Cliente& cliente) {
+        FILE* pArchivo = fopen("clientes.dat", "ab");
+        if (pArchivo == nullptr) {
+            perror("Error al abrir el archivo cliente.dat");
             return false;
         }
 
-        bool ok = fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
+        size_t escritos = fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
         fclose(pArchivo);
 
-        return ok;
+        return escritos == 1;
     }
 
-    bool guardarArchivoTrabajo (Trabajo trabajo){
-        FILE *pArchivo = fopen("trabajo.dat", "ab");
+    bool Archivos::guardarArchivoTrabajo(Trabajo& trabajo){
+        FILE *pArchivo = fopen("trabajos.dat", "ab");
         if(pArchivo == NULL){
 
             return false;
@@ -87,20 +101,7 @@
         return ok;
     }
 
-    bool guardarArchivoUsuario (Usuario usuario){
-        FILE *pArchivo = fopen("usuario.dat", "ab");
-        if(pArchivo == NULL){
 
-            return false;
-        }
-
-        bool ok = fwrite(&usuario, sizeof(Usuario), 1, pArchivo);
-        fclose(pArchivo);
-
-        return ok;
-    }
-
-    //Cantidad Registros
     int Archivos::cantidadRegistrosCaballo(){
         FILE *pArchivo = fopen("caballos.dat", "rb");
         if(pArchivo == NULL){
@@ -116,7 +117,7 @@
     }
 
     int Archivos::cantidadRegistrosAgenda(){
-        FILE *pArchivo = fopen("agenda.dat", "rb");
+        FILE *pArchivo = fopen("agendas.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -129,8 +130,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterial(){
-        FILE *pArchivo = fopen("material.dat", "rb");
+    int Archivos::cantidadRegistrosMaterial(){
+        FILE *pArchivo = fopen("materiales.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -143,7 +144,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterialesUsados(){
+    int Archivos::cantidadRegistrosMaterialesUsados(){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
         if(pArchivo == NULL){
 
@@ -157,8 +158,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosCliente(){
-        FILE *pArchivo = fopen("registros_cliente.dat", "rb");
+    int Archivos::cantidadRegistrosCliente(){
+        FILE *pArchivo = fopen("clientes.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -171,8 +172,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosTrabajo(){
-        FILE *pArchivo = fopen("trabajo.dat", "rb");
+    int Archivos::cantidadRegistrosTrabajo(){
+        FILE *pArchivo = fopen("trabajos.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -185,8 +186,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosUsuario(){
-        FILE *pArchivo = fopen("usuario.dat", "rb");
+    int Archivos::cantidadRegistrosUsuario(){
+        FILE *pArchivo = fopen("usuarios.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -200,13 +201,14 @@
     }
 
 
-    //Leer
     Caballo Archivos::leerRegistroCaballo(int pos){
         FILE *pArchivo = fopen("caballos.dat", "rb");
-        if(pArchivo == NULL){
-            return Caballo();
-        }
+
         Caballo caballo;
+
+        if(pArchivo == NULL){
+            return caballo;
+        }
         fseek(pArchivo, sizeof(Caballo) * pos, SEEK_SET);
         fread(&caballo, sizeof(Caballo), 1, pArchivo);
         fclose(pArchivo);
@@ -214,11 +216,13 @@
     }
 
     Agenda Archivos::leerRegistroAgenda(int pos){
-        FILE *pArchivo = fopen("agenda.dat", "rb");
-        if(pArchivo == NULL){
-            return Agenda();
-        }
+        FILE *pArchivo = fopen("agendas.dat", "rb");
+
         Agenda agenda;
+        if(pArchivo == NULL){
+            return agenda;
+        }
+
         fseek(pArchivo, sizeof(Agenda) * pos, SEEK_SET);
         fread(&agenda, sizeof(Agenda), 1, pArchivo);
         fclose(pArchivo);
@@ -227,23 +231,23 @@
     }
 
     Material Archivos::leerRegistroMaterial(int pos){
-        FILE *pArchivo = fopen("registro_material.dat", "rb");
-        if(pArchivo == NULL){
-            return Material();
-        }
         Material material;
-        fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
-        fread(&material, sizeof(Agenda), 1, pArchivo);
-        fclose(pArchivo);
+        FILE* p = fopen("materiales.dat", "rb");
+        if (p == nullptr) return material;
+        fseek(p, pos * sizeof(Material), SEEK_SET);
+        fread(&material, sizeof(Material), 1, p);
+        fclose(p);
         return material;
     }
 
     MaterialesUsados Archivos::leerRegistroMaterialesUsados(int pos){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
-        if(pArchivo == NULL){
-            return MaterialesUsados();
-        }
         MaterialesUsados materialesUsados;
+
+        if(pArchivo == NULL){
+            return materialesUsados;
+        }
+
         fseek(pArchivo, sizeof(MaterialesUsados) * pos, SEEK_SET);
         fread(&materialesUsados, sizeof(MaterialesUsados), 1, pArchivo);
         fclose(pArchivo);
@@ -251,11 +255,12 @@
     }
 
     Cliente Archivos::leerRegistroCliente(int pos){
-        FILE *pArchivo = fopen("cliente.dat", "rb");
-        if(pArchivo == NULL){
-            return Cliente();
-        }
+        FILE *pArchivo = fopen("clientes.dat", "rb");
         Cliente cliente;
+        if(pArchivo == NULL){
+            return cliente;
+        }
+
         fseek(pArchivo, sizeof(Cliente) * pos, SEEK_SET);
         fread(&cliente, sizeof(Cliente), 1, pArchivo);
         fclose(pArchivo);
@@ -263,11 +268,11 @@
     }
 
     Trabajo Archivos::leerRegistroTrabajo(int pos){
-        FILE *pArchivo = fopen("trabajo.dat", "rb");
-        if(pArchivo == NULL){
-            return Trabajo();
-        }
+        FILE *pArchivo = fopen("trabajos.dat", "rb");
         Trabajo trabajo;
+        if(pArchivo == NULL){
+            return trabajo;
+        }
         fseek(pArchivo, sizeof(Trabajo) * pos, SEEK_SET);
         fread(&trabajo, sizeof(Trabajo), 1, pArchivo);
         fclose(pArchivo);
@@ -275,11 +280,12 @@
     }
 
     Usuario Archivos::leerRegistroUsuario(int pos){
-        FILE *pArchivo = fopen("usuario.dat", "rb");
-        if(pArchivo == NULL){
-            return Usuario();
-        }
+        FILE *pArchivo = fopen("usuarios.dat", "rb");
         Usuario usuario;
+        if(pArchivo == NULL){
+            return usuario;
+        }
+
         fseek(pArchivo, sizeof(Usuario) * pos, SEEK_SET);
         fread(&usuario, sizeof(Usuario), 1, pArchivo);
         fclose(pArchivo);
@@ -346,3 +352,176 @@
         cout << "No se encontraron caballos para ese cliente.\n";
     }
 }
+
+
+
+
+int Archivos::buscarMaterialPorID(int id) {
+        Material material;
+        FILE *pArchivo = fopen("materiales.dat", "rb");
+        if (pArchivo == NULL) return -1;
+
+        int pos = 0;
+        while (fread(&material, sizeof(Material), 1, pArchivo)) {
+            if (material.getID() == id && material.getEstado()) {
+                fclose(pArchivo);
+                return pos;
+            }
+            pos++;
+        }
+
+        fclose(pArchivo);
+        return -1;
+    }
+
+bool Archivos::modificarRegistroMaterial(Material& material, int pos) {
+        FILE *pArchivo = fopen("materiales.dat", "rb+");
+        if (pArchivo == NULL) return false;
+
+        fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
+        bool ok = fwrite(&material, sizeof(Material), 1, pArchivo);
+        fclose(pArchivo);
+        return ok;
+    }
+
+void Archivos::calcularRecaudacionAnualPorMes() {
+        int cantidad = cantidadRegistrosTrabajo();
+
+        int anio;
+        cout << "Ingrese el año para calcular la recaudacion: ";
+        cin >> anio;
+
+
+        float totalMes[12] = {0};
+
+        for (int i = 0; i < cantidad; i++) {
+            Trabajo t = leerRegistroTrabajo(i);
+            Fecha f = t.getFecha();
+
+            if (f.getAnio() == anio) {
+                int mes = f.getMes();
+                if (mes >= 1 && mes <= 12) {
+                    totalMes[mes - 1] += t.getMonto();
+                }
+            }
+        }
+
+        cout << "Recaudacion del año " << anio << " por mes:" << endl;
+        for (int i = 0; i < 12; i++) {
+            cout << "Mes " << (i + 1) << ": $" << totalMes[i] << endl;
+        }
+    }
+
+void Archivos::calcularRecaudacionPorCliente() {
+        int cantidadTrabajos = cantidadRegistrosTrabajo();
+        int cantidadClientes = cantidadRegistrosCliente();
+
+        int anio;
+        cout << "Ingrese el año para calcular la recaudacion por cliente: ";
+        cin >> anio;
+
+        // Array de clientes
+        Cliente* clientes = new Cliente[cantidadClientes];
+        for (int i = 0; i < cantidadClientes; i++) {
+            clientes[i] = leerRegistroCliente(i);
+        }
+
+        // Array paralelo para acumular recaudacion
+        float* recaudacion = new float[cantidadClientes];
+        for (int i = 0; i < cantidadClientes; i++) {
+            recaudacion[i] = 0;
+        }
+
+        // Recorremos los trabajos y acumulamos montos por cliente
+        for (int i = 0; i < cantidadTrabajos; i++) {
+            Trabajo t = leerRegistroTrabajo(i);
+            Fecha f = t.getFecha();
+
+            if (f.getAnio() == anio) {
+                int idCliente = t.getIdCliente();
+                // Buscamos la posición del cliente en el array
+                for (int j = 0; j < cantidadClientes; j++) {
+                    if (clientes[j].getID() == idCliente) {
+                        recaudacion[j] += t.getMonto();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Mostramos resultados
+        cout << "Recaudacion por cliente en el año " << anio << ":\n";
+        cout << "ID Cliente\tNombre\t\tTotal recaudado\n";
+        cout << "-----------------------------------------\n";
+
+        for (int i = 0; i < cantidadClientes; i++) {
+            if (recaudacion[i] > 0) {
+                cout << clientes[i].getID() << "\t\t"
+                     << clientes[i].getNombre() << "\t\t$"
+                     << recaudacion[i] << endl;
+            }
+        }
+
+        delete[] clientes;
+        delete[] recaudacion;
+    }
+
+void Archivos::consumoMaterialesPorAno() {
+        int cantidadMU = cantidadRegistrosMaterialesUsados();
+        int cantidadMateriales = cantidadRegistrosMaterial();
+
+        int anio;
+        cout << "Ingrese el año para calcular el consumo de materiales: ";
+        cin >> anio;
+
+        // Array de materiales
+        Material* materiales = new Material[cantidadMateriales];
+        for (int i = 0; i < cantidadMateriales; i++) {
+            materiales[i] = leerRegistroMaterial(i);
+        }
+
+        // Array paralelo para acumular consumo
+        int* consumo = new int[cantidadMateriales];
+        for (int i = 0; i < cantidadMateriales; i++) {
+            consumo[i] = 0;
+        }
+
+        // Recorremos los materiales usados
+        for (int i = 0; i < cantidadMU; i++) {
+            MaterialesUsados mu = leerRegistroMaterialesUsados(i);
+            Trabajo t = leerRegistroTrabajo(mu.getIDTrabajo());
+            Fecha f = t.getFecha();
+
+            if (f.getAnio() == anio) {
+                int idMaterial = mu.getIDMaterial();
+                // Buscamos la posición del material en el array
+                for (int j = 0; j < cantidadMateriales; j++) {
+                    if (materiales[j].getID() == idMaterial) {
+                        consumo[j] += mu.getCantidad();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Mostramos resultados
+        cout << "Consumo de materiales en el año " << anio << ":\n";
+        cout << "ID\tNombre\t\tTipo\t\tCantidad consumida\n";
+        cout << "-----------------------------------------------------\n";
+
+        for (int i = 0; i < cantidadMateriales; i++) {
+            if (consumo[i] > 0) {
+                cout << materiales[i].getID() << "\t"
+                     << materiales[i].getNombre() << "\t\t"
+                     << materiales[i].getTipo() << "\t\t"
+                     << consumo[i] << endl;
+            }
+        }
+
+        delete[] materiales;
+        delete[] consumo;
+    }
+
+
+
+

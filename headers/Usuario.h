@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <iostream>
+
 using namespace std;
 
 class Usuario {
@@ -32,7 +33,8 @@ public:
     void setEmail(const char* valor);
     void setEstado(bool valor);
 
-    virtual void mostrar() const {}
+    virtual void cargar();
+    virtual void mostrar() const;
 };
 
 #endif

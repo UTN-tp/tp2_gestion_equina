@@ -1,6 +1,9 @@
 #include <cstring>
 #include <iostream>
-#include "Caballo.h" 
+#include "Caballo.h"
+#include <cstring>
+
+
 using namespace std;
 
 
@@ -113,3 +116,5 @@ void Caballo::mostrar() const {
     cout << "Estado: " << (getEstado() ? "Activo" : "Inactivo") << endl;
     cout << "-------------------------" << endl;
 }
+
+

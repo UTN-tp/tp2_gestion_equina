@@ -1,18 +1,31 @@
 #include "CaballosManager.h"
+#include "./Archivos.h"
 #include <iostream>
 #include <cstring>
 using namespace std;
 
 void CaballosManager::cargarCaballo() {
     Caballo c;
+    Cliente cliente;
 
     int nuevoID = archivos.cantidadRegistrosCaballo() + 1;
     c.setID(nuevoID);
 
     cout << "ID Cliente: ";
-    int idC; 
-    cin >> idC;
-    c.setIDCliente(idC);
+    int idCliente;
+    int idClienteCaballo;
+    cin >> idCliente;
+    idClienteCaballo = cliente.buscarPorID(idCliente);
+
+    if (idClienteCaballo != 0)
+    {
+        c.setIDCliente(idClienteCaballo);
+    }
+    else
+    {
+        cout << "No se encontró un cliente con el ID " << idCliente << endl;
+        return;
+    }
 
     char nombre[20];
     cout << "Nombre: ";

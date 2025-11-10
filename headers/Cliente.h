@@ -18,7 +18,13 @@ public:
     void setDireccion(const char* valor);
     void setCantidadCaballos(int valor);
 
-    void mostrar() const override {}
+    void cargar();
+    void buscarPorID();
+    int buscarPorID(int idCliente);
+    void editarPorID();
+    void cambiarEstadoPorID();
+    void mostrarListado();
+    void mostrar() const override;
 };
 
 #endif

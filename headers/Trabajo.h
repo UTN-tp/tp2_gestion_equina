@@ -1,37 +1,32 @@
 #ifndef TRABAJO_H
 #define TRABAJO_H
 
-#include <cstring>
 #include <iostream>
+#include "Fecha.h"
 using namespace std;
 
 class Trabajo {
 private:
     int id;
-    int idCaballo;
-    char fecha[11];
-    char tipoTrabajo[30];
-    float costo;
-    float precio;
+    int idCliente;
+    float monto;
+    Fecha fechaTrabajo;
 
 public:
     Trabajo(){}
     ~Trabajo(){}
 
     int getID() const;
-    int getIDCaballo() const;
-    const char* getFecha() const;
-    const char* getTipoTrabajo() const;
-    float getCosto() const;
-    float getPrecio() const;
+    int getIdCliente() const;
+    float getMonto() const;
+    Fecha getFecha() const;
 
     void setID(int valor);
-    void setIDCaballo(int valor);
-    void setFecha(const char* valor);
-    void setTipoTrabajo(const char* valor);
-    void setCosto(float valor);
-    void setPrecio(float valor);
+    void setIdCliente(int valor);
+    void setMonto(float valor);
+    void setFecha(const Fecha& f);
 
+    void cargar();
     void mostrar() const;
 };
 
