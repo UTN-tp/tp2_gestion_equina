@@ -353,6 +353,82 @@ using namespace std;
     }
 }
 
+ // agrego para usuario y cliente generacion de ID automatico
+    int Archivos::obtenerUltimoIDUsuario() {
+    FILE* p = fopen("Cliente.dat", "rb");
+    if (p == nullptr) return 0;
+
+    Usuario u;
+    int maxID = 0;
+
+    while (fread(&u, sizeof(Usuario), 1, p) == 1) {
+        if (u.getID() > maxID) {
+            maxID = u.getID();
+        }
+    }
+
+    fclose(p);
+    return maxID;
+}
+    // y esto para validar que no se repita
+    bool Archivos::existeUsuarioPorID(int idBuscado) {
+    FILE* p = fopen("usuarios.dat", "rb");
+    if (p == nullptr) return false;
+
+    Usuario u;
+
+    while (fread(&u, sizeof(Usuario), 1, p) == 1) {
+        if (u.getID() == idBuscado) {
+            fclose(p);
+            return true;
+        }
+    }
+
+    fclose(p);
+    return false;
+}
+
+
+
+
+// para crear ID automatico para caballo
+int Archivos::obtenerUltimoIDCaballo() {
+    FILE* p = fopen("caballos.dat", "rb");
+    if (p == nullptr) return 0;
+
+    Caballo c;
+    int maxID = 0;
+
+    while (fread(&c, sizeof(Caballo), 1, p) == 1) {
+        if (c.getID() > maxID) {
+            maxID = c.getID();
+        }
+    }
+
+    fclose(p);
+    return maxID;
+}
+ // agrego 2
+void Archivos::listarTodosLosCaballos() {
+    FILE* pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo caballos.dat\n";
+        return;
+    }
+
+    Caballo aux;
+
+    cout << "=== LISTA COMPLETA DE CABALLOS ===\n\n";
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo) == 1) {
+        aux.mostrar();
+        cout << "\n-----------------------------\n";
+    }
+
+    fclose(pArchivo);
+}
+
+
 
 
 

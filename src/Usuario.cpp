@@ -1,5 +1,7 @@
 #include "Usuario.h"
-#include <cstring>  // para strncpy
+#include <cstring>
+#include "Archivos.h"
+#include "InputManager.h"  // para strncpy
 
 // ======= GETTERS =======
 
@@ -76,27 +78,29 @@ void Usuario::setEstado(bool valor) {
 
 // ======= CARGAR =======
 void Usuario::cargar() {
-    cout << "=== CARGA DE USUARIO ===" << endl;
 
-    cout << "ID: ";
-    cin >> id;
-    cin.ignore(); // limpia el salto de línea pendiente
+    Archivos archivo;
+    int nuevoID = archivo.obtenerUltimoIDUsuario() + 1;
 
-    cout << "Nombre: ";
-    cin.getline(nombre, sizeof(nombre));
+    while (archivo.existeUsuarioPorID(nuevoID)) {
+    nuevoID++;
+    }
 
-    cout << "Apellido: ";
-    cin.getline(apellido, sizeof(apellido));
+      setID(nuevoID);
 
-    cout << "Telefono: ";
-    cin.getline(telefono, sizeof(telefono));
+    //cout << "=== CARGA DE USUARIO ===\n";
 
-    cout << "Email: ";
-    cin.getline(email, sizeof(email));
+    //id = InputManager::leerInt("ID: ");
 
-    estado = true; // por defecto activo
+    setNombre(InputManager::leerLinea("Nombre: ").c_str());
+    setApellido(InputManager::leerLinea("Apellido: ").c_str());
+    setTelefono(InputManager::leerLinea("Telefono: ").c_str());
+    setEmail(InputManager::leerLinea("Email: ").c_str());
+
+    estado = true;
+
+
 }
-
 // ======= MOSTRAR =======
 void Usuario::mostrar() const {
     cout << "ID: " << id << endl;

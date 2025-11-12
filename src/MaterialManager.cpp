@@ -5,32 +5,42 @@ using namespace std;
 
 /// 1. Cargar Nuevo Material al Inventario
 void MaterialManager::cargarNuevoMaterial() {
+    if (!InputManager::confirmar("Desea cargar un nuevo material? (s/n): "))
+        return;
+
     Material m;
     int nuevoID = archivos.cantidadRegistrosMaterial() + 1;
     m.setID(nuevoID);
 
-    char nombre[40];
-    cout << "Ingrese nombre del material: ";
-    cin.ignore();
-    cin.getline(nombre, 40);
-    m.setNombre(nombre);
+    cout << "\n=== CARGA DE MATERIAL ===\n";
 
-    char tipo[30];
-    cout << "Ingrese tipo de material: ";
-    cin.getline(tipo, 30);
-    m.setTipo(tipo);
+    string nombre = InputManager::leerLinea("Nombre del material: ");
+    m.setNombre(nombre.c_str());
 
-    int stock;
-    cout << "Ingrese cantidad inicial de stock: ";
-    cin >> stock;
+    string tipo = InputManager::leerLinea("Tipo de material: ");
+    m.setTipo(tipo.c_str());
+
+    int stock = InputManager::leerInt("Cantidad inicial de stock: ");
     m.setStock(stock);
 
-    float precio;
-    cout << "Ingrese precio unitario: $";
-    cin >> precio;
+    float precio = InputManager::leerFloat("Precio unitario: $");
     m.setPrecio(precio);
 
     m.setEstado(true);
+
+    // --- Confirmación previa al guardado ---
+    cout << "\n--- CONFIRMAR DATOS DEL MATERIAL ---\n";
+    cout << "ID: " << m.getID() << endl;
+    cout << "Nombre: " << m.getNombre() << endl;
+    cout << "Tipo: " << m.getTipo() << endl;
+    cout << "Stock: " << m.getStock() << endl;
+    cout << "Precio: $" << m.getPrecio() << endl;
+    cout << "------------------------------------\n";
+
+    if (!InputManager::confirmar("¿Desea guardar este material? (s/n): ")) {
+        cout << "\nCarga cancelada. No se guardaron datos.\n";
+        return;
+    }
 
     if (archivos.guardarArchivoMaterial(m))
         cout << "Material guardado correctamente.\n";
@@ -38,11 +48,10 @@ void MaterialManager::cargarNuevoMaterial() {
         cout << "Error al guardar el material.\n";
 }
 
+
 /// 2. Modificar Stock de Material
 void MaterialManager::modificarStock() {
-    int id;
-    cout << "Ingrese ID del material: ";
-    cin >> id;
+    int id = InputManager::leerInt("Ingrese ID del material: ");
 
     int pos = archivos.buscarMaterialPorID(id);
     if (pos < 0) {
@@ -52,12 +61,24 @@ void MaterialManager::modificarStock() {
 
     Material m = archivos.leerRegistroMaterial(pos);
     cout << "\nStock actual: " << m.getStock() << endl;
+    cout << "\n--- MATERIAL ENCONTRADO ---\n";
+     cout << "ID: " << m.getID() << endl;
+     cout << "Nombre: " << m.getNombre() << endl;
+     cout << "Stock actual: " << m.getStock() << endl;
 
-    int nuevoStock;
-    cout << "Ingrese nuevo stock: ";
-    cin >> nuevoStock;
+     if (!InputManager::confirmar("Desea modificar el stock? (s/n): "))
+          return;
+
+
+    int nuevoStock = InputManager::leerInt("Ingrese nuevo stock: ");
+     cout << "\nNuevo stock será: " << nuevoStock << endl;
+    if (!InputManager::confirmar("¿Confirmar cambios? (s/n): "))
+        return;
+
 
     m.setStock(nuevoStock);
+    
+
     if (archivos.modificarRegistroMaterial(m, pos))
         cout << "Stock actualizado.\n";
     else
@@ -66,21 +87,21 @@ void MaterialManager::modificarStock() {
 
 /// 3. Registrar Materiales Usados en un Trabajo
 void MaterialManager::registrarMaterialesUsados() {
+    
+     if (!InputManager::confirmar("Desea registrar materiales usados? (s/n): "))
+        return;
+
     MaterialesUsados mu;
-    int idTrabajo, idMaterial, cantidad;
-
-    cout << "Ingrese ID del trabajo: ";
-    cin >> idTrabajo;
+    
+    int idTrabajo = InputManager::leerInt("ID del trabajo: ");
     mu.setIDTrabajo(idTrabajo);
-
-    cout << "Ingrese ID del material utilizado: ";
-    cin >> idMaterial;
+    
+    int idMaterial = InputManager::leerInt("ID del material utilizado: ");
     mu.setIDMaterial(idMaterial);
-
-    cout << "Ingrese cantidad usada: ";
-    cin >> cantidad;
+    
+    int cantidad = InputManager::leerInt("Ingrese cantidad usada: ");
     mu.setCantidad(cantidad);
-
+    
     // Verificar si el material existe
     int pos = archivos.buscarMaterialPorID(idMaterial);
     if (pos < 0) {
@@ -90,7 +111,7 @@ void MaterialManager::registrarMaterialesUsados() {
 
     Material m = archivos.leerRegistroMaterial(pos);
     if (m.getStock() < cantidad) {
-        cout << "⚠No hay suficiente stock disponible.\n";
+        cout << "No hay suficiente stock disponible.\n";
         return;
     }
 

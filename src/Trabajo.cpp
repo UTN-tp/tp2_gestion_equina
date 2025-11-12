@@ -1,6 +1,7 @@
+#include <iostream>
 #include "Trabajo.h"
 #include "Fecha.h"
-#include <iostream>
+#include "InputManager.h"
 using namespace std;
 
 
@@ -15,15 +16,20 @@ void Trabajo::setMonto(float valor) { monto = valor; }
 void Trabajo::setFecha(const Fecha& f) { fechaTrabajo = f; }
 
 void Trabajo::cargar() {
-    cout << "ID Trabajo: ";
-    cin >> id;
-    cout << "ID Cliente: ";
-    cin >> idCliente;
-    cout << "Monto: $";
-    cin >> monto;
+   if (!InputManager::confirmar("Desea cargar un trabajo? S/N: "))
+        return;
+
+
+    int id = InputManager::leerInt("ID Trabajo: ");
+    int idCliente = InputManager::leerInt("ID Cliente: ");
+    float monto = InputManager::leerFloat("Monto:$ ");
 
     cout << "Ingrese fecha del trabajo:\n";
     fechaTrabajo.cargar();
+    if (!InputManager::confirmar("Desea guardar trabajo? (s/n): ")) {
+        cout << "\nCarga cancelada. No se guardaron datos.\n";
+        return;
+    }
 }
 
 void Trabajo::mostrar() const {

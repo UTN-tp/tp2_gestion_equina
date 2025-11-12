@@ -43,26 +43,10 @@ string Fecha::toString() const {
 }
 
 void Fecha::cargar(){
-    do {
-        cout<< "Dia: ";
-        cin>> dia;
-        if (dia < 1 || dia > 31) {
-            cout<< "Ingrese parametros validos."<<endl;
-        }
-    } while (dia < 1 || dia > 31);
-
-    do {
-        cout<< "Ingrese mes: ";
-        cin>> mes;
-        if (mes < 1 || mes > 12) {
-            cout << "Ingrese parametros validos."<<endl;
-        }
-    } while (mes < 1 || mes > 12);
-
-    cout<<"Anio: ";
-    cin>> anio;
+     dia  = InputManager::leerIntEnRango("Dia: ", 1, 31);
+     mes  = InputManager::leerIntEnRango("Mes: ", 1, 12);
+     anio = InputManager::leerInt("Anio: ");
 }
-
 void Fecha::mostrar() const {
     cout << dia << "/" << mes << "/" << anio;
 }

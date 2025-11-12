@@ -1,9 +1,10 @@
 
-#include "./Cliente.h"
+#include <iostream>
 #include <cstring>
 #include "./Archivos.h"
-
-
+#include "./Cliente.h"
+#include "InputManager.h"
+using namespace std;
 // Getter: devuelve la dirección
 const char* Cliente::getDireccion() const {
     return direccion;
@@ -29,30 +30,44 @@ void Cliente::setCantidadCaballos(int valor) {
     cantidadCaballos = valor;
 }
 
+// ===== CARGAR =====
+
 void Cliente::cargar() {
-    Usuario::cargar();
+      if (!InputManager::confirmar("Desea cargar un nuevo cliente? (s/n): "))
+        return;
 
-    cout << "Direccion: ";
-    cin.ignore();
-    cin.getline(direccion, sizeof(direccion));
+    cout << "\n=== CARGA DE CLIENTE ===\n";
 
-    cout << "Cantidad de caballos: ";
-    cin >> cantidadCaballos;
-    cin.ignore();
+    // Esto ya incluye su propia confirmación interna
+     Usuario::cargar();
 
-    // Instanciamos Archivos y guardamos directamente
+
+    setDireccion(InputManager::leerLinea("Direccion: ").c_str());
+    cantidadCaballos = InputManager::leerInt("Cantidad de caballos: ");
+
+
+    cout << "\n--- CONFIRMAR DATOS DEL CLIENTE ---\n";
+    mostrar();
+    cout << "------------------------------------\n";
+
+    if (!InputManager::confirmar("Desea guardar este cliente? (s/n): ")) {
+        cout << "\nCarga cancelada. No se guardaron datos.\n";
+        return;
+    }
+
+
     Archivos archivo;
-    if (archivo.guardarArchivoCliente(*this)) {
-        cout << "\nCliente guardado correctamente en 'cliente.dat'\n";
-    } else {
+
+    if (archivo.guardarArchivoCliente(*this))
+        cout << "\nCliente guardado correctamente.\n";
+    else
         cout << "\nError al guardar el cliente.\n";
-    }
 
-    if (!archivo.guardarArchivoUsuario(static_cast<Usuario>(*this))) {
+    if (!archivo.guardarArchivoUsuario(static_cast<Usuario>(*this)))
         cout << "Error al guardar el usuario base.\n";
-    }
-
 }
+
+// ===== MOSTRAR =====
 
 void Cliente::mostrar() const {
     Usuario::mostrar();
@@ -60,117 +75,97 @@ void Cliente::mostrar() const {
     cout << "Cantidad de caballos: " << cantidadCaballos << endl;
 }
 
+// ===== BUSCAR POR ID =====
+
 void Cliente::buscarPorID() {
-    int idBuscado;
-    cout << "Ingrese el ID del cliente a buscar: ";
-    cin >> idBuscado;
+    int idBuscado = InputManager::leerInt("Ingrese el ID del cliente a buscar: ");
 
     Archivos archivo;
     int cantidad = archivo.cantidadRegistrosCliente();
-    bool encontrado = false;
 
     for (int i = 0; i < cantidad; i++) {
         Cliente cliente = archivo.leerRegistroCliente(i);
+
         if (cliente.getID() == idBuscado) {
             cout << "\nCliente encontrado:\n";
             cliente.mostrar();
-            encontrado = true;
-            break;
+            return;
         }
     }
 
-    if (!encontrado) {
-        cout << "No se encontró un cliente con el ID " << idBuscado << endl;
-    }
+    cout << "No se encontro un cliente con ese ID.\n";
 }
+
+// ===== BUSCAR POR ID (int) =====
 
 int Cliente::buscarPorID(int idCliente) {
-
-    int idBuscado = idCliente;
-
     Archivos archivo;
     int cantidad = archivo.cantidadRegistrosCliente();
-    bool encontrado = false;
 
     for (int i = 0; i < cantidad; i++) {
         Cliente cliente = archivo.leerRegistroCliente(i);
-        if (cliente.getID() == idBuscado) {
-            cout << "\nCliente encontrado:\n";
+
+        if (cliente.getID() == idCliente) {
             cliente.mostrar();
-            return  cliente.getID();
+            return cliente.getID();
         }
     }
 
-    if (!encontrado) {
-        cout << "No se encontró un cliente con el ID " << idBuscado << endl;
-        return 0;
-    }
+    cout << "No se encontro un cliente con ese ID.\n";
+    return 0;
 }
 
+// ===== EDITAR POR ID =====
 
 void Cliente::editarPorID() {
     Archivos archivo;
-    int idBuscado;
 
-    cout << "Ingrese el ID del cliente que desea modificar: ";
-    cin >> idBuscado;
-    cin.ignore();
-
+    int idBuscado = InputManager::leerInt("Ingrese el ID del cliente que desea modificar: ");
     int cantidad = archivo.cantidadRegistrosCliente();
-    bool encontrado = false;
 
     for (int i = 0; i < cantidad; i++) {
         Cliente cliente = archivo.leerRegistroCliente(i);
 
         if (cliente.getID() == idBuscado) {
-            encontrado = true;
             cout << "\nCliente encontrado:\n";
             cliente.mostrar();
 
-            cout << "\n--- Modificar datos (Enter = no modificar) ---\n";
+            if (!InputManager::confirmar("Desea modificar este cliente? (s/n): "))
+                return;
 
-            string buffer;
+            string s;
 
-            // Nombre
-            cout << "Nuevo nombre (" << cliente.getNombre() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                strncpy(cliente.nombre, buffer.c_str(), sizeof(cliente.nombre));
+            s = InputManager::leerLinea("Nuevo nombre: ");
+            if (!s.empty()) cliente.setNombre(s.c_str());
 
-            // Apellido
-            cout << "Nuevo apellido (" << cliente.getApellido() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                strncpy(cliente.apellido, buffer.c_str(), sizeof(cliente.apellido));
+            s = InputManager::leerLinea("Nuevo apellido: ");
+            if (!s.empty()) cliente.setApellido(s.c_str());
 
-            // Teléfono
-            cout << "Nuevo telefono (" << cliente.getTelefono() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                strncpy(cliente.telefono, buffer.c_str(), sizeof(cliente.telefono));
+            s = InputManager::leerLinea("Nuevo telefono: ");
+            if (!s.empty()) cliente.setTelefono(s.c_str());
 
-            // Email
-            cout << "Nuevo email (" << cliente.getEmail() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                strncpy(cliente.email, buffer.c_str(), sizeof(cliente.email));
+            s = InputManager::leerLinea("Nuevo email: ");
+            if (!s.empty()) cliente.setEmail(s.c_str());
 
-            // Dirección
-            cout << "Nueva direccion (" << cliente.getDireccion() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                strncpy(cliente.direccion, buffer.c_str(), sizeof(cliente.direccion));
+            s = InputManager::leerLinea("Nueva direccion: ");
+            if (!s.empty()) cliente.setDireccion(s.c_str());
 
-            // Cantidad de caballos
-            cout << "Nueva cantidad de caballos (" << cliente.getCantidadCaballos() << "): ";
-            getline(cin, buffer);
-            if (!buffer.empty())
-                cliente.cantidadCaballos = stoi(buffer);
+            s = InputManager::leerLinea("Nueva cantidad de caballos: ");
+            if (!s.empty()) cliente.setCantidadCaballos(stoi(s));
 
-            // Guardar cambios
+             cout << "\n--- CONFIRMAR CAMBIOS ---\n";
+             cliente.mostrar();
+             cout << "----------------------------------\n";
+
+             if (!InputManager::confirmar("Desea guardar los cambios? (s/n): ")) {
+             cout << "\nModificación cancelada. No se guardaron datos.\n";
+             return;
+             }
+
+
             FILE* pArchivo = fopen("clientes.dat", "rb+");
-            if (pArchivo == nullptr) {
-                cout << " No se pudo abrir cliente.dat para modificar.\n";
+            if (!pArchivo) {
+                cout << "No se pudo abrir clientes.dat\n";
                 return;
             }
 
@@ -183,75 +178,71 @@ void Cliente::editarPorID() {
         }
     }
 
-    if (!encontrado)
-        cout << " No se encontró un cliente con ese ID.\n";
-
+    cout << "No se encontro un cliente con ese ID.\n";
 }
+
+// ===== CAMBIAR ESTADO =====
 
 void Cliente::cambiarEstadoPorID() {
     Archivos archivo;
-    int idBuscado;
-    bool encontrado = false;
 
-    cout << "Ingrese el ID del cliente que desea cambiar de estado: ";
-    cin >> idBuscado;
-    cin.ignore();
-
+    int idBuscado = InputManager::leerInt("Ingrese el ID del cliente: ");
     int cantidad = archivo.cantidadRegistrosCliente();
 
     for (int i = 0; i < cantidad; i++) {
+
         Cliente cliente = archivo.leerRegistroCliente(i);
 
         if (cliente.getID() == idBuscado) {
-            encontrado = true;
 
             cout << "\nCliente encontrado:\n";
             cliente.mostrar();
 
-            cout << "\nEstado actual: "
-                 << (cliente.getEstado() ? "Activo" : "Inactivo") << endl;
 
-            char opcion;
-            cout << "Desea cambiar el estado? (s/n): ";
-            cin >> opcion;
-            cin.ignore();
+            if (!InputManager::confirmar("Desea modificar el estado de este cliente? (s/n): "))
+                return;
 
-            if (opcion == 's' || opcion == 'S') {
-                cliente.setEstado(!cliente.getEstado());
-                cout << "Nuevo estado: "
-                     << (cliente.getEstado() ? "Activo" : "Inactivo") << endl;
 
-                FILE* pArchivo = fopen("clientes.dat", "rb+");
-                if (pArchivo == nullptr) {
-                    cout << "No se pudo abrir cliente.dat para modificar.\n";
-                    return;
-                }
+            const char* estados[] = {
+                "Activo",
+                "Inactivo",
+                "Suspendido"
+            };
 
-                fseek(pArchivo, sizeof(Cliente) * i, SEEK_SET);
-                fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
-                fclose(pArchivo);
+            int numEstados = 3;
 
-                cout << "\nEstado actualizado correctamente.\n";
-            } else {
-                cout << "\nNo se realizaron cambios.\n";
+            cout << "\n--- SELECCIONE EL NUEVO ESTADO ---\n";
+            int opcion = InputManager::seleccionarOpcion(
+                "Elija una opcion (1-3): ",
+                estados,
+                numEstados
+            );
+
+
+            bool nuevoEstadoLogico = (opcion == 1);
+
+            cliente.setEstado(nuevoEstadoLogico);
+
+
+            FILE* pArchivo = fopen("clientes.dat", "rb+");
+            if (!pArchivo) {
+                cout << "No se pudo abrir clientes.dat para modificar.\n";
+                return;
             }
+
+            fseek(pArchivo, sizeof(Cliente) * i, SEEK_SET);
+            fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
+            fclose(pArchivo);
+
+            cout << "\nEstado modificado correctamente.\n";
+            cout << "Nuevo estado: " << estados[opcion - 1] << endl;
 
             return;
         }
     }
 
-    if (!encontrado)
-        cout << "No se encontro un cliente con ese ID.\n";
+    cout << "No se encontro un cliente con ese ID.\n";
 }
-
-void Cliente::mostrarListado() {
-    Archivos archivo;
-    int cantidad = archivo.cantidadRegistrosCliente();
-
-    if (cantidad == 0) {
-        cout << "No hay clientes registrados.\n";
-        return;
-    }
 
     cout << "\n========== LISTADO DE CLIENTES ==========\n";
 

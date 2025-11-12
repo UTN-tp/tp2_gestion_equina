@@ -22,12 +22,13 @@ class Archivos
     bool modificarRegistroCaballo(const Caballo& caballo, int pos);
     bool modificarRegistroMaterial(Material& material, int pos);
     bool guardarArchivoMaterialesUsados(MaterialesUsados& materialesUsados);
-
+    bool existeUsuarioPorID(int idBuscado);
     
     void listarCaballosPorCliente(int idCliente);
     void calcularRecaudacionAnualPorMes();
     void calcularRecaudacionPorCliente();
     void consumoMaterialesPorAno();
+    void listarTodosLosCaballos();
     
     int buscarCaballoPorID(int idBuscado);
     int buscarMaterialPorID(int id);
@@ -38,6 +39,8 @@ class Archivos
     int cantidadRegistrosCliente();
     int cantidadRegistrosTrabajo();
     int cantidadRegistrosUsuario();
+    int obtenerUltimoIDCaballo();
+    int obtenerUltimoIDUsuario();
 
     Caballo leerRegistroCaballo(int pos);
     Agenda leerRegistroAgenda(int pos);
