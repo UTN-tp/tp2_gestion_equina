@@ -346,3 +346,40 @@
         cout << "No se encontraron caballos para ese cliente.\n";
     }
 }
+
+// agrego  1
+int Archivos::obtenerUltimoIDCaballo() {
+    FILE* p = fopen("caballos.dat", "rb");
+    if (p == nullptr) return 0;
+
+    Caballo c;
+    int maxID = 0;
+
+    while (fread(&c, sizeof(Caballo), 1, p) == 1) {
+        if (c.getID() > maxID) {
+            maxID = c.getID();
+        }
+    }
+
+    fclose(p);
+    return maxID;
+}
+ // agrego 2
+void Archivos::listarTodosLosCaballos() {
+    FILE* pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo caballos.dat\n";
+        return;
+    }
+
+    Caballo aux;
+
+    cout << "=== LISTA COMPLETA DE CABALLOS ===\n\n";
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo) == 1) {
+        aux.mostrar();
+        cout << "\n-----------------------------\n";
+    }
+
+    fclose(pArchivo);
+}
