@@ -12,6 +12,7 @@ public:
     void consultarPorID();
     void listarPorCliente();
     void cambiarEstado();
+    void listarTodos();
 };
 
 

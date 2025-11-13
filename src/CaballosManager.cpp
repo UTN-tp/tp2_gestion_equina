@@ -1,94 +1,90 @@
 #include "CaballosManager.h"
+#include "InputManager.h"
 #include <iostream>
 #include <cstring>
+#include <string>
+
 using namespace std;
 
 void CaballosManager::cargarCaballo() {
+
+
     Caballo c;
 
-    int nuevoID = archivos.cantidadRegistrosCaballo() + 1;
+     int nuevoID = archivos.obtenerUltimoIDCaballo() + 1;
     c.setID(nuevoID);
 
-    cout << "ID Cliente: ";
-    int idC; 
-    cin >> idC;
+    int idC = InputManager::leerInt("ID Cliente: ");
     c.setIDCliente(idC);
 
-    char nombre[20];
-    cout << "Nombre: ";
-    cin >> nombre;
-    c.setNombre(nombre);
+    string nombre = InputManager::leerString("Nombre: ");
+    c.setNombre(nombre.c_str());
 
-    cout << "Edad: ";
-    int edad;
-     cin >> edad;
+    int edad = InputManager::leerInt("Edad: ");
     c.setEdad(edad);
 
-    char raza[40];
-    cout << "Raza: ";
-    cin >> raza;
-    c.setRaza(raza);
+    string raza = InputManager::leerString("Raza: ");
+    c.setRaza(raza.c_str());
 
-    char tipo[30];
-    cout << "Tipo trabajo: ";
-    cin >> tipo;
-    c.setTipoTrabajo(tipo);
+    string tipo = InputManager::leerString("Tipo trabajo: ");
+    c.setTipoTrabajo(tipo.c_str());
 
     Fecha fUltima;
-    cout << "\nFecha de ultima atencion:" << endl;
+    cout << "Fecha de ultima atencion: " << endl;
     fUltima.cargar();
-
-
-
-    string sUltima = fUltima.toString();
-    c.setUltimaAtencion(sUltima.c_str());
-
+    c.setUltimaAtencion(fUltima.toString().c_str());
 
     Fecha fProxima;
-    cout << "\nFecha de proxima atencion:" << endl;
+    cout << "Fecha de proxima atencion: " << endl;
     fProxima.cargar();
-
-    string sProxima = fProxima.toString();
-    c.setProximaAtencion(sProxima.c_str());
+    c.setProximaAtencion(fProxima.toString().c_str());
 
     c.setEstado(true);
 
+    cout << "\n--- CONFIRMAR DATOS DEL CABALLO ---\n";
+    c.mostrar();
+    cout << "-----------------------------------\n";
+
+    if (!InputManager::confirmar("Desea guardar este caballo? (s/n): ")) {
+        cout << "\nCarga cancelada. No se guardaron datos.\n";
+        return;
+    }
+
     archivos.guardarArchivoCaballo(c);
-    cout << "Caballo cargado correctamente.\n";
+    cout << "Caballo cargado correctamente." << endl;
 }
 
 
 void CaballosManager::modificarCaballo() {
-    int id;
-    cout << "Ingrese ID del caballo: ";
-    cin >> id;
+    int id = InputManager::leerInt("Ingrese ID del caballo: ");
 
     int pos = archivos.buscarCaballoPorID(id);
     if (pos < 0) {
-        cout << "Caballo no encontrado.\n";
+        cout << "Caballo no encontrado." << endl;
         return;
     }
 
     Caballo c = archivos.leerRegistroCaballo(pos);
 
-    char nuevoNombre[20];
-    cout << "Nuevo nombre: ";
-    cin >> nuevoNombre;
-    c.setNombre(nuevoNombre);
+    c.mostrar();
+
+    if (!InputManager::confirmar("Desea modificar este caballo? S/N: "))
+        return;
+
+    string nuevoNombre = InputManager::leerString("Nuevo nombre: ");
+    c.setNombre(nuevoNombre.c_str());
 
     archivos.modificarRegistroCaballo(c, pos);
-    cout << "Caballo modificado correctamente.\n";
+    cout << "Caballo modificado correctamente." << endl;
 }
 
 
 void CaballosManager::consultarPorID() {
-    int id;
-    cout << "Ingrese ID: ";
-    cin >> id;
+    int id = InputManager::leerInt("Ingrese ID: ");
 
     int pos = archivos.buscarCaballoPorID(id);
     if (pos < 0) {
-        cout << "Caballo no encontrado.\n";
+        cout << "Caballo no encontrado." << endl;
         return;
     }
 
@@ -98,44 +94,46 @@ void CaballosManager::consultarPorID() {
 
 
 void CaballosManager::listarPorCliente() {
-    int idC;
-    cout << "ID Cliente: ";
-    cin >> idC;
+    int idC = InputManager::leerInt("ID Cliente: ");
 
     archivos.listarCaballosPorCliente(idC);
 }
 
 
 void CaballosManager::cambiarEstado() {
-    int id;
-    cout << "ID del caballo: ";
-    cin >> id;
+    int id = InputManager::leerInt("ID del caballo: ");
 
     int pos = archivos.buscarCaballoPorID(id);
     if (pos < 0) {
-        cout << "Caballo no encontrado.\n";
+        cout << "Caballo no encontrado." << endl;
         return;
     }
 
     Caballo c = archivos.leerRegistroCaballo(pos);
+    c.mostrar();
 
-    cout << "1. Activo\n2. Inactivo\n3. Vendido\n";
-    int op; 
-    cin >> op;
+    if(!InputManager::confirmar("Desea cambiar el estado de este caballo? (S/N): "))
+        return;
 
-    switch (op) {
-        case 1: 
-        c.setEstado(true);
-         break;
-        case 2: 
-        c.setEstado(false);
-         break;
-        case 3: 
-        c.setEstado(false); 
-        break;
-        default: cout << "Opción inválida."; return;
+    const char* estadosCaballo[] = {"Activo", "Inactivo", "Vendido"};
+    int numEstados = 3;
+    int nuevoEstado = InputManager::seleccionarOpcion("Seleccione la nueva opcion de estado (1-3): ", estadosCaballo, numEstados);
+
+
+    c.setEstado(nuevoEstado);
+
+
+    if (archivos.modificarRegistroCaballo(c, pos)) {
+        cout << "El estado del caballo ID " << id << " fue modificado correctamente." << endl;
+        // Mostrar el nombre del estado seleccionado para confirmación
+        cout << "Nuevo estado: " << estadosCaballo[nuevoEstado - 1] << endl;
+    } else {
+        cout << "ERROR: No se pudo modificar el registro." << endl;
     }
 
-    archivos.modificarRegistroCaballo(c, pos);
-    cout << "Estado actualizado.\n";
+}
+ // agrego 2
+void CaballosManager::listarTodos() {
+    archivos.listarTodosLosCaballos();
+
 }

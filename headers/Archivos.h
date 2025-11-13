@@ -22,6 +22,8 @@ class Archivos
     bool modificarRegistroCaballo(const Caballo& caballo, int pos);// agrego
     
     void listarCaballosPorCliente(int idCliente); //agrego
+    void listarTodosLosCaballos();  //agrego 2
+
     
     int buscarCaballoPorID(int idBuscado); //agrego
     int cantidadRegistrosCaballo();
@@ -31,6 +33,7 @@ class Archivos
     int cantidadRegistrosCliente();
     int cantidadRegistrosTrabajo();
     int cantidadRegistrosUsuario();
+    int obtenerUltimoIDCaballo();   // agrego 1
 
     Caballo leerRegistroCaballo(int pos);
     Agenda leerRegistroAgenda(int pos);
