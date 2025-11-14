@@ -1,6 +1,4 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
-
+#pragma once
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -15,8 +13,8 @@ private:
     bool estado;
 
 public:
-    Material(){}
-    ~Material(){}
+    Material();
+    ~Material();
 
     int getID() const;
     const char* getNombre() const;
@@ -34,5 +32,3 @@ public:
 
     void mostrar() const;
 };
-
-#endif
