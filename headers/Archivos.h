@@ -20,10 +20,12 @@ class Archivos
     bool guardarArchivoTrabajo (Trabajo trabajo);
     bool guardarArchivoUsuario (Usuario usuario);
     bool modificarRegistroCaballo(const Caballo& caballo, int pos);// agrego
-    
+    bool modificarRegistroMaterial(const Material& material, int pos);
+
     void listarCaballosPorCliente(int idCliente); //agrego
-    
+
     int buscarCaballoPorID(int idBuscado); //agrego
+    int buscarMaterialPorID(int idBuscado);
     int cantidadRegistrosCaballo();
     int cantidadRegistrosAgenda();
     int cantidadRegistrosMaterial();
