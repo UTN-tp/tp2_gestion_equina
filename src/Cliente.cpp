@@ -79,10 +79,6 @@ void Cliente::setCantidadCaballos(int valor) {
 
 
    /* bool Cliente::modificarDatosCliente (){
-        Usuario::setNombre();
-        Usuario::setApellido();
-        Usuario::setTelefono();
-        Usuario::setEmail();
 
     }
     bool Cliente::consultarporId(){
