@@ -35,7 +35,8 @@
         return ok;
     }
 
-    bool Archivos::guardarArchivoMaterial (Material material){
+
+      bool Archivos::guardarArchivoMaterial (Material material){
         FILE *pArchivo = fopen("materiales.dat", "ab");
         if(pArchivo == NULL){
 
@@ -100,6 +101,8 @@
         return ok;
     }
 
+
+
     //Cantidad Registros
     int Archivos::cantidadRegistrosCaballo(){
         FILE *pArchivo = fopen("caballos.dat", "rb");
@@ -130,7 +133,7 @@
     }
 
     int Archivos::cantidadRegistrosMaterial(){
-        FILE *pArchivo = fopen("material.dat", "rb");
+        FILE *pArchivo = fopen("materiales.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -142,6 +145,7 @@
 
         return cantidadRegistros;
     }
+
 
     int Archivos::cantidadRegistrosMaterialesUsados(){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
@@ -226,17 +230,18 @@
 
     }
 
-    Material Archivos::leerRegistroMaterial(int pos){
-        FILE *pArchivo = fopen("registro_material.dat", "rb");
+     Material Archivos::leerRegistroMaterial(int pos){
+        FILE *pArchivo = fopen("materiales.dat", "rb");
         if(pArchivo == NULL){
             return Material();
         }
         Material material;
         fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
-        fread(&material, sizeof(Agenda), 1, pArchivo);
+        fread(&material, sizeof(Material), 1, pArchivo);
         fclose(pArchivo);
         return material;
     }
+
 
     MaterialesUsados Archivos::leerRegistroMaterialesUsados(int pos){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
@@ -286,7 +291,8 @@
         return usuario;
     }
 
-    // buscar por ID
+    // Buscar:
+    //buscar por ID
 
     int Archivos::buscarCaballoPorID(int idBuscado) {
     FILE *pArchivo = fopen("caballos.dat", "rb");
@@ -307,7 +313,28 @@
     return -1;
 }
 
-  //modificar registro
+/*int Archivos::buscarMaterialPorID(int idBuscado) {
+    FILE *pArchivo = fopen("materiales.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Material aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Material), 1, pArchivo)) {
+        if (aux.getID() == idBuscado) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
+*/
+
+
+  //modificar registros
 
   bool Archivos::modificarRegistroCaballo(const Caballo& caballo, int pos) {
     FILE *pArchivo = fopen("caballos.dat", "rb+");
@@ -319,6 +346,18 @@
 
     return ok;
 }
+
+    bool Archivos::modificarRegistroMaterial(const Material& material, int pos) {
+        FILE *pArchivo = fopen("materiales.dat", "rb+");
+        if (pArchivo == NULL) return false;
+
+        fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
+        bool ok = fwrite(&material, sizeof(Material), 1, pArchivo);
+        fclose(pArchivo);
+
+    return ok;
+}
+
 
   //listar caballos por cliente
 
