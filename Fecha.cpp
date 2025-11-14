@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Fecha.h"
+#include "InputManager.h"
 using namespace std;
 
 Fecha::Fecha() {

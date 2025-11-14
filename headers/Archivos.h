@@ -16,7 +16,7 @@ class Archivos
     bool guardarArchivoAgenda(Agenda agenda);
     bool guardarArchivoMaterial(Material& material);
     bool guardarArchivoCliente (const Cliente& cliente);
-    bool guardarArchivoCliente (const Usuario& usuario);
+    //bool guardarArchivoCliente (const Usuario& usuario);
     bool guardarArchivoTrabajo (Trabajo& trabajo);
     bool guardarArchivoUsuario (const Usuario& usuario);
     bool modificarRegistroCaballo(const Caballo& caballo, int pos);

@@ -14,8 +14,7 @@ private:
     char tipoTrabajo[30];
     char ultimaAtencion[11];
     char proximaAtencion[11];
-    bool estado;
-
+    int estado;
 public:
     Caballo();
     ~Caballo();
@@ -28,7 +27,7 @@ public:
     const char* getTipoTrabajo() const;
     const char* getUltimaAtencion() const;
     const char* getProximaAtencion() const;
-    bool getEstado() const;
+    int getEstado() const;
 
     void setID(int valor);
     void setIDCliente(int valor);
@@ -38,7 +37,7 @@ public:
     void setTipoTrabajo(const char* valor);
     void setUltimaAtencion(const char* valor);
     void setProximaAtencion(const char* valor);
-    void setEstado(bool valor);
+    void setEstado(int valor);
 
     void mostrar() const;
 };

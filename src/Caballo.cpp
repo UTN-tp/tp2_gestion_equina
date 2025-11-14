@@ -16,7 +16,7 @@ Caballo::Caballo() {
     tipoTrabajo[0] = '\0';
     ultimaAtencion[0] = '\0';
     proximaAtencion[0] = '\0';
-    estado = true; 
+    estado = 1; 
 }
 
 
@@ -56,7 +56,7 @@ const char* Caballo::getProximaAtencion() const {
     return proximaAtencion;
 }
 
-bool Caballo::getEstado() const {
+int Caballo::getEstado() const {
     return estado;
 }
 
@@ -98,7 +98,7 @@ void Caballo::setProximaAtencion(const char* valor) {
     proximaAtencion[10] = '\0';
 }
 
-void Caballo::setEstado(bool valor) {
+void Caballo::setEstado(int valor) {
     estado = valor;
 }
 
@@ -113,8 +113,21 @@ void Caballo::mostrar() const {
     cout << "Tipo de Trabajo: " << getTipoTrabajo() << endl;
     cout << "Ultima Atencion: " << getUltimaAtencion() << endl;
     cout << "Proxima Atencion: " << getProximaAtencion() << endl;
-    cout << "Estado: " << (getEstado() ? "Activo" : "Inactivo") << endl;
-    cout << "-------------------------" << endl;
+    cout << "Estado: ";
+    switch (estado) {
+        case 1:
+            cout << "Activo" << endl;
+            break;
+        case 2:
+            cout << "Inactivo" << endl;
+            break;
+        case 3:
+            cout << "Vendido" << endl;
+            break;
+        default:
+            cout << "Desconocido (" << estado << ")" << endl;
+            break;
+    }
 }
 
 

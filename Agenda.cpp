@@ -141,7 +141,29 @@ void Agenda::registrarNuevoTrabajo(){
         cout << "Registro cancelado.\n";
         return;
     }
+     // === GUARDA TAMBIÉN UN TRABAJO ===
+     Trabajo t;
+     Archivos archTrabajo;
 
+     // Generar ID de trabajo
+     int nuevoIDTrabajo = archTrabajo.cantidadRegistrosTrabajo() + 1;
+
+     t.setID(nuevoIDTrabajo);
+      t.setIdCliente(idClienteIngresado);
+
+     // Pedir monto
+     float monto = InputManager::leerFloat("Monto del trabajo: $ ");
+     t.setMonto(monto);
+
+     // Fecha = la misma de Agenda
+     t.setFecha(regFecha);
+
+     // Guardar Trabajo
+     if (archTrabajo.guardarArchivoTrabajo(t)) {
+     cout << "Trabajo (economico) guardado correctamente.\n";
+     } else {
+      cout << "ERROR: no se pudo guardar el trabajo economico.\n";
+     }
 
     if (archivoAgenda.guardarArchivoAgenda(*this))
         cout << "Trabajo registrado correctamente.\n";
