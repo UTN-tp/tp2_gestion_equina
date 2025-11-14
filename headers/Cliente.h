@@ -12,6 +12,8 @@ public:
     Cliente(){}
     ~Cliente(){}
 
+    void agregarNuevoCliente ();
+
     const char* getDireccion() const;
     int getCantidadCaballos() const;
 

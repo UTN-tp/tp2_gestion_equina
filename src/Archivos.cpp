@@ -61,7 +61,7 @@
         return ok;
     }
 
-    bool guardarArchivoCliente (Cliente cliente){
+    bool Archivos::guardarArchivoCliente (Cliente cliente){
         FILE *pArchivo = fopen("cliente.dat", "ab");
         if(pArchivo == NULL){
 
@@ -74,7 +74,7 @@
         return ok;
     }
 
-    bool guardarArchivoTrabajo (Trabajo trabajo){
+    bool Archivos::guardarArchivoTrabajo (Trabajo trabajo){
         FILE *pArchivo = fopen("trabajo.dat", "ab");
         if(pArchivo == NULL){
 
@@ -87,7 +87,7 @@
         return ok;
     }
 
-    bool guardarArchivoUsuario (Usuario usuario){
+    bool Archivos::guardarArchivoUsuario (Usuario usuario){
         FILE *pArchivo = fopen("usuario.dat", "ab");
         if(pArchivo == NULL){
 
@@ -129,7 +129,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterial(){
+    int Archivos::cantidadRegistrosMaterial(){
         FILE *pArchivo = fopen("material.dat", "rb");
         if(pArchivo == NULL){
 
@@ -143,7 +143,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterialesUsados(){
+    int Archivos::cantidadRegistrosMaterialesUsados(){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
         if(pArchivo == NULL){
 
@@ -157,7 +157,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosCliente(){
+    int Archivos::cantidadRegistrosCliente(){
         FILE *pArchivo = fopen("registros_cliente.dat", "rb");
         if(pArchivo == NULL){
 
@@ -171,7 +171,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosTrabajo(){
+    int Archivos::cantidadRegistrosTrabajo(){
         FILE *pArchivo = fopen("trabajo.dat", "rb");
         if(pArchivo == NULL){
 
@@ -185,7 +185,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosUsuario(){
+    int Archivos::cantidadRegistrosUsuario(){
         FILE *pArchivo = fopen("usuario.dat", "rb");
         if(pArchivo == NULL){
 
