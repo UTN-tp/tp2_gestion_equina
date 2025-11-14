@@ -80,12 +80,43 @@ void Agenda::registrarNuevoTrabajo(){
     char estadoOpcion;
     bool existenciaCaballo = false;
     bool estadoCaballo = false;
-
+    CaballosManager managerCaballos;
     cout<<"NUEVO TRABAJO A REGISTRAR\n-------------------------\n";
 
 
-    idClienteIngresado = InputManager::leerInt("ID de cliente: ");
-    setIDCliente(idClienteIngresado);
+    Cliente clienteTemp;
+
+    do {
+
+        idClienteIngresado = InputManager::leerInt("ID de cliente: ");
+
+        cout << "\n--- Buscando Cliente con ID " << idClienteIngresado << " ---\n";
+
+
+        int idEncontrado = clienteTemp.buscarPorID(idClienteIngresado);
+
+        if (idEncontrado == 0) {
+
+            if (!InputManager::confirmar("\nDesea intentar con otro ID? (s/n): ")) {
+                cout << "\nCarga de trabajo cancelada.\n";
+                return;
+            }
+        } else {
+
+            if (InputManager::confirmar("\nEs este el cliente correcto? (s/n): ")) {
+                 setIDCliente(idClienteIngresado);
+                 break;
+            } else {
+                 cout << "Por favor, ingrese el ID correcto.\n";
+            }
+        }
+
+    } while(true);
+
+
+    cout << "\n--- CABALLOS DEL CLIENTE CONFIRMADO ---\n";
+
+    archivoCaballo.listarCaballosPorCliente(idClienteIngresado);
 
     idCaballoIngresado = InputManager::leerInt("ID de caballo: ");
 
