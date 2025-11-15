@@ -7,6 +7,7 @@
 #include "Usuario.h"
 #include "Trabajo.h"
 
+
     //Guardar
     bool Archivos::guardarArchivoCaballo(Caballo caballo){
         FILE *pArchivo = fopen("caballos.dat", "ab");
@@ -162,7 +163,7 @@
     }
 
     int Archivos::cantidadRegistrosCliente(){
-        FILE *pArchivo = fopen("registros_cliente.dat", "rb");
+        FILE *pArchivo = fopen("cliente.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -358,6 +359,16 @@
     return ok;
 }
 
+    bool Archivos::modificarRegistroCliente(const Cliente cliente, int pos) {
+        FILE *pArchivo = fopen("cliente.dat", "rb+");
+        if (pArchivo == NULL) return false;
+
+        fseek(pArchivo, sizeof(Cliente) * pos, SEEK_SET);
+        bool ok = fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
+        fclose(pArchivo);
+
+    return ok;
+    }
 
   //listar caballos por cliente
 
@@ -416,6 +427,25 @@ void Archivos::listarTodosLosCaballos() {
     cout << "=== LISTA COMPLETA DE CABALLOS ===\n\n";
 
     while (fread(&aux, sizeof(Caballo), 1, pArchivo) == 1) {
+        aux.mostrar();
+        cout << "\n-----------------------------\n";
+    }
+
+    fclose(pArchivo);
+}
+
+void Archivos::listarTodosLosClientes() {
+    FILE* pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo cliente.dat\n";
+        return;
+    }
+
+    Cliente aux;
+
+    cout << "=== LISTA COMPLETA DE CLIENTES ===\n\n";
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo) == 1) {
         aux.mostrar();
         cout << "\n-----------------------------\n";
     }

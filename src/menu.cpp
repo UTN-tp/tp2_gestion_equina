@@ -59,6 +59,7 @@ void menuPrincipal() {
 
 void menuGestionClientes() {
     Cliente obj;
+
     int opcion;
     do {
         rlutil::cls();
@@ -77,22 +78,44 @@ void menuGestionClientes() {
                  if (InputManager::confirmar("Cargar un nuevo cliente? (s/n): ")) {
                     rlutil::cls();
                     obj.agregarNuevoCliente ();
-                }
+                 }
                  cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                  rlutil::anykey();
 
             break;
             case 2:
-                 // Logica: ModificarCliente()
+                  if (InputManager::confirmar("Modificar un cliente? (s/n): ")) {
+                    rlutil::cls();
+                    obj.modificarDatosCliente();
+                  }
+                 cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                 rlutil::anykey();
+
               break;
             case 3:
-                 // Logica: ConsultarCliente()
+
+                    rlutil::cls();
+                    obj.consultarporId();
+                 cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                 rlutil::anykey();
+
               break;
             case 4:
-                 // Logica: ListarClientes()
+                    if (InputManager::confirmar("Listar todos los clientes? (s/n): ")){
+                        rlutil::cls();
+                        obj.listarTodosLosClientes();
+                    }
+                        cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                        rlutil::anykey();
+
               break;
             case 5:
-                // Logica: CambiarEstadoCliente()
+                        rlutil::cls();
+                        obj.cambiarEstadoCliente();
+
+                        cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                        rlutil::anykey();
+
               break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
