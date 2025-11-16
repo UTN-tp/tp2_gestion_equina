@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CABALLO_H
+#define CABALLO_H
 
 #include <cstring>
 #include <iostream>
@@ -14,8 +15,8 @@ private:
     char tipoTrabajo[30];
     char ultimaAtencion[11];
     char proximaAtencion[11];
-    //bool estado;
-    int estado;
+    int estado;   // esta linea
+
 
 public:
     Caballo();
@@ -29,7 +30,7 @@ public:
     const char* getTipoTrabajo() const;
     const char* getUltimaAtencion() const;
     const char* getProximaAtencion() const;
-    //bool getEstado() const;
+    int getEstado() const;  // esta linea
 
     void setID(int valor);
     void setIDCliente(int valor);
@@ -39,9 +40,14 @@ public:
     void setTipoTrabajo(const char* valor);
     void setUltimaAtencion(const char* valor);
     void setProximaAtencion(const char* valor);
-    //void setEstado(bool valor);
-     void setEstado(int valor);
+    void setEstado(int valor);   // esta linea
+
     void mostrar() const;
 };
 
 
+
+
+
+
+#endif

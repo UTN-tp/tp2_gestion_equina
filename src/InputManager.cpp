@@ -113,6 +113,7 @@ string InputManager::leerString(const char* mensaje) {
 
 string InputManager::leerLinea(const char* mensaje) {
     string s;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << mensaje;
     getline(cin, s);

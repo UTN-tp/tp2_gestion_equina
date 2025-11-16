@@ -5,6 +5,7 @@
 #include "Fecha.h"
 #include "InputManager.h"
 #include "rlutil.h"
+#include "Cliente.h"
 
 using namespace std;
 
@@ -50,13 +51,15 @@ void menuPrincipal() {
                    opcion = -1;
                    cout << "gracias por utilizar el programa" << endl;
                 break;
-           
+
         }
     } while (opcion != 0);
 }
 
 
 void menuGestionClientes() {
+    Cliente obj;
+
     int opcion;
     do {
         rlutil::cls();
@@ -71,24 +74,53 @@ void menuGestionClientes() {
         opcion = InputManager::leerInt("Seleccione una opcion: ");
         switch (opcion) {
             case 1:
-                 // Logica: CargarCliente()
+
+                 if (InputManager::confirmar("Cargar un nuevo cliente? (s/n): ")) {
+                    rlutil::cls();
+                    obj.agregarNuevoCliente ();
+                 }
+                 cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                 rlutil::anykey();
+
             break;
             case 2:
-                 // Logica: ModificarCliente()
+                  if (InputManager::confirmar("Modificar un cliente? (s/n): ")) {
+                    rlutil::cls();
+                    obj.modificarDatosCliente();
+                  }
+                 cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                 rlutil::anykey();
+
               break;
             case 3:
-                 // Logica: ConsultarCliente()
+
+                    rlutil::cls();
+                    obj.consultarporId();
+                 cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                 rlutil::anykey();
+
               break;
             case 4:
-                 // Logica: ListarClientes()
+                    if (InputManager::confirmar("Listar todos los clientes? (s/n): ")){
+                        rlutil::cls();
+                        obj.listarTodosLosClientes();
+                    }
+                        cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                        rlutil::anykey();
+
               break;
             case 5:
-                // Logica: CambiarEstadoCliente()
+                        rlutil::cls();
+                        obj.cambiarEstadoCliente();
+
+                        cout << "Haga clic en cualquier tecla para volver al menu" << endl;
+                        rlutil::anykey();
+
               break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
-           
+
         }
     } while (opcion != 9);
 }
@@ -180,7 +212,7 @@ void menuGestionAgenda() {
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
-           
+
         }
     } while (opcion != 9);
 }
@@ -218,7 +250,7 @@ void menuGestionMateriales() {
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
-            
+
         }
     } while (opcion != 9);
 }

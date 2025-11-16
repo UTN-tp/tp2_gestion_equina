@@ -1,26 +1,28 @@
 #include <cstring>
 #include <iostream>
-#include "Caballo.h" 
+#include "Caballo.h"
+#include "rlutil.h" //esta linea
 using namespace std;
 
-
+// Constructor
 Caballo::Caballo() {
     id = 0;
     idCliente = 0;
-    nombre[0] = '\0';
+    nombre[0] = {};
     edad = 0;
-    raza[0] = '\0';
-    tipoTrabajo[0] = '\0';
-    ultimaAtencion[0] = '\0';
-    proximaAtencion[0] = '\0';
-    estado = true; 
+    raza[0] = {};
+    tipoTrabajo[0] = {};
+    ultimaAtencion[0] = {};
+    proximaAtencion[0] = {};
+    estado = 1; // esta linea faltaba
+
 }
 
-
+// Destructor
 Caballo::~Caballo() {
 }
 
-
+// Getters
 int Caballo::getID() const {
     return id;
 }
@@ -52,12 +54,13 @@ const char* Caballo::getUltimaAtencion() const {
 const char* Caballo::getProximaAtencion() const {
     return proximaAtencion;
 }
-/*
-bool Caballo::getEstado() const {
+
+int Caballo::getEstado() const {     // esta linea
     return estado;
 }
-**/
 
+
+// Setters
 void Caballo::setID(int valor) {
     id = valor;
 }
@@ -68,7 +71,7 @@ void Caballo::setIDCliente(int valor) {
 
 void Caballo::setNombre(const char* valor) {
     strncpy(nombre, valor, 19);
-    nombre[19] = '\0';
+    nombre[19] = {};
 }
 
 void Caballo::setEdad(int valor) {
@@ -77,30 +80,32 @@ void Caballo::setEdad(int valor) {
 
 void Caballo::setRaza(const char* valor) {
     strncpy(raza, valor, 39);
-    raza[39] = '\0';
+    raza[39] = {};
 }
 
 void Caballo::setTipoTrabajo(const char* valor) {
     strncpy(tipoTrabajo, valor, 29);
-    tipoTrabajo[29] = '\0';
+    tipoTrabajo[29] = {};
 }
 
 void Caballo::setUltimaAtencion(const char* valor) {
     strncpy(ultimaAtencion, valor, 10);
-    ultimaAtencion[10] = '\0';
+    ultimaAtencion[10] = {};
 }
 
 void Caballo::setProximaAtencion(const char* valor) {
     strncpy(proximaAtencion, valor, 10);
-    proximaAtencion[10] = '\0';
+    proximaAtencion[10] = {};
 }
-/*
-void Caballo::setEstado(bool valor) {
+
+void Caballo::setEstado(int valor) {     // esta linea
     estado = valor;
 }
-**/
 
+
+// Mostrar
 void Caballo::mostrar() const {
+
     cout << "--- Datos del Caballo ---" << endl;
     cout << "ID: " << getID() << endl;
     cout << "ID Cliente: " << getIDCliente() << endl;
@@ -110,7 +115,9 @@ void Caballo::mostrar() const {
     cout << "Tipo de Trabajo: " << getTipoTrabajo() << endl;
     cout << "Ultima Atencion: " << getUltimaAtencion() << endl;
     cout << "Proxima Atencion: " << getProximaAtencion() << endl;
-     cout << "Estado: ";
+   // cout << "Estado: " << (getEstado() ? "Activo" : "Inactivo") << endl;
+   // cout << "-------------------------" << endl;
+    cout << "Estado: ";
     switch (estado) {
         case 1:
             cout << "Activo" << endl;
@@ -125,4 +132,8 @@ void Caballo::mostrar() const {
             cout << "Desconocido (" << estado << ")" << endl;
             break;
     }
+
 }
+
+
+

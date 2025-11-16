@@ -7,6 +7,7 @@
 #include "Usuario.h"
 #include "Trabajo.h"
 
+
     //Guardar
     bool Archivos::guardarArchivoCaballo(Caballo caballo){
         FILE *pArchivo = fopen("caballos.dat", "ab");
@@ -35,7 +36,8 @@
         return ok;
     }
 
-    bool Archivos::guardarArchivoMaterial (Material material){
+
+      bool Archivos::guardarArchivoMaterial (Material material){
         FILE *pArchivo = fopen("materiales.dat", "ab");
         if(pArchivo == NULL){
 
@@ -61,7 +63,7 @@
         return ok;
     }
 
-    bool guardarArchivoCliente (Cliente cliente){
+    bool Archivos::guardarArchivoCliente (Cliente cliente){
         FILE *pArchivo = fopen("cliente.dat", "ab");
         if(pArchivo == NULL){
 
@@ -74,7 +76,7 @@
         return ok;
     }
 
-    bool guardarArchivoTrabajo (Trabajo trabajo){
+    bool Archivos::guardarArchivoTrabajo (Trabajo trabajo){
         FILE *pArchivo = fopen("trabajo.dat", "ab");
         if(pArchivo == NULL){
 
@@ -87,7 +89,7 @@
         return ok;
     }
 
-    bool guardarArchivoUsuario (Usuario usuario){
+    bool Archivos::guardarArchivoUsuario (Usuario usuario){
         FILE *pArchivo = fopen("usuario.dat", "ab");
         if(pArchivo == NULL){
 
@@ -99,6 +101,8 @@
 
         return ok;
     }
+
+
 
     //Cantidad Registros
     int Archivos::cantidadRegistrosCaballo(){
@@ -129,8 +133,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterial(){
-        FILE *pArchivo = fopen("material.dat", "rb");
+    int Archivos::cantidadRegistrosMaterial(){
+        FILE *pArchivo = fopen("materiales.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -143,7 +147,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosMaterialesUsados(){
+
+    int Archivos::cantidadRegistrosMaterialesUsados(){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
         if(pArchivo == NULL){
 
@@ -157,8 +162,8 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosCliente(){
-        FILE *pArchivo = fopen("registros_cliente.dat", "rb");
+    int Archivos::cantidadRegistrosCliente(){
+        FILE *pArchivo = fopen("cliente.dat", "rb");
         if(pArchivo == NULL){
 
             return 0;
@@ -171,7 +176,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosTrabajo(){
+    int Archivos::cantidadRegistrosTrabajo(){
         FILE *pArchivo = fopen("trabajo.dat", "rb");
         if(pArchivo == NULL){
 
@@ -185,7 +190,7 @@
         return cantidadRegistros;
     }
 
-    int cantidadRegistrosUsuario(){
+    int Archivos::cantidadRegistrosUsuario(){
         FILE *pArchivo = fopen("usuario.dat", "rb");
         if(pArchivo == NULL){
 
@@ -226,17 +231,18 @@
 
     }
 
-    Material Archivos::leerRegistroMaterial(int pos){
-        FILE *pArchivo = fopen("registro_material.dat", "rb");
+     Material Archivos::leerRegistroMaterial(int pos){
+        FILE *pArchivo = fopen("materiales.dat", "rb");
         if(pArchivo == NULL){
             return Material();
         }
         Material material;
         fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
-        fread(&material, sizeof(Agenda), 1, pArchivo);
+        fread(&material, sizeof(Material), 1, pArchivo);
         fclose(pArchivo);
         return material;
     }
+
 
     MaterialesUsados Archivos::leerRegistroMaterialesUsados(int pos){
         FILE *pArchivo = fopen("materiales_usados.dat", "rb");
@@ -286,7 +292,8 @@
         return usuario;
     }
 
-    // buscar por ID
+    // Buscar:
+    //buscar por ID
 
     int Archivos::buscarCaballoPorID(int idBuscado) {
     FILE *pArchivo = fopen("caballos.dat", "rb");
@@ -307,7 +314,28 @@
     return -1;
 }
 
-  //modificar registro
+/*int Archivos::buscarMaterialPorID(int idBuscado) {
+    FILE *pArchivo = fopen("materiales.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Material aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Material), 1, pArchivo)) {
+        if (aux.getID() == idBuscado) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
+*/
+
+
+  //modificar registros
 
   bool Archivos::modificarRegistroCaballo(const Caballo& caballo, int pos) {
     FILE *pArchivo = fopen("caballos.dat", "rb+");
@@ -319,6 +347,28 @@
 
     return ok;
 }
+
+    bool Archivos::modificarRegistroMaterial(const Material& material, int pos) {
+        FILE *pArchivo = fopen("materiales.dat", "rb+");
+        if (pArchivo == NULL) return false;
+
+        fseek(pArchivo, sizeof(Material) * pos, SEEK_SET);
+        bool ok = fwrite(&material, sizeof(Material), 1, pArchivo);
+        fclose(pArchivo);
+
+    return ok;
+}
+
+    bool Archivos::modificarRegistroCliente(const Cliente cliente, int pos) {
+        FILE *pArchivo = fopen("cliente.dat", "rb+");
+        if (pArchivo == NULL) return false;
+
+        fseek(pArchivo, sizeof(Cliente) * pos, SEEK_SET);
+        bool ok = fwrite(&cliente, sizeof(Cliente), 1, pArchivo);
+        fclose(pArchivo);
+
+    return ok;
+    }
 
   //listar caballos por cliente
 
@@ -377,6 +427,25 @@ void Archivos::listarTodosLosCaballos() {
     cout << "=== LISTA COMPLETA DE CABALLOS ===\n\n";
 
     while (fread(&aux, sizeof(Caballo), 1, pArchivo) == 1) {
+        aux.mostrar();
+        cout << "\n-----------------------------\n";
+    }
+
+    fclose(pArchivo);
+}
+
+void Archivos::listarTodosLosClientes() {
+    FILE* pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo cliente.dat\n";
+        return;
+    }
+
+    Cliente aux;
+
+    cout << "=== LISTA COMPLETA DE CLIENTES ===\n\n";
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo) == 1) {
         aux.mostrar();
         cout << "\n-----------------------------\n";
     }
