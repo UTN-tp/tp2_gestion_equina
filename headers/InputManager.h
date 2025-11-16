@@ -14,6 +14,9 @@ public:
 
     static std::string leerString(const char* mensaje);
     static std::string leerLinea(const char* mensaje);
+    static std::string leerString(const char* mensaje, int tamanio);
+    static std::string leerLinea(const char* mensaje, int tamanio);
+
     static int seleccionarOpcion(const char* mensaje, const char* opciones[], int numOpciones); // agregue para estado
     static bool confirmar(const char* mensaje);  // S/N
 };
