@@ -59,10 +59,22 @@ void Fecha::cargar(){
         }
     } while (mes < 1 || mes > 12);
 
-    cout<<"Anio: ";
-    cin>> anio;
+    do {
+        cout<< "Ingrese anio: ";
+        cin>> anio;
+        if (anio < 2024 || anio > 3000) {
+            cout << "Ingrese parametros validos."<<endl;
+        }
+    } while (anio < 2024 || anio > 3000);
 }
 
 void Fecha::mostrar() const {
     cout << dia << "/" << mes << "/" << anio;
 }
+
+bool Fecha::fechaMenor(const Fecha& otraFecha) const {
+    if (anio != otraFecha.anio) return anio < otraFecha.anio;
+    if (mes  != otraFecha.mes)  return mes  < otraFecha.mes;
+    return dia < otraFecha.dia;
+}
+

@@ -20,6 +20,7 @@ class Fecha
         void setAnio(int anio);
         void cargar();
         void mostrar() const;
+        bool fechaMenor(const Fecha& otraFecha) const;
 
     std::string toString() const; // convertir la fecha a formato "DD/MM/YYYY"
 };
