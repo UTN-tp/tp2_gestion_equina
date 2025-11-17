@@ -151,6 +151,28 @@ int InputManager::seleccionarOpcion(const char* mensaje, const char* opciones[],
     }
 }
 
+//LeerLinea con sobrecarga:
+
+
+string InputManager::leerLinea(const char* mensaje, int tamanio) {
+    string s;
+    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+
+    cout << mensaje << ">>> Max hasta  " << tamanio << " caracteres:";
+
+    getline(cin, s);
+
+    while (s.size() == 0 || s.size() > tamanio) {
+
+        rlutil::setColor(rlutil::RED);
+        cout << "Entrada invalida." << endl;
+        rlutil::setColor(rlutil::WHITE);
+        getline(cin, s);
+    }
+
+    return s;
+}
 
 
 

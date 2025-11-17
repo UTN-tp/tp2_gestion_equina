@@ -5,6 +5,7 @@ using namespace std;
 #include "InputManager.h"
 #include "Usuario.h"
 #include "Archivos.h"
+#include "rlutil.h"
 
 
 //GETTERS Y SETTERS
@@ -36,30 +37,32 @@ void Cliente::setCantidadCaballos(int valor) {
 }
 
 //Funciones propias de Cliente
+//Agregar cliente:
 
     void Cliente::agregarNuevoCliente(){
 
         Cliente cliente;
         Archivos archivos;
 
-        string nombre = InputManager::leerString("Ingrese el nombre del nuevo cliente: ");
+
+        string nombre = InputManager::leerLinea("Ingrese el nombre del nuevo cliente. ", 40);
         cliente.setNombre(nombre.c_str());
 
 
-        string apellido = InputManager::leerString("Ingrese el apellido del nuevo cliente: ");
+        string apellido = InputManager::leerLinea("Ingrese el apellido del nuevo cliente. ", 40);
         cliente.setApellido(apellido.c_str());
 
-        string email = InputManager::leerString("Ingrese el email del nuevo cliente: ");
+        string email = InputManager::leerLinea("Ingrese el email del nuevo cliente. ", 60);
         cliente.setEmail(email.c_str());
 
-        string telefono = InputManager::leerString("Ingrese el telefono del nuevo cliente: ");
+        string telefono = InputManager::leerLinea("Ingrese el telefono del nuevo cliente. ", 20);
         cliente.setTelefono(telefono.c_str());
 
-        string direccion = InputManager::leerLinea("Ingrese la direccion del nuevo cliente: ");
+        string direccion = InputManager::leerLinea("Ingrese la direccion del nuevo cliente. ", 100);
         cliente.setDireccion(direccion.c_str());
 
 
-        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad de caballos que posee el cliente: ");
+        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad de caballos que posee el cliente. ");
         cliente.setCantidadCaballos(cantidadCaballos);
 
         cliente.setEstado(true);
@@ -69,6 +72,8 @@ void Cliente::setCantidadCaballos(int valor) {
 
 
         //Confirmacion agregar Cliente
+
+         rlutil::cls();
 
          cout << "\n--- CONFIRMAR DATOS DEL CLIENTE ---\n";
         cliente.mostrar();
@@ -107,20 +112,20 @@ void Cliente::setCantidadCaballos(int valor) {
     if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
         return;
 
-        string nombre = InputManager::leerString("Ingrese el nuevo nombre: ");
+        string nombre = InputManager::leerString("Ingrese el nuevo nombre. ");
         cliente.setNombre(nombre.c_str());
 
 
-        string apellido = InputManager::leerString("Ingrese el nuevo apellido: ");
+        string apellido = InputManager::leerString("Ingrese el nuevo apellido. ");
         cliente.setApellido(apellido.c_str());
 
-        string email = InputManager::leerString("Ingrese el nuevo email: ");
+        string email = InputManager::leerString("Ingrese el nuevo email. ");
         cliente.setEmail(email.c_str());
 
-        string telefono = InputManager::leerString("Ingrese el nuevo telefono: ");
+        string telefono = InputManager::leerString("Ingrese el nuevo telefono. ");
         cliente.setTelefono(telefono.c_str());
 
-        string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ");
+        string direccion = InputManager::leerLinea("Ingrese la nueva direccion. ");
         cliente.setDireccion(direccion.c_str());
 
 
