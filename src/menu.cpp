@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "rlutil.h"
 #include "Cliente.h"
+#include "MaterialesManager.h"
 
 using namespace std;
 
@@ -199,15 +200,19 @@ void menuGestionAgenda() {
         switch (opcion) {
             case 1:
                 obj.registrarNuevoTrabajo();
+                rlutil::anykey();
             break;
             case 2:
                 obj.proximosTrabajos();
+                rlutil::anykey();
             break;
             case 3:
                 obj.historialTrabajosRealizados();
+                rlutil::anykey();
             break;
             case 4:
                 obj.buscarTrabajo();
+                rlutil::anykey();
             break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
@@ -218,6 +223,7 @@ void menuGestionAgenda() {
 }
 
 void menuGestionMateriales() {
+    MaterialesManager obj;
     int opcion;
     do {
         rlutil::cls();
@@ -234,15 +240,20 @@ void menuGestionMateriales() {
         switch (opcion) {
             case 1:
                 // Logica: CargarMaterial()
+                obj.cargarNuevoMaterial();
             break;
             case 2:
                 // Logica: ModificarStock()
+                obj.modificarStockMaterial();
+                rlutil::anykey();
             break;
             case 3:
                 // Logica: RegistrarMaterialesTrabajo()
             break;
             case 4:
                 // Logica: ConsultarStock()
+                obj.consultarStockActual();
+                rlutil::anykey();
             break;
             case 5:
                 // Logica: ConsultarConsumoPeriodo()
