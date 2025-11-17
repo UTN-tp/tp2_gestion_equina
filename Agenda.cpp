@@ -6,6 +6,7 @@
 #include "CaballosManager.h"
 #include "Archivos.h"
 #include "Fecha.h"
+#include "rlutil.h"
 using namespace std;
 
 Agenda::Agenda(){
@@ -151,7 +152,7 @@ void Agenda::registrarNuevoTrabajo(){
     cin>>estadoOpcion;
     while (estadoOpcion != 'R' && estadoOpcion != 'r'                  //validacion
         && estadoOpcion != 'P' && estadoOpcion != 'p'){
-        cout<<"Opción invalida, ingrese P o R segun corresponde"<<endl;
+        cout<<"Opciï¿½n invalida, ingrese P o R segun corresponde"<<endl;
         cin>>estadoOpcion;
     }
     if (estadoOpcion == 'R' || estadoOpcion == 'r'){
@@ -300,7 +301,7 @@ void Agenda::buscarTrabajo(){
         cout<<"No se registraron trabajos en la agenda."<<endl;
         return;
     }
-
+    rlutil::cls();
     cout<<"BUSCAR TRABAJO POR FECHA/CABALLO"<<endl;
     cout<<"--------------------------------"<<endl;
     cout<<"1-Buscar por Fecha"<<endl;
@@ -312,6 +313,7 @@ void Agenda::buscarTrabajo(){
 
     switch (opcion){
         case 1:{
+            rlutil::cls();
             bool existenciaTrabajo = false;
 
             cout<<"Ingrese la fecha del trabajo a buscar: "<<endl;
@@ -337,6 +339,7 @@ void Agenda::buscarTrabajo(){
         } break;
 
         case 2:{
+            rlutil::cls();
             bool existenciaTrabajo = false;
             bool existenciaCaballo = false;
             bool estadoCaballo = false;
@@ -380,11 +383,11 @@ void Agenda::buscarTrabajo(){
 
         case 0: {
             char opcion;
-            cout<<"¿Seguro quiere regresar al menú principal? (ingrese s/S para confirmar): ";
+            cout<<"ï¿½Seguro quiere regresar al menï¿½ principal? (ingrese s/S para confirmar): ";
             cin>>opcion;
 
             if (opcion == 's' || opcion == 'S'){
-                cout << "Volviendo al menú principal..." << endl;
+                cout << "Volviendo al menï¿½ principal..." << endl;
                 return;
             }
             else{
@@ -393,7 +396,7 @@ void Agenda::buscarTrabajo(){
         } break;
 
         default:
-            cout<<"Opción incorrecta, ingrese un numero valido."<<endl;
+            cout<<"Opciï¿½n incorrecta, ingrese un numero valido."<<endl;
             break;
     }
 }

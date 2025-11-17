@@ -1,5 +1,6 @@
 #include "CaballosManager.h"
 #include "InputManager.h"
+#include "rlutil.h"
 #include <iostream>
 #include <cstring>
 #include <string>
@@ -40,7 +41,7 @@ void CaballosManager::cargarCaballo() {
     c.setProximaAtencion(fProxima.toString().c_str());
 
     c.setEstado(true);
-
+    rlutil::cls();
     cout << "\n--- CONFIRMAR DATOS DEL CABALLO ---\n";
     c.mostrar();
     cout << "-----------------------------------\n";
@@ -122,7 +123,7 @@ void CaballosManager::cambiarEstado() {
 
     c.setEstado(nuevoEstado);
 
-
+    rlutil::cls();
     if (archivos.modificarRegistroCaballo(c, pos)) {
         cout << "El estado del caballo ID " << id << " fue modificado correctamente." << endl;
         // Mostrar el nombre del estado seleccionado para confirmación

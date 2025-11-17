@@ -1,12 +1,12 @@
 #ifndef ARCHIVOS_H
 #define ARCHIVOS_H
-#include <Cliente.h>
-#include <Material.h>
-#include <Agenda.h>
-#include <Caballo.h>
-#include <MaterialesUsados.h>
-#include <Usuario.h>
-#include <Trabajo.h>
+#include "Cliente.h"
+#include "Material.h"
+#include "Agenda.h"
+#include "Caballo.h"
+#include "MaterialesUsados.h"
+#include "Usuario.h"
+#include "Trabajo.h"
 
 
 class Archivos
