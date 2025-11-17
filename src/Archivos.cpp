@@ -51,7 +51,7 @@
     }
 
     bool Archivos::guardarArchivoMaterialesUsados (MaterialesUsados materialesUsados){
-        FILE *pArchivo = fopen("materialesusados.dat", "ab");
+        FILE *pArchivo = fopen("materiales_usados.dat", "ab");
         if(pArchivo == NULL){
 
             return false;
@@ -314,7 +314,7 @@
     return -1;
 }
 
-/*int Archivos::buscarMaterialPorID(int idBuscado) {
+int Archivos::buscarMaterialPorID(int idBuscado) {
     FILE *pArchivo = fopen("materiales.dat", "rb");
     if (pArchivo == NULL) return -1;
 
@@ -332,7 +332,7 @@
     fclose(pArchivo);
     return -1;
 }
-*/
+
 
 
   //modificar registros
