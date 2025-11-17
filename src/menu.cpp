@@ -6,11 +6,8 @@
 #include "InputManager.h"
 #include "rlutil.h"
 #include "Cliente.h"
-<<<<<<< HEAD
 #include "MaterialesManager.h"
-=======
 #include "GestorDeRecaudacion.h"
->>>>>>> 7c15b74 (Agrego el gestor de recaudacion, la clase y en el menu)
 
 using namespace std;
 
