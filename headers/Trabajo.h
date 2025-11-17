@@ -3,35 +3,37 @@
 
 #include <cstring>
 #include <iostream>
+#include "Fecha.h"
 using namespace std;
 
 class Trabajo {
 private:
     int id;
     int idCaballo;
-    char fecha[11];
-    char tipoTrabajo[30];
+    int idCliente;
     float costo;
-    float precio;
+    Fecha fechaTrabajo;  
+ 
 
 public:
     Trabajo(){}
     ~Trabajo(){}
 
     int getID() const;
-    int getIDCaballo() const;
-    const char* getFecha() const;
-    const char* getTipoTrabajo() const;
+    int getIdCliente() const;
+    int getIdCaballo() const;
     float getCosto() const;
-    float getPrecio() const;
+    Fecha getFecha() const;
+   
+    
 
     void setID(int valor);
-    void setIDCaballo(int valor);
-    void setFecha(const char* valor);
-    void setTipoTrabajo(const char* valor);
+    void setIdCliente(int valor);
+    void setIdCaballo(int valor);
     void setCosto(float valor);
-    void setPrecio(float valor);
-
+    void setFecha(const Fecha& f);
+    
+    void cargar();
     void mostrar() const;
 };
 
