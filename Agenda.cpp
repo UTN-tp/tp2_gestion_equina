@@ -148,6 +148,29 @@ void Agenda::registrarNuevoTrabajo(){
         }
     } while (strlen(tipoTrabajo) == 0);     // validacion nuevamente con strlen
     setTipoTrabajo(tipoTrabajo);
+
+    // agrego monto para trabajo
+    Trabajo t;
+    Archivos archTrabajo;
+    float costo;
+    int nuevoIDTrabajo = archTrabajo.cantidadRegistrosTrabajo() + 1;
+
+    t.setID(nuevoIDTrabajo);
+    t.setIdCliente(idClienteIngresado);
+    t.setIdCaballo(idCaballoIngresado);
+    t.setFecha(regFecha);
+
+    cout << "Costo del Trabajo: $ ";
+    cin >> costo;
+    t.setCosto(costo);
+
+    if (archTrabajo.guardarArchivoTrabajo(t)){
+        cout << "Registro guardado correctamente.\n";
+    }
+    else {
+        cout << "ERROR al guardar el registro.\n";
+    }
+
     cout<<"Estado del trabajo (Realizado: R/r, Pendiente: P/p): ";
     cin>>estadoOpcion;
     while (estadoOpcion != 'R' && estadoOpcion != 'r'                  //validacion
