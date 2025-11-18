@@ -7,6 +7,7 @@
 #include "rlutil.h"
 #include "Cliente.h"
 #include "MaterialesManager.h"
+#include "GestorDeRecaudacion.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ void menuGestionClientes();
 void menuGestionCaballos();
 void menuGestionAgenda();
 void menuGestionMateriales();
+void menuGestionRecaudacionConsumos();
 
 void menuPrincipal() {
     int opcion;
@@ -26,8 +28,7 @@ void menuPrincipal() {
         cout << "2. Gestion de Caballos" << endl;
         cout << "3. Agenda y Trabajos" << endl;
         cout << "4. Gestion de Materiales" << endl;
-        cout << "5. algo que falte" << endl;
-        cout << "6.Creditos" << endl;
+        cout << "5. Gestion de recaudacion" << endl;
         cout << "0. Salir del Programa" << endl;
         cout << "=====================================" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -46,7 +47,7 @@ void menuPrincipal() {
                 menuGestionMateriales();
                 break;
             case 5:
-                // para alguna opcion o algun otro menu
+                menuGestionRecaudacionConsumos();
                 break;
             case 6:
                 rlutil::cls();
@@ -279,4 +280,44 @@ void menuGestionMateriales() {
     } while (opcion != 9);
 }
 
+//RECAUDACION
 
+void menuGestionRecaudacionConsumos()
+{
+    int opcion;
+    GestorDeRecaudacion r;
+    Archivos a;
+    do
+    {
+        rlutil::cls();
+        cout << "\n--- RECAUDACION Y CONSUMO ---" << endl;
+        cout << "1. Recaudacion por mes" << endl;
+        cout << "2. Recaudacion por cliente" << endl;
+        cout << "3. Consumo de materiales por anio" << endl;
+        cout << "9. Volver al Menu Principal" << endl;
+        cout << "------------------------------" << endl;
+        opcion = InputManager::leerInt("Seleccione una opcion: ");
+
+
+        switch (opcion)
+        {
+        case 1:
+            r.calcularRecaudacionAnualPorMes();
+            rlutil::anykey();
+            break;
+        case 2:
+           r.calcularRecaudacionPorCliente();
+            rlutil::anykey();
+            break;
+        case 3:
+            r.consumoMaterialesPorAnio();
+            rlutil::anykey();
+            break;
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+        }
+
+    }
+    while (opcion != 9);
+}
