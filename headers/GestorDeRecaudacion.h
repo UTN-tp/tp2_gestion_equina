@@ -8,7 +8,7 @@ public:
  void calcularRecaudacionAnualPorMes();
  void calcularRecaudacionPorCliente();
  void consumoMaterialesPorAnio();
-
+ void calcularGananciaTotalConMateriales(); 
 };
 
 #endif // GESTORDERECAUDACION_H_INCLUDED

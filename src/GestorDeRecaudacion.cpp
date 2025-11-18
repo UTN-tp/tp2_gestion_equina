@@ -67,7 +67,7 @@ void GestorDeRecaudacion::calcularRecaudacionPorCliente() {
 
             if (f.getAnio() == anio) {
                 int idCliente = t.getIdCliente();
-                // Buscamos la posici¢n del cliente en el array
+                // Buscamos la posiciï¿½n del cliente en el array
                 for (int j = 0; j < cantidadClientes; j++) {
                     if (clientes[j].getID() == idCliente) {
                         recaudacion[j] += t.getCosto();
@@ -127,7 +127,7 @@ void GestorDeRecaudacion::calcularRecaudacionPorCliente() {
 
             if (f.getAnio() == anio) {
                 int idMaterial = mu.getIDMaterial();
-                // Buscamos la posici¢n del material en el array
+                // Buscamos la posiciï¿½n del material en el array
                 for (int j = 0; j < cantidadMateriales; j++) {
                     if (materiales[j].getID() == idMaterial) {
                         consumo[j] += mu.getCantidad();
@@ -154,3 +154,50 @@ void GestorDeRecaudacion::calcularRecaudacionPorCliente() {
         delete[] materiales;
         delete[] consumo;
     }
+    
+    void GestorDeRecaudacion::calcularGananciaTotalConMateriales() {       // agrego esto
+
+    Archivos a;
+
+    int cantTrabajos = a.cantidadRegistrosTrabajo();
+    int cantMU = a.cantidadRegistrosMaterialesUsados();
+
+    float gananciaTotal = 0;
+
+    for (int i = 0; i < cantTrabajos; i++) {
+
+        Trabajo t = a.leerRegistroTrabajo(i);
+        int idTrabajo = t.getID();
+
+        float precioTrabajo = t.getCosto();   // aca aparece lo que cobro 
+        float costoMateriales = 0;
+
+        
+        for (int j = 0; j < cantMU; j++) {
+
+            MaterialesUsados mu = a.leerRegistroMaterialesUsados(j);
+
+            if (mu.getIDTrabajo() == idTrabajo) {
+
+                int idMat = mu.getIDMaterial();
+
+                
+                int posMat = a.buscarMaterialPorID(idMat);
+                if (posMat >= 0) {
+
+                    Material m = a.leerRegistroMaterial(posMat);
+
+                    
+                    costoMateriales += (m.getPrecio() * mu.getCantidad());
+                }
+            }
+        }
+
+        float gananciaTrabajo = precioTrabajo - costoMateriales;
+
+        gananciaTotal += gananciaTrabajo;
+    }
+
+    cout << "\nGanancia TOTAL descontando materiales usados: $"
+         << gananciaTotal << endl;
+}
