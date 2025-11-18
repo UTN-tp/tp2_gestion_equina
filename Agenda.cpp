@@ -170,11 +170,11 @@ void Agenda::registrarNuevoTrabajo(){
     setTrabajoRealizado(estadoOpcion == 'R' || estadoOpcion == 'r');
 
 
-    if (!InputManager::confirmar("�Confirmar registro del trabajo? (s/n): ")) {
+    if (!InputManager::confirmar("¨Confirmar registro del trabajo? (s/n): ")) {
         cout << "Registro cancelado.\n";
         return;
     }
-     // === GUARDA TAMBI�N UN TRABAJO ===
+     // === GUARDA TAMBIN UN TRABAJO ===
      Trabajo t;
      Archivos archTrabajo;
 
@@ -284,7 +284,7 @@ void Agenda::consultasPorIDCaballo(){
         cout<<"No hay trabajos registrados para este caballo.\n";
 
     if (!estadoCaballo)
-        cout<<"ADVERTENCIA: El caballo est� inactivo/vendido.\n";
+        cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
 }
 
 void Agenda::historialTrabajosRealizados(){
@@ -399,7 +399,7 @@ void Agenda::buscarTrabajo(){
         }
 
         if (!estadoCaballo)
-            cout<<"ADVERTENCIA: El caballo est� inactivo/vendido.\n";
+            cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
 
         for (int i=0; i<cantidadTrabajos; i++){
             regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
@@ -417,7 +417,7 @@ void Agenda::buscarTrabajo(){
 
     case 0:{
 
-        if (InputManager::confirmar("�Seguro quiere regresar al men� principal? (s/n): ")) {
+        if (InputManager::confirmar("¨Seguro quiere regresar al men£ principal? (s/n): ")) {
             cout<<"Volviendo...\n";
             return;
         } else {
@@ -615,7 +615,7 @@ void Agenda::registrarNuevoTrabajo(){
     cin>>estadoOpcion;
     while (estadoOpcion != 'R' && estadoOpcion != 'r'                  //validacion
         && estadoOpcion != 'P' && estadoOpcion != 'p'){
-        cout<<"Opci�n invalida, ingrese P o R segun corresponde"<<endl;
+        cout<<"Opciï¿½n invalida, ingrese P o R segun corresponde"<<endl;
         cin>>estadoOpcion;
     }
     if (estadoOpcion == 'R' || estadoOpcion == 'r'){
@@ -846,11 +846,11 @@ void Agenda::buscarTrabajo(){
 
         case 0: {
             char opcion;
-            cout<<"�Seguro quiere regresar al men� principal? (ingrese s/S para confirmar): ";
+            cout<<"ï¿½Seguro quiere regresar al menï¿½ principal? (ingrese s/S para confirmar): ";
             cin>>opcion;
 
             if (opcion == 's' || opcion == 'S'){
-                cout << "Volviendo al men� principal..." << endl;
+                cout << "Volviendo al menï¿½ principal..." << endl;
                 return;
             }
             else{
@@ -859,7 +859,7 @@ void Agenda::buscarTrabajo(){
         } break;
 
         default:
-            cout<<"Opci�n incorrecta, ingrese un numero valido."<<endl;
+            cout<<"Opciï¿½n incorrecta, ingrese un numero valido."<<endl;
             break;
     }
 }
