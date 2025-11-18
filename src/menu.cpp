@@ -49,6 +49,18 @@ void menuPrincipal() {
             case 5:
                 menuGestionRecaudacionConsumos();
                 break;
+            case 6:
+                rlutil::cls();
+                 cout << "======CREDITOS======" << endl;
+                 cout << "Guillermo Caratini Legajo: 33158" << endl;
+                 cout << "Jazmin Erasun Sgur Legajo: 32509" << endl;
+                 cout << "Macarena Amores Legajo: 31834" << endl;
+                 cout << "Sebastian Cabeza Legajo: 33483\n";
+                 cout << "----------------------" << endl;
+                 cout << "======INFORMACION ADICIONAL======" << endl;
+                 cout << "libreria RLUTIL Copyright (C) 2010 Tapio Vierros" << endl;
+                 rlutil::anykey();
+                break;
             case 0:
                 if(!InputManager::confirmar("Desea salir del programa? (S/N): "))
                    opcion = -1;
