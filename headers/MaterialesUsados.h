@@ -1,7 +1,7 @@
-#ifndef MATERIALESUSADOS_H
-#define MATERIALESUSADOS_H
-
+#pragma once
+#include <cstring>
 #include <iostream>
+#include "Fecha.h"
 using namespace std;
 
 class MaterialesUsados {
@@ -10,6 +10,7 @@ private:
     int idTrabajo;
     int idMaterial;
     int cantidad;
+    Fecha fechaUso;
 
 public:
     MaterialesUsados(){}
@@ -19,13 +20,14 @@ public:
     int getIDTrabajo() const;
     int getIDMaterial() const;
     int getCantidad() const;
+    Fecha getFechaUso() const;
 
     void setIDMaterialUsado(int valor);
     void setIDTrabajo(int valor);
     void setIDMaterial(int valor);
     void setCantidad(int valor);
+    void setFechaUso(const Fecha& valor);
 
     void mostrar() const;
 };
 
-#endif

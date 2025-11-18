@@ -64,10 +64,15 @@ void MaterialesManager::modificarStockMaterial(){
     cout << "Stock modificado correctamente.\n";
 }
 
-/*void MaterialesManager::registrarMaterialesUsados(){
+void MaterialesManager::registrarMaterialesUsados(){
 
     MaterialesUsados mu;
+    Fecha fechaActual;
     int idTrabajo, idMaterial, cantidad;
+
+    cout << "Ingrese la fecha actual: ";
+    fechaActual.cargar();
+    mu.setFechaUso(fechaActual);
 
     cout << "Ingrese ID del trabajo: ";
     cin >> idTrabajo;
@@ -80,6 +85,7 @@ void MaterialesManager::modificarStockMaterial(){
     cout << "Ingrese cantidad usada: ";
     cin >> cantidad;
     mu.setCantidad(cantidad);
+
 
     // Verificar si el material existe
     int pos = archivos.buscarMaterialPorID(idMaterial);
@@ -104,7 +110,7 @@ void MaterialesManager::modificarStockMaterial(){
 
     cout << "Material registrado como usado y stock actualizado.\n";
 
-}    */
+}
 
 void MaterialesManager::consultarStockActual() {
     int cantidad = archivos.cantidadRegistrosMaterial();
@@ -128,5 +134,25 @@ void MaterialesManager::consultarStockActual() {
 }
 
 void consultarPeriodoConsumo(){
+    Fecha inicio;
+    Fecha fin;
+    Archivos arc;
+    cout << "Ingrese fecha de inicio:\n";
+    inicio.cargar();
+    cout << "Ingrese fecha de fin:\n";
+    fin.cargar();
 
+    int cantidad = arc.cantidadRegistrosMaterialesUsados();
+    cout << "Consumo de materiales entre " << inicio.toString()
+         << " y " << fin.toString() << endl;
+
+    for (int i = 0; i < cantidad; i++) {
+        MaterialesUsados mu = arc.leerRegistroMaterialesUsados(i);
+        Fecha f = mu.getFechaUso();
+
+        if ( !f.fechaMenor(inicio) && !fin.fechaMenor(f) ) {
+            Material m = arc.leerRegistroMaterial(mu.getIDMaterial());
+            cout << "- " << m.getNombre() << " (" << mu.getCantidad() << " unidades)" << endl;
+        }
+    }
 }
