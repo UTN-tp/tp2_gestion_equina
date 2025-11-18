@@ -184,6 +184,25 @@ void Cliente::setCantidadCaballos(int valor) {
         cliente.mostrar();
     }
 
+    // BUSCARPORIDc/parametro
+
+    int Cliente::buscarPorID(int idCliente) {
+    Archivos archivo;
+    int cantidad = archivo.cantidadRegistrosCliente();
+
+    for (int i = 0; i < cantidad; i++) {
+        Cliente cliente = archivo.leerRegistroCliente(i);
+
+        if (cliente.getID() == idCliente) {
+            cliente.mostrar();
+            return cliente.getID();
+        }
+    }
+
+    cout << "No se encontro un cliente con ese ID.\n";
+    return 0;
+}
+
 
     //CONSULTAR TODOS
     void Cliente::listarTodosLosClientes (){

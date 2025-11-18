@@ -16,6 +16,7 @@ public:
     void listarTodosLosClientes ();
     void consultarporId();
     void cambiarEstadoCliente ();
+    int buscarPorID(int idCliente);
 
 
     //Getters/Setters:

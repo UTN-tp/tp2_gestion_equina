@@ -8,7 +8,8 @@ void menuGestionCaballos();
 void menuGestionAgenda();
 void menuGestionMateriales();
 void menuGestionUsuarios();
+void menuGestionRecaudacionConsumos();
 
 
 
-#endif 
+#endif
