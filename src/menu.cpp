@@ -29,6 +29,7 @@ void menuPrincipal() {
         cout << "3. Agenda y Trabajos" << endl;
         cout << "4. Gestion de Materiales" << endl;
         cout << "5. Gestion de recaudacion" << endl;
+        cout << "6. Informacion Adicional" << endl;
         cout << "0. Salir del Programa" << endl;
         cout << "=====================================" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -263,6 +264,8 @@ void menuGestionMateriales() {
             break;
             case 3:
                 // Logica: RegistrarMaterialesTrabajo()
+                 obj.registrarMaterialesUsados();
+                rlutil::anykey(); // agrego
             break;
             case 4:
                 // Logica: ConsultarStock()
@@ -294,6 +297,7 @@ void menuGestionRecaudacionConsumos()
         cout << "1. Recaudacion por mes" << endl;
         cout << "2. Recaudacion por cliente" << endl;
         cout << "3. Consumo de materiales por anio" << endl;
+        cout << "4. Recaudacion Total" << endl;
         cout << "9. Volver al Menu Principal" << endl;
         cout << "------------------------------" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -313,6 +317,10 @@ void menuGestionRecaudacionConsumos()
             r.consumoMaterialesPorAnio();
             rlutil::anykey();
             break;
+        case 4:
+            r.calcularGananciaTotalConMateriales();
+            rlutil::anykey();
+            break;    
         case 9:
             cout << "-> Volviendo al Menu Principal..." << endl;
             break;
