@@ -55,6 +55,13 @@ void Cliente::setCantidadCaballos(int valor) {
         string email = InputManager::leerLinea("Ingrese el email del nuevo cliente. ", 60);
         cliente.setEmail(email.c_str());
 
+         //===================== agrego
+        if (archivos.existeEmailCliente(cliente.getEmail())) {
+            cout << "\nERROR: El email ingresado ya esta registrado. Carga cancelada.\n";
+            return;
+        }
+        //==================== hasta aca
+
         string telefono = InputManager::leerLinea("Ingrese el telefono del nuevo cliente. ", 20);
         cliente.setTelefono(telefono.c_str());
 
