@@ -23,7 +23,9 @@ void menuPrincipal() {
     rlutil::setBackgroundColor(rlutil::BROWN);
     do {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n=== MENU PRINCIPAL GESTIONEQUINA ===" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Gestion de Clientes" << endl;
         cout << "2. Gestion de Caballos" << endl;
         cout << "3. Agenda y Trabajos" << endl;
@@ -52,13 +54,17 @@ void menuPrincipal() {
                 break;
             case 6:
                 rlutil::cls();
+                    rlutil::setColor(rlutil::BLACK);
                  cout << "======CREDITOS======" << endl;
+                 rlutil::setColor(rlutil::WHITE);
                  cout << "Guillermo Caratini Legajo: 33158" << endl;
                  cout << "Jazmin Erasun Sgur Legajo: 32509" << endl;
                  cout << "Macarena Amores Legajo: 31834" << endl;
                  cout << "Sebastian Cabeza Legajo: 33483\n";
                  cout << "----------------------" << endl;
+                 rlutil::setColor(rlutil::BLACK);
                  cout << "======INFORMACION ADICIONAL======" << endl;
+                 rlutil::setColor(rlutil::WHITE);
                  cout << "libreria RLUTIL Copyright (C) 2010 Tapio Vierros" << endl;
                  rlutil::anykey();
                 break;
@@ -79,7 +85,9 @@ void menuGestionClientes() {
     int opcion;
     do {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n--- MENU GESTION DE CLIENTES ---" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Cargar Nuevo Cliente" << endl;
         cout << "2. Modificar Datos de Cliente" << endl;
         cout << "3. Consultar Cliente por ID" << endl;
@@ -149,7 +157,9 @@ void menuGestionCaballos() {
     int opcion;
     do {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n--- MENU GESTION DE CABALLOS ---" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Cargar Nuevo Caballo (Asociado a Cliente)" << endl;
         cout << "2. Modificar Datos de Caballo" << endl;
         cout << "3. Consultar Caballo por ID" << endl;
@@ -203,7 +213,9 @@ void menuGestionAgenda() {
     Agenda obj;
     do {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n--- MENU AGENDA Y TRABAJOS ---" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Registrar Nuevo Trabajo (Asociar a Caballo)" << endl;
         cout << "2. Ver Agenda de Proximos Trabajos" << endl;
         cout << "3. Consultar Historial de Trabajos Realizados" << endl;
@@ -242,7 +254,9 @@ void menuGestionMateriales() {
     int opcion;
     do {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n--- MENU GESTION DE MATERIALES ---" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Cargar Nuevo Material al Inventario" << endl;
         cout << "2. Modificar Stock de Material" << endl;
         cout << "3. Registrar Materiales Usados en un Trabajo" << endl;
@@ -273,7 +287,8 @@ void menuGestionMateriales() {
                 rlutil::anykey();
             break;
             case 5:
-                // Logica: ConsultarConsumoPeriodo()
+                obj.consultarPeriodoConsumo();
+                rlutil::anykey();
             break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
@@ -293,7 +308,9 @@ void menuGestionRecaudacionConsumos()
     do
     {
         rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
         cout << "\n--- RECAUDACION Y CONSUMO ---" << endl;
+        rlutil::setColor(rlutil::WHITE);
         cout << "1. Recaudacion por mes" << endl;
         cout << "2. Recaudacion por cliente" << endl;
         cout << "3. Consumo de materiales por anio" << endl;
@@ -320,7 +337,7 @@ void menuGestionRecaudacionConsumos()
         case 4:
             r.calcularGananciaTotalConMateriales();
             rlutil::anykey();
-            break;    
+            break;
         case 9:
             cout << "-> Volviendo al Menu Principal..." << endl;
             break;

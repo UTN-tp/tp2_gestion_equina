@@ -27,8 +27,6 @@ void CaballosManager::cargarCaballo() {
     string raza = InputManager::leerString("Raza: ");
     c.setRaza(raza.c_str());
 
-    string tipo = InputManager::leerString("Tipo trabajo: ");
-    c.setTipoTrabajo(tipo.c_str());
 
     Fecha fUltima;
     cout << "Fecha de ultima atencion: " << endl;
@@ -42,7 +40,9 @@ void CaballosManager::cargarCaballo() {
 
     c.setEstado(true);
     rlutil::cls();
+    rlutil::setColor(rlutil::BLACK);
     cout << "\n--- CONFIRMAR DATOS DEL CABALLO ---\n";
+    rlutil::setColor(rlutil::WHITE);
     c.mostrar();
     cout << "-----------------------------------\n";
 
@@ -52,7 +52,9 @@ void CaballosManager::cargarCaballo() {
     }
 
     archivos.guardarArchivoCaballo(c);
+    rlutil::setColor(rlutil::GREEN);
     cout << "Caballo cargado correctamente." << endl;
+    rlutil::setColor(rlutil::WHITE);
 }
 
 
@@ -61,7 +63,9 @@ void CaballosManager::modificarCaballo() {
 
     int pos = archivos.buscarCaballoPorID(id);
     if (pos < 0) {
+        rlutil::setColor(rlutil::RED);
         cout << "Caballo no encontrado." << endl;
+        rlutil::setColor(rlutil::WHITE);
         return;
     }
 
@@ -76,7 +80,9 @@ void CaballosManager::modificarCaballo() {
     c.setNombre(nuevoNombre.c_str());
 
     archivos.modificarRegistroCaballo(c, pos);
+    rlutil::setColor(rlutil::GREEN);
     cout << "Caballo modificado correctamente." << endl;
+    rlutil::setColor(rlutil::WHITE);
 }
 
 

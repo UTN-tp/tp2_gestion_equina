@@ -12,7 +12,6 @@ private:
     char nombre[20];
     int edad;
     char raza[40];
-    char tipoTrabajo[30];
     char ultimaAtencion[11];
     char proximaAtencion[11];
     int estado;   // esta linea

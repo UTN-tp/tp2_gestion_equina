@@ -3,23 +3,27 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include "rlutil.h"
 #include "Agenda.h"
 #include "Caballo.h"
 #include "CaballosManager.h"
 #include "Archivos.h"
 #include "Fecha.h"
 #include "InputManager.h"
+#include "MaterialesManager.h"
 
 
 
 using namespace std;
+
+
 
 Agenda::Agenda(){
     id = 0;
     idCliente = 0;
     idCaballo = 0;
     fechaTrabajo = Fecha(0, 0, 0);
-    tipoTrabajo[0]  = '\0';
+    tipoTrabajo;
     trabajoRealizado = false;
 }
 
@@ -29,18 +33,35 @@ int Agenda::getID() const{ return id; }
 int Agenda::getIDCliente() const{ return idCliente; }
 int Agenda::getIDCaballo() const{ return idCaballo; }
 Fecha Agenda::getFechaTrabajo() const{ return fechaTrabajo; }
-const char* Agenda::getTipoTrabajo() const{ return tipoTrabajo; }
+int Agenda::getTipoTrabajo() const{ return tipoTrabajo; }
 bool Agenda::getTrabajoRealizado() const{ return trabajoRealizado; }
 
 void Agenda::setID(int valor){ id = valor; }
 void Agenda::setIDCliente(int valor){ idCliente = valor; }
 void Agenda::setIDCaballo(int valor){ idCaballo = valor; }
 void Agenda::setFechaTrabajo(const Fecha& valor){ fechaTrabajo = valor; }
-void Agenda::setTipoTrabajo(const char* valor){
-    strncpy(tipoTrabajo, valor, 29);
-    tipoTrabajo[29] = '\0';
+void Agenda::setTipoTrabajo(int valor){
+   tipoTrabajo = valor;
 }
 void Agenda::setTrabajoRealizado(bool valor){ trabajoRealizado = valor; }
+
+bool Agenda::validarMaterialesStock (int tipoTrabajo){
+
+    if(tipoTrabajo==2){
+        Archivos archivos;
+        Material m1 = archivos.leerRegistroMaterial(1);
+        Material m2 = archivos.leerRegistroMaterial(2);
+
+        if (m1.getStock() < Agenda::clavosParaHerrado && m2.getStock()< Agenda::herraduraParaHerrado) {
+            rlutil::setColor(rlutil::RED);
+            cout << "�No hay suficiente stock de materiales disponible para ese trabajo.\n -- Es necesario realizar una reposicion --";
+            rlutil::setColor(rlutil::WHITE);
+            return false;
+        }
+    }
+    return true;
+
+};
 
 void Agenda::mostrar() const {
     cout<<"-----------------------------------------\n";
@@ -50,7 +71,19 @@ void Agenda::mostrar() const {
     cout<<"Fecha de Trabajo: ";
     fechaTrabajo.mostrar();
     cout<<endl;
-    cout<<"Tipo de Trabajo: "<<getTipoTrabajo()<<endl;
+
+    getTipoTrabajo();
+    if (tipoTrabajo==1){
+        cout<<"Tipo de Trabajo: Desvasado" << endl;
+    }
+
+    else if (tipoTrabajo==2){
+        cout<<"Tipo de Trabajo: Herrado" << endl;
+
+    }
+
+
+  //  cout<<"Tipo de Trabajo: "<<getTipoTrabajo()<<endl;
 
     if (getTrabajoRealizado())
         cout<<"Estado del trabajo: Realizado\n";
@@ -78,13 +111,14 @@ void Agenda::registrarNuevoTrabajo(){
 
     int idClienteIngresado;
     int idCaballoIngresado;
-    char tipoTrabajoIngresado[30];
     char estadoOpcion;
     bool existenciaCaballo = false;
     bool estadoCaballo = false;
     CaballosManager managerCaballos;
-    cout<<"NUEVO TRABAJO A REGISTRAR\n-------------------------\n";
 
+    rlutil::setColor(rlutil::BLACK);
+    cout<<"NUEVO TRABAJO A REGISTRAR\n-------------------------\n";
+    rlutil::setColor(rlutil::WHITE);
 
     Cliente clienteTemp;
 
@@ -115,8 +149,9 @@ void Agenda::registrarNuevoTrabajo(){
 
     } while(true);
 
-
+    rlutil::setColor(rlutil::BLACK);
     cout << "\n--- CABALLOS DEL CLIENTE CONFIRMADO ---\n";
+    rlutil::setColor(rlutil::WHITE);
 
     archivoCaballo.listarCaballosPorCliente(idClienteIngresado);
 
@@ -153,12 +188,14 @@ void Agenda::registrarNuevoTrabajo(){
     regFecha.cargar();
     setFechaTrabajo(regFecha);
 
+    //Validar stock para el trabajo elegido
 
-    string texto = InputManager::leerLinea("Tipo de trabajo a realizar: ");
-    strncpy(tipoTrabajoIngresado, texto.c_str(), 29);
-    tipoTrabajoIngresado[29] = '\0';
+    int tipoTrabajoIngresado = InputManager::leerInt("Tipo de trabajo a realizar:\n 1- Desvasado \n 2- Herrado: ");
+    if (!validarMaterialesStock (tipoTrabajoIngresado)){
+        return;
+    }
+
     setTipoTrabajo(tipoTrabajoIngresado);
-
 
 
     estadoOpcion = InputManager::leerCharOpciones(
@@ -200,8 +237,10 @@ void Agenda::registrarNuevoTrabajo(){
 
     if (archivoAgenda.guardarArchivoAgenda(*this))
         cout << "Trabajo registrado correctamente.\n";
+
     else
         cout << "No se pudo registrar el trabajo.\n";
+
 }
 
 void Agenda::proximosTrabajos(){
@@ -215,8 +254,9 @@ void Agenda::proximosTrabajos(){
         cout << "No hay trabajos registrados en la agenda.\n";
         return;
     }
-
+    rlutil::setColor(rlutil::BLACK);
     cout<<"AGENDA DE PROXIMOS TRABAJOS\n";
+    rlutil::setColor(rlutil::WHITE);
 
     for (int i=0; i<cantidadTrabajos; i++){
         regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
@@ -315,9 +355,6 @@ void Agenda::historialTrabajosRealizados(){
 }
 
 void Agenda::buscarTrabajo(){
-
-
-
 
     Archivos regArchivoAgenda;
     Archivos regArchivoCaballo;
@@ -427,440 +464,3 @@ void Agenda::buscarTrabajo(){
     } break;
     }
 }
-
-
-
-
-
-
-
-
-/*Version anterior Agenda:
-#include <iostream>
-#include <string>
-#include <cstring>
-#include "Agenda.h"
-#include "Caballo.h"
-#include "CaballosManager.h"
-#include "Archivos.h"
-#include "Fecha.h"
-#include "rlutil.h"
-using namespace std;
-
-Agenda::Agenda(){
-    id = 0;
-    idCliente = 0;                     // constructor inicializado en 0
-    idCaballo = 0;
-    fechaTrabajo = Fecha(0, 0, 0);
-    tipoTrabajo[0]  = '\0';
-    trabajoRealizado = false;
-}
-
-Agenda::~Agenda(){
-}
-
-int Agenda::getID() const{
-    return id;
-}
-
-int Agenda::getIDCliente() const{
-    return idCliente;
-}
-
-int Agenda::getIDCaballo() const{
-    return idCaballo;
-}
-
-Fecha Agenda::getFechaTrabajo() const{
-    return fechaTrabajo;
-}
-
-const char* Agenda::getTipoTrabajo() const{
-    return tipoTrabajo;
-}
-
-bool Agenda::getTrabajoRealizado() const{
-    return trabajoRealizado;
-}
-
-void Agenda::setID(int valor){
-    id = valor;
-}
-
-void Agenda::setIDCliente(int valor){
-    idCliente = valor;
-}
-
-void Agenda::setIDCaballo(int valor){
-    idCaballo = valor;
-}
-
-void Agenda::setFechaTrabajo(const Fecha& valor){
-    fechaTrabajo = valor;
-}
-
-void Agenda::setTipoTrabajo(const char* valor){
-    strncpy(tipoTrabajo, valor, 29);             // uso de strncpy para evitar errores si se sobrepasa el valor del array
-    tipoTrabajo[29] = '\0';
-}
-
-void Agenda::setTrabajoRealizado(bool valor){
-    trabajoRealizado = valor;
-}
-
-void Agenda::mostrar() const {
-    cout<<"-----------------------------------------" << endl;
-    cout<<"ID: "<<getID()<<endl;
-    cout<<"ID Cliente: "<<getIDCliente()<<endl;
-    cout<<"ID Caballo: "<<getIDCaballo()<<endl;
-    cout<<"Fecha de Trabajo: ";
-    fechaTrabajo.mostrar();
-    cout<<endl;
-    cout<<"Tipo de Trabajo: "<<getTipoTrabajo()<<endl;
-    if (getTrabajoRealizado() == true){
-    cout<<"Estado del trabajo: Realizado"<<endl;
-    } else {
-    cout <<"Estado del trabajo: Pendiente"<<endl;
-    }
-    cout<<"-----------------------------------------"<<endl;
-}
-
-void Agenda::registrarNuevoTrabajo(){
-
-    Fecha regFecha;
-    Caballo regCaballo;
-    Archivos archivoAgenda;
-    Archivos archivoCaballo;
-    int nuevoID = archivoAgenda.cantidadRegistrosAgenda() + 1;
-    int cantidadCaballos = archivoCaballo.cantidadRegistrosCaballo();
-    setID(nuevoID);
-    int idClienteIngresado;
-    int idCaballoIngresado;
-    char tipoTrabajo[30];
-    char estadoOpcion;
-    bool existenciaCaballo;
-    bool estadoCaballo;
-
-    cout<<"NUEVO TRABAJO A REGISTRAR"<<endl;
-    cout<<"-------------------------"<<endl;
-    cout<<"ID de cliente: ";
-    cin>>idClienteIngresado;
-    setIDCliente(idClienteIngresado);
-    cout<<"ID de caballo: ";
-    cin>>idCaballoIngresado;
-
-    if (cantidadCaballos <= 0){
-    cout<<"No hay caballos ingresados. No se puede registrar el trabajo."<<endl;
-    return;
-    }
-
-    for (int i=0; i<cantidadCaballos; i++){
-    regCaballo = archivoCaballo.leerRegistroCaballo(i);
-    if (regCaballo.getID() == idCaballoIngresado){
-        existenciaCaballo = true;                                //validacion de estado y existencia del caballo
-        estadoCaballo = regCaballo.getEstado();
-        break;
-    }
-    }
-
-    if (existenciaCaballo == false){
-        cout<<"No existe un caballo con el ID ingresado."<<endl;
-        return;
-    }
-
-    if (estadoCaballo == false){
-        cout<<"El caballo se encuentra inactivo/vendido. No se puede registrar el trabajo."<<endl;
-        return;
-    }
-
-    setIDCaballo(idCaballoIngresado);
-    cout<<"Fecha de trabajo:"<<endl;
-    regFecha.cargar();                 // uso de la clase fecha para guardar valor
-    setFechaTrabajo(regFecha);
-    cin.ignore();                  // limpieza del enter pendiente de ultimo cin >>
-    do {
-        cout<<"Tipo de trabajo a realizar: ";
-        cin.getline(tipoTrabajo, 30); // permite ingresar texto con espacios
-        if (strlen(tipoTrabajo) == 0) {  // Verificamos que el usuario ingrese un caracter obligatoriamente
-        cout <<"Ingrese una descripcion del tipo de trabajo"<<endl;
-        }
-    } while (strlen(tipoTrabajo) == 0);     // validacion nuevamente con strlen
-    setTipoTrabajo(tipoTrabajo);
-
-      // agrego monto para trabajo
-    Trabajo t;
-    Archivos archTrabajo;
-    float costo;
-    int nuevoIDTrabajo = archTrabajo.cantidadRegistrosTrabajo() + 1;
-
-    t.setID(nuevoIDTrabajo);
-    t.setIdCliente(idClienteIngresado);
-    t.setIdCaballo(idCaballoIngresado);
-    t.setFecha(regFecha);
-
-    cout << "Costo del Trabajo: $ ";
-    cin >> costo;
-    t.setCosto(costo);
-
-    if (archTrabajo.guardarArchivoTrabajo(t)){
-        cout << "Registro guardado correctamente.\n";
-    }
-    else {
-        cout << "ERROR al guardar el registro.\n";
-    }
-
-    // hasta aca agregue lo de Guille para probar
-
-    cout<<"Estado del trabajo (Realizado: R/r, Pendiente: P/p): ";
-    cin>>estadoOpcion;
-    while (estadoOpcion != 'R' && estadoOpcion != 'r'                  //validacion
-        && estadoOpcion != 'P' && estadoOpcion != 'p'){
-        cout<<"Opciï¿½n invalida, ingrese P o R segun corresponde"<<endl;
-        cin>>estadoOpcion;
-    }
-    if (estadoOpcion == 'R' || estadoOpcion == 'r'){
-        setTrabajoRealizado(true);
-    } else {
-        setTrabajoRealizado(false);
-    }
-    // crear o guardar el archivo de agenda
-    if (archivoAgenda.guardarArchivoAgenda(*this) == true ){
-        cout << "Trabajo registrado correctamente." << endl;
-    }
-    else {
-        cout << "No se pudo registrar el trabajo." << endl;
-    }
-}
-
-void Agenda::proximosTrabajos(){
-
-    Archivos regArchivoAgenda;
-    Agenda regAgenda;
-    int cantidadTrabajos;
-    cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
-    bool trabajosPendientes = false;
-
-    if (cantidadTrabajos <= 0){
-        cout << "No hay trabajos registrados en la agenda." << endl;
-        return;
-    }
-
-    cout<<"AGENDA DE PROXIMOS TRABAJOS"<<endl;
-
-    for (int i=0; i<cantidadTrabajos; i++){
-        regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
-        // solo mostrara si el trabajo esta pendiente
-        if (regAgenda.getTrabajoRealizado() == false){
-            regAgenda.mostrar();
-            trabajosPendientes=true;
-        }
-    }
-
-    if (trabajosPendientes == false){
-        cout <<"No hay trabajos pendientes."<<endl;
-    }
-}
-
-void Agenda::consultasPorIDCaballo(){
-
-    Archivos archAgenda;
-    Archivos archCaballo;
-    Agenda regAgenda;
-    Caballo regCaballo;
-    int idCaballo;
-    int cantidadTrabajos;
-    int cantidadCaballos;
-    bool existenciaTrabajo = false;
-    bool existenciaCaballo = false;
-    bool estadoCaballo = false;
-
-    cantidadCaballos = archCaballo.cantidadRegistrosCaballo();
-    cantidadTrabajos = archAgenda.cantidadRegistrosAgenda();
-
-    if (cantidadTrabajos <= 0) {
-        cout<<"No se registraron trabajos en la agenda."<<endl;
-        return;
-    }
-
-    cout<<"Ingrese el ID del caballo: ";
-    cin>>idCaballo;
-
-    for (int i=0; i<cantidadCaballos; i++){
-        regCaballo = archCaballo.leerRegistroCaballo(i);
-        if (regCaballo.getID() == idCaballo) {
-            existenciaCaballo = true;
-            estadoCaballo = regCaballo.getEstado();         //Validar existencia y estado de caballo unica vez
-            break;
-        }
-    }
-
-    if (existenciaCaballo == false){
-        cout<<"No existe un caballo con ese ID ingresado."<<endl;
-        return;
-    }
-
-    cout<< "LISTADO DE TRABAJOS DEL ID CABALLO N: "<<idCaballo<<endl;
-    cout<<"-----------------------------------------"<<endl;
-
-    for (int i = 0; i < cantidadTrabajos; i++){
-        regAgenda = archAgenda.leerRegistroAgenda(i);
-        if (regAgenda.getIDCaballo() == idCaballo){
-            regAgenda.mostrar();
-            existenciaTrabajo = true;
-        }
-    }
-
-    if (existenciaTrabajo == false){
-        cout<<"No hay trabajos registrados para este caballo."<<endl;
-    }
-
-    if (estadoCaballo == false){
-        cout<<"ADVERTENCIA: El caballo se encuentra inactivo/vendido."<<endl;
-    }
-}
-
-void Agenda::historialTrabajosRealizados(){
-
-    Archivos regArchivoAgenda;
-    Agenda regAgenda;
-
-    int cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
-    bool existenciaTrabajo = false;
-
-    if (cantidadTrabajos <= 0){
-        cout<<"No hay trabajos registrados en la agenda."<<endl;
-        return;
-    }
-
-    cout<<"HISTORIAL DE TRABAJOS REALIZADOS: "<<endl;
-
-    for (int i=0; i<cantidadTrabajos; i++){
-        regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
-        if (regAgenda.getTrabajoRealizado() == true) {
-            regAgenda.mostrar();
-            existenciaTrabajo = true;
-        }
-    }
-
-    if (existenciaTrabajo == false){
-        cout<<"El historial se encuentra vacio. No hay registro de trabajo realizado."<<endl;
-    }
-}
-
-void Agenda::buscarTrabajo(){
-
-    Archivos regArchivoAgenda;
-    Archivos regArchivoCaballo;
-    Agenda regAgenda;
-    Caballo regCaballo;
-    Fecha fechaBuscada;
-
-    int idCaballo;
-    int cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
-    int cantidadCaballos = regArchivoCaballo.cantidadRegistrosCaballo();
-    int opcion;
-
-    if (cantidadTrabajos <= 0){
-        cout<<"No se registraron trabajos en la agenda."<<endl;
-        return;
-    }
-    rlutil::cls();
-    cout<<"BUSCAR TRABAJO POR FECHA/CABALLO"<<endl;
-    cout<<"--------------------------------"<<endl;
-    cout<<"1-Buscar por Fecha"<<endl;
-    cout<<"2-Buscar por ID de Caballo"<<endl;
-    cout<<"0-Volver al menu"<<endl;
-    cout<<"--------------------------------"<<endl;
-    cout<< "Ingrese una opcion (1, 2, 0): ";
-    cin>>opcion;
-
-    switch (opcion){
-        case 1:{
-            rlutil::cls();
-            bool existenciaTrabajo = false;
-
-            cout<<"Ingrese la fecha del trabajo a buscar: "<<endl;
-            fechaBuscada.cargar();
-            cout<<"FECHA SELECCIONADA: ";
-            fechaBuscada.mostrar();
-            cout<<endl;
-
-            for (int i=0; i<cantidadTrabajos; i++){
-                regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
-                Fecha regFecha = regAgenda.getFechaTrabajo();
-
-                if (regFecha.getDia() == fechaBuscada.getDia() && regFecha.getMes() == fechaBuscada.getMes()
-                     && regFecha.getAnio() == fechaBuscada.getAnio()){
-                    regAgenda.mostrar();
-                    existenciaTrabajo = true;
-                }
-            }
-
-            if (existenciaTrabajo == false){
-                cout<<"No se encontraron trabajos registrados en esa fecha."<<endl;
-            }
-        } break;
-
-        case 2:{
-            rlutil::cls();
-            bool existenciaTrabajo = false;
-            bool existenciaCaballo = false;
-            bool estadoCaballo = false;
-
-            cout<< "Ingrese el ID del caballo: ";
-            cin>>idCaballo;
-
-            cout<<"ID CABALLO SELECCIONADO: "<<idCaballo<<endl;
-
-            for (int i=0; i<cantidadCaballos; i++){
-                regCaballo = regArchivoCaballo.leerRegistroCaballo(i);  // validamos que exista caballo y su estado
-                if (regCaballo.getID() == idCaballo){
-                    existenciaCaballo = true;
-                    estadoCaballo = regCaballo.getEstado();
-                    break;
-                }
-            }
-
-            if (existenciaCaballo == false){
-                cout<<"No existe un caballo con el ID ingresado."<<endl;
-                return;
-            }
-
-            if (estadoCaballo == false){
-                cout<<"ADVERTENCIA: El caballo se encuentra inactivo/vendido."<<endl;
-            }
-
-            for (int i=0; i<cantidadTrabajos; i++){
-                regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
-
-                if (regAgenda.getIDCaballo() == idCaballo){
-                    regAgenda.mostrar();
-                    existenciaTrabajo = true;
-                }
-            }
-
-            if (existenciaTrabajo == false){
-                cout<< "No se encontraron trabajos registrados para ese caballo."<<endl;
-            }
-        } break;
-
-        case 0: {
-            char opcion;
-            cout<<"ï¿½Seguro quiere regresar al menï¿½ principal? (ingrese s/S para confirmar): ";
-            cin>>opcion;
-
-            if (opcion == 's' || opcion == 'S'){
-                cout << "Volviendo al menï¿½ principal..." << endl;
-                return;
-            }
-            else{
-                cout<<"Caracter incorrecto, anulando solicitud"<<endl;
-            }
-        } break;
-
-        default:
-            cout<<"Opciï¿½n incorrecta, ingrese un numero valido."<<endl;
-            break;
-    }
-}
-*/

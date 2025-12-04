@@ -11,7 +11,6 @@ Caballo::Caballo() {
     nombre[0] = {};
     edad = 0;
     raza[0] = {};
-    tipoTrabajo[0] = {};
     ultimaAtencion[0] = {};
     proximaAtencion[0] = {};
     estado = 1; // esta linea faltaba
@@ -43,9 +42,6 @@ const char* Caballo::getRaza() const {
     return raza;
 }
 
-const char* Caballo::getTipoTrabajo() const {
-    return tipoTrabajo;
-}
 
 const char* Caballo::getUltimaAtencion() const {
     return ultimaAtencion;
@@ -83,10 +79,6 @@ void Caballo::setRaza(const char* valor) {
     raza[39] = {};
 }
 
-void Caballo::setTipoTrabajo(const char* valor) {
-    strncpy(tipoTrabajo, valor, 29);
-    tipoTrabajo[29] = {};
-}
 
 void Caballo::setUltimaAtencion(const char* valor) {
     strncpy(ultimaAtencion, valor, 10);
@@ -112,7 +104,6 @@ void Caballo::mostrar() const {
     cout << "Nombre: " << getNombre() << endl;
     cout << "Edad: " << getEdad() << " anios" << endl;
     cout << "Raza: " << getRaza() << endl;
-    cout << "Tipo de Trabajo: " << getTipoTrabajo() << endl;
     cout << "Ultima Atencion: " << getUltimaAtencion() << endl;
     cout << "Proxima Atencion: " << getProximaAtencion() << endl;
    // cout << "Estado: " << (getEstado() ? "Activo" : "Inactivo") << endl;

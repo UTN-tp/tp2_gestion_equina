@@ -6,13 +6,17 @@ using namespace std;
 
 class Agenda {
 
-        private:
+private:
         int id;
         int idCliente;
         int idCaballo;
         Fecha fechaTrabajo;
-        char tipoTrabajo[30];
-         bool trabajoRealizado;
+        int tipoTrabajo;
+        bool trabajoRealizado;
+        bool validarMaterialesStock(int);
+        static const int clavosParaHerrado = 24;
+        static const int herraduraParaHerrado = 4;
+
 public:
     Agenda();
     ~Agenda();
@@ -21,18 +25,18 @@ public:
         int getIDCliente() const;
         int getIDCaballo() const;
         Fecha getFechaTrabajo() const;
-        const char* getTipoTrabajo() const;
+        int getTipoTrabajo() const;
         bool getTrabajoRealizado() const;
 
         void setID(int valor);
         void setIDCliente(int valor);
         void setIDCaballo(int valor);
         void setFechaTrabajo(const Fecha& valor);
-        void setTipoTrabajo(const char* valor);
+        void setTipoTrabajo(int valor);
         void setTrabajoRealizado(bool valor);
 
         void mostrar() const;
-        void registrarNuevoTrabajo();    //pendiente 2 validaciones
+        void registrarNuevoTrabajo();
         void proximosTrabajos();
         void consultasPorIDCaballo();
         void historialTrabajosRealizados();
