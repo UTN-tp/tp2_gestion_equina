@@ -30,7 +30,7 @@ class Archivos
     void listarTodosLosCaballos();  //agrego 2
     void listarTodosLosClientes ();
 
-
+    int buscarClientePorID(int idBuscado); //agrego nuevo
     int buscarCaballoPorID(int idBuscado); //agrego
     int buscarMaterialPorID(int idBuscado); //material: agrego
     int cantidadRegistrosCaballo();

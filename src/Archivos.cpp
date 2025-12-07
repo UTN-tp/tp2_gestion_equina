@@ -295,6 +295,25 @@
     // Buscar:
     //buscar por ID
 
+    int Archivos::buscarClientePorID(int idBuscado) {
+    FILE *pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Cliente aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo)) {
+        if (aux.getID() == idBuscado) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
+
     int Archivos::buscarCaballoPorID(int idBuscado) {
     FILE *pArchivo = fopen("caballos.dat", "rb");
     if (pArchivo == NULL) return -1;
