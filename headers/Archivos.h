@@ -23,7 +23,8 @@ class Archivos
     bool modificarRegistroMaterial(const Material& material, int pos); //material: agrego
     bool modificarRegistroCliente(const Cliente cliente, int pos);
 
-
+    // metodo de validacion de mail
+    bool existeEmailCliente(const char* emailNuevo);
 
     void listarCaballosPorCliente(int idCliente); //agrego
     void listarTodosLosCaballos();  //agrego 2
