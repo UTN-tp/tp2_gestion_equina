@@ -13,6 +13,7 @@ class MaterialesManager{
         void registrarMaterialesUsados();
         void consultarStockActual();
         void consultarPeriodoConsumo();
+        int getStockPorID(int idMaterial);
 };
 
 

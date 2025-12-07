@@ -133,7 +133,7 @@ void MaterialesManager::consultarStockActual() {
     }
 }
 
-void consultarPeriodoConsumo(){
+void MaterialesManager::consultarPeriodoConsumo(){
     Fecha inicio;
     Fecha fin;
     Archivos arc;
