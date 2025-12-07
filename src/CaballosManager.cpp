@@ -18,6 +18,27 @@ void CaballosManager::cargarCaballo() {
     int idC = InputManager::leerInt("ID Cliente: ");
     c.setIDCliente(idC);
 
+     // **USO DEL NUEVO METODO DE BUSQUEDA POR ID**
+    int posCliente = archivos.buscarClientePorID(idC);
+                                                                      // nuevo
+     
+    if (posCliente == -1) {
+        cout << "ERROR: Cliente con ID " << idC << " no encontrado. Carga de caballo cancelada." << endl;
+        return;
+    }
+
+
+    Cliente cliente = archivos.leerRegistroCliente(posCliente);
+
+    
+    if (cliente.getID() != idC) {
+        cout << "ERROR interno al leer el registro del cliente." << endl;
+        return;
+    }
+
+    c.setIDCliente(idC); 
+
+
     string nombre = InputManager::leerString("Nombre: ");
     c.setNombre(nombre.c_str());
 
@@ -52,11 +73,19 @@ void CaballosManager::cargarCaballo() {
     }
 
     archivos.guardarArchivoCaballo(c);
-    rlutil::setColor(rlutil::GREEN);
-    cout << "Caballo cargado correctamente." << endl;
-    rlutil::setColor(rlutil::WHITE);
-}
+    
+    
+    int nuevaCantidad = cliente.getCantidadCaballos() + 1;
+    cliente.setCantidadCaballos(nuevaCantidad); 
 
+    
+    if (archivos.modificarRegistroCliente(cliente, posCliente)) {
+        cout << "Caballo cargado correctamente y la cantidad del cliente fue actualizada." << endl;
+    } else {
+        cout << "Caballo cargado correctamente, pero hubo un ERROR al actualizar la cantidad de caballos del cliente." << endl;
+    }
+
+}
 
 void CaballosManager::modificarCaballo() {
     int id = InputManager::leerInt("Ingrese ID del caballo: ");

@@ -295,6 +295,25 @@
     // Buscar:
     //buscar por ID
 
+    int Archivos::buscarClientePorID(int idBuscado) {
+    FILE *pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Cliente aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo)) {
+        if (aux.getID() == idBuscado) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
+
     int Archivos::buscarCaballoPorID(int idBuscado) {
     FILE *pArchivo = fopen("caballos.dat", "rb");
     if (pArchivo == NULL) return -1;
@@ -451,4 +470,30 @@ void Archivos::listarTodosLosClientes() {
     }
 
     fclose(pArchivo);
+}
+
+
+// --- NUEVA FUNCION PARA VALIDAR EMAIL UNICO -----
+bool Archivos::existeEmailCliente(const char* emailNuevo) {
+    FILE *pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) {
+        
+        return false;
+    }
+
+    Cliente regCliente;
+
+    // Recorre el archivo de principio a fin, leyendo un registro a la vez.
+    while (fread(&regCliente, sizeof(Cliente), 1, pArchivo) == 1) {
+        // Compara el email del registro leido con el email que se intenta guardar.
+        // La comparacion debe ser sensible a mayusculas/minusculas.
+        // strcmp devuelve 0 si las cadenas son identicas, esto es lo que hace la magia
+        if (strcmp(regCliente.getEmail(), emailNuevo) == 0) {
+            fclose(pArchivo);
+            return true; // Email encontrado: ya existe.
+        }
+    }
+
+    fclose(pArchivo);
+    return false; // Bucle terminado: email no encontrado.
 }
