@@ -61,7 +61,7 @@ bool Agenda::validarMaterialesStock (int tipoTrabajo){
     }
     return true;
 
-};
+}
 
 void Agenda::mostrar() const {
     cout<<"-----------------------------------------\n";
@@ -105,16 +105,12 @@ void Agenda::registrarNuevoTrabajo(){
     Archivos archivoCaballo;
 
     int nuevoID = archivoAgenda.cantidadRegistrosAgenda() + 1;
-    int cantidadCaballos = archivoCaballo.cantidadRegistrosCaballo();
 
     setID(nuevoID);
 
     int idClienteIngresado;
     int idCaballoIngresado;
     char estadoOpcion;
-    bool existenciaCaballo = false;
-    bool estadoCaballo = false;
-    CaballosManager managerCaballos;
 
     rlutil::setColor(rlutil::BLACK);
     cout<<"NUEVO TRABAJO A REGISTRAR\n-------------------------\n";
@@ -157,27 +153,12 @@ void Agenda::registrarNuevoTrabajo(){
 
     idCaballoIngresado = InputManager::leerInt("ID de caballo: ");
 
-
-    if (cantidadCaballos <= 0){
-        cout<<"No hay caballos ingresados. No se puede registrar el trabajo.\n";
-        return;
+    // Validacion
+    if (!archivoCaballo.validarExistenciaCaballo(idCaballoIngresado, regCaballo)){
+        return;   // si no hay un caballo valido, la funcion ya lo muestra con cout
     }
 
-    for (int i=0; i<cantidadCaballos; i++){
-        regCaballo = archivoCaballo.leerRegistroCaballo(i);
-        if (regCaballo.getID() == idCaballoIngresado){
-            existenciaCaballo = true;
-            estadoCaballo = regCaballo.getEstado();
-            break;
-        }
-    }
-
-    if (!existenciaCaballo){
-        cout<<"No existe un caballo con el ID ingresado.\n";
-        return;
-    }
-
-    if (!estadoCaballo){
+    if (regCaballo.getEstado() != 1) {   // 1 = caballo activo
         cout<<"El caballo se encuentra inactivo/vendido. No se puede registrar el trabajo.\n";
         return;
     }
@@ -281,10 +262,7 @@ void Agenda::consultasPorIDCaballo(){
 
     int idCaballo;
     int cantidadTrabajos = archAgenda.cantidadRegistrosAgenda();
-    int cantidadCaballos = archCaballo.cantidadRegistrosCaballo();
     bool existenciaTrabajo = false;
-    bool existenciaCaballo = false;
-    bool estadoCaballo = false;
 
     if (cantidadTrabajos <= 0){
         cout<<"No se registraron trabajos en la agenda.\n";
@@ -295,18 +273,13 @@ void Agenda::consultasPorIDCaballo(){
     idCaballo = InputManager::leerInt("Ingrese el ID del caballo: ");
 
 
-    for (int i=0; i<cantidadCaballos; i++){
-        regCaballo = archCaballo.leerRegistroCaballo(i);
-        if (regCaballo.getID() == idCaballo){
-            existenciaCaballo = true;
-            estadoCaballo = regCaballo.getEstado();
-            break;
-        }
+    // Validacion
+    if (!archCaballo.validarExistenciaCaballo(idCaballo, regCaballo)){
+        return;   // si no hay un caballo valido, la funcion ya lo muestra con cout
     }
 
-    if (!existenciaCaballo){
-        cout<<"No existe un caballo con ese ID.\n";
-        return;
+    if (regCaballo.getEstado() != 1) {   // 1 = caballo activo
+        cout<<"ADVERTENCIA: El caballo se encuentra inactivo/vendido."<<endl;
     }
 
     cout<<"LISTADO DE TRABAJOS DEL CABALLO "<<idCaballo<<"\n";
@@ -322,9 +295,6 @@ void Agenda::consultasPorIDCaballo(){
 
     if (!existenciaTrabajo)
         cout<<"No hay trabajos registrados para este caballo.\n";
-
-    if (!estadoCaballo)
-        cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
 }
 
 void Agenda::historialTrabajosRealizados(){
@@ -364,7 +334,6 @@ void Agenda::buscarTrabajo(){
 
     int idCaballo;
     int cantidadTrabajos = regArchivoAgenda.cantidadRegistrosAgenda();
-    int cantidadCaballos = regArchivoCaballo.cantidadRegistrosCaballo();
 
     int opcion;
 
@@ -412,31 +381,19 @@ void Agenda::buscarTrabajo(){
 
     case 2:{
         bool existenciaTrabajo = false;
-        bool existenciaCaballo2 = false;
-        bool estadoCaballo = false;
-
 
         idCaballo = InputManager::leerInt("Ingrese el ID del caballo: ");
 
-
         cout<<"ID CABALLO SELECCIONADO: "<<idCaballo<<endl;
 
-        for (int i=0; i<cantidadCaballos; i++){
-            regCaballo = regArchivoCaballo.leerRegistroCaballo(i);
-            if (regCaballo.getID() == idCaballo){
-                existenciaCaballo2 = true;
-                estadoCaballo = regCaballo.getEstado();
-                break;
-            }
+        // Validacion
+        if (!regArchivoCaballo.validarExistenciaCaballo(idCaballo, regCaballo)){
+            return;   // si no hay un caballo valido, la funcion ya lo muestra con cout
         }
 
-        if (!existenciaCaballo2){
-            cout<<"No existe un caballo con ese ID.\n";
-            return;
+        if (regCaballo.getEstado() != 1) {   // 1 = caballo activo
+            cout<<"ADVERTENCIA: El caballo se encuentra inactivo/vendido."<<endl;
         }
-
-        if (!estadoCaballo)
-            cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
 
         for (int i=0; i<cantidadTrabajos; i++){
             regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
