@@ -25,6 +25,7 @@ class Archivos
 
     // metodo de validacion de mail
     bool existeEmailCliente(const char* emailNuevo);
+    int buscarClientePorEmail(const char* emailBuscado);
 
     void listarCaballosPorCliente(int idCliente); //agrego
     void listarTodosLosCaballos();  //agrego 2

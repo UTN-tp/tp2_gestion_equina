@@ -54,7 +54,7 @@ bool Agenda::validarMaterialesStock (int tipoTrabajo){
 
         if (m1.getStock() < Agenda::clavosParaHerrado && m2.getStock()< Agenda::herraduraParaHerrado) {
             rlutil::setColor(rlutil::RED);
-            cout << "�No hay suficiente stock de materiales disponible para ese trabajo.\n -- Es necesario realizar una reposicion --";
+            cout << "No hay suficiente stock de materiales disponible para ese trabajo.\n -- Es necesario realizar una reposicion --";
             rlutil::setColor(rlutil::WHITE);
             return false;
         }
@@ -211,7 +211,7 @@ void Agenda::registrarNuevoTrabajo(){
         cout << "Registro cancelado.\n";
         return;
     }
-     // === GUARDA TAMBIN UN TRABAJO ===
+     // === GUARDA TAMBIEN UN TRABAJO ===
      Trabajo t;
      Archivos archTrabajo;
 
@@ -230,9 +230,9 @@ void Agenda::registrarNuevoTrabajo(){
 
      // Guardar Trabajo
      if (archTrabajo.guardarArchivoTrabajo(t)) {
-     cout << "Trabajo (economico) guardado correctamente.\n";
+     cout << "Trabajo guardado correctamente.\n";
      } else {
-      cout << "ERROR: no se pudo guardar el trabajo economico.\n";
+      cout << "ERROR: no se pudo guardar el trabajo.\n";
      }
 
     if (archivoAgenda.guardarArchivoAgenda(*this))
@@ -324,7 +324,7 @@ void Agenda::consultasPorIDCaballo(){
         cout<<"No hay trabajos registrados para este caballo.\n";
 
     if (!estadoCaballo)
-        cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
+        cout<<"ADVERTENCIA: El caballo esta inactivo/vendido.\n";
 }
 
 void Agenda::historialTrabajosRealizados(){
@@ -436,7 +436,7 @@ void Agenda::buscarTrabajo(){
         }
 
         if (!estadoCaballo)
-            cout<<"ADVERTENCIA: El caballo est  inactivo/vendido.\n";
+            cout<<"ADVERTENCIA: El caballo esta inactivo/vendido.\n";
 
         for (int i=0; i<cantidadTrabajos; i++){
             regAgenda = regArchivoAgenda.leerRegistroAgenda(i);
@@ -454,7 +454,7 @@ void Agenda::buscarTrabajo(){
 
     case 0:{
 
-        if (InputManager::confirmar("¨Seguro quiere regresar al men£ principal? (s/n): ")) {
+        if (InputManager::confirmar("Seguro quiere regresar al menu principal? (s/n): ")) {
             cout<<"Volviendo...\n";
             return;
         } else {
@@ -463,4 +463,4 @@ void Agenda::buscarTrabajo(){
 
     } break;
     }
-}
+};

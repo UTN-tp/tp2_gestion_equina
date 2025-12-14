@@ -6,7 +6,7 @@
 class Cliente : public Usuario {
 private:
     char direccion[100];
-    int cantidadCaballos;
+    int cantidadCaballos = 0;
 
 public:
     Cliente();
@@ -17,7 +17,7 @@ public:
     void consultarporId();
     void cambiarEstadoCliente ();
     int buscarPorID(int idCliente);
-
+    void buscarClientePorEmail(); 
 
     //Getters/Setters:
     const char* getDireccion() const;

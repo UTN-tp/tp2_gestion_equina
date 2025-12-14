@@ -497,3 +497,22 @@ bool Archivos::existeEmailCliente(const char* emailNuevo) {
     fclose(pArchivo);
     return false; // Bucle terminado: email no encontrado.
 }
+
+int Archivos::buscarClientePorEmail(const char* emailBuscado) {
+    FILE* pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Cliente aux;
+    int pos = 0;
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo) == 1) {
+        if (strcmp(aux.getEmail(), emailBuscado) == 0) {
+            fclose(pArchivo);
+            return pos;
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
