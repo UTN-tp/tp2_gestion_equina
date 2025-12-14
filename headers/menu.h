@@ -9,6 +9,7 @@ void menuGestionAgenda();
 void menuGestionMateriales();
 void menuGestionUsuarios();
 void menuGestionRecaudacionConsumos();
+void menuGestionConfiguracion();
 
 
 

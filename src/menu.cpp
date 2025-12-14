@@ -8,6 +8,7 @@
 #include "Cliente.h"
 #include "MaterialesManager.h"
 #include "GestorDeRecaudacion.h"
+#include "Configuracion.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ void menuGestionCaballos();
 void menuGestionAgenda();
 void menuGestionMateriales();
 void menuGestionRecaudacionConsumos();
+void menuGestionConfiguracion();
 
 void menuPrincipal() {
     int opcion;
@@ -32,6 +34,7 @@ void menuPrincipal() {
         cout << "4. Gestion de Materiales" << endl;
         cout << "5. Gestion de recaudacion" << endl;
         cout << "6. Informacion Adicional" << endl;
+        cout << "7. Configuracion" << endl;
         cout << "0. Salir del Programa" << endl;
         cout << "=====================================" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -67,6 +70,9 @@ void menuPrincipal() {
                  rlutil::setColor(rlutil::WHITE);
                  cout << "libreria RLUTIL Copyright (C) 2010 Tapio Vierros" << endl;
                  rlutil::anykey();
+                break;
+                case 7:
+                menuGestionConfiguracion();
                 break;
             case 0:
                 if(!InputManager::confirmar("Desea salir del programa? (S/N): "))
@@ -346,3 +352,46 @@ void menuGestionRecaudacionConsumos()
     }
     while (opcion != 9);
 }
+
+void menuGestionConfiguracion()
+{
+    Configuracion cfg;
+    int opcion;
+    do {
+        rlutil::cls();
+        cout << "\n=== MENU CONFIGURACION ===\n";
+        cout << "1. Exportar datos (respaldo)\n";
+        cout << "2. Importar datos\n";
+        cout << "3. Generar CSV\n";
+        cout << "9. Volver\n";
+        opcion = InputManager::leerInt("Seleccione una opcion: ");
+
+        switch (opcion) {
+        case 1:
+            rlutil::cls();
+            cfg.exportarDatos();
+            rlutil::anykey();
+            break;
+        case 2:
+            rlutil::cls();
+            cfg.importarDatos();
+            rlutil::anykey();
+            break;
+        case 3: {
+                string nombreBin, nombreCSV;
+                cout << "Archivo binario (ej: materiales.dat): ";
+                cin >> nombreBin;
+                cout << "Nombre CSV de salida (ej: materiales.csv): ";
+                cin >> nombreCSV;
+                cfg.generarCSV(nombreBin, nombreCSV);
+                break;
+        }
+        case 9:
+            cout << "-> Volviendo al Menu Principal..." << endl;
+            break;
+
+        }
+
+    } while (opcion != 9);
+}
+
