@@ -477,7 +477,7 @@ void Archivos::listarTodosLosClientes() {
 bool Archivos::existeEmailCliente(const char* emailNuevo) {
     FILE *pArchivo = fopen("cliente.dat", "rb");
     if (pArchivo == NULL) {
-        
+
         return false;
     }
 
@@ -496,4 +496,24 @@ bool Archivos::existeEmailCliente(const char* emailNuevo) {
 
     fclose(pArchivo);
     return false; // Bucle terminado: email no encontrado.
+}
+
+//VALIDACION AGENDA
+bool Archivos::validarExistenciaCaballo(int idCaballo, Caballo &caballo) {
+    int cantidadRegistros = cantidadRegistrosCaballo();
+    if (cantidadRegistros <= 0) {
+        cout<<"No se registro ningun caballo.\n";
+        return false;
+    }
+
+    for (int i = 0; i < cantidadRegistros; i++){
+        Caballo aux = leerRegistroCaballo(i);
+        if (aux.getID() == idCaballo) {
+            caballo = aux;        // devuelve el caballo completo
+            return true;
+        }
+    }
+
+    cout<<"Error: no existe un caballo con ese ID.\n";
+    return false;
 }
