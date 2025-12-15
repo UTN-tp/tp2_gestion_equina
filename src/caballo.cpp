@@ -97,27 +97,34 @@ void Caballo::setEstado(int valor) {     // esta linea
 
 // Mostrar
 void Caballo::mostrar() const {
-
+    rlutil::setColor(rlutil::BLACK);
     cout << "--- Datos del Caballo ---" << endl;
+    rlutil::setColor(rlutil::WHITE);
     cout << "ID: " << getID() << endl;
     cout << "ID Cliente: " << getIDCliente() << endl;
     cout << "Nombre: " << getNombre() << endl;
     cout << "Edad: " << getEdad() << " anios" << endl;
     cout << "Raza: " << getRaza() << endl;
-    cout << "Ultima Atencion: " << getUltimaAtencion() << endl;
-    cout << "Proxima Atencion: " << getProximaAtencion() << endl;
+    //cout << "Ultima Atencion: " << getUltimaAtencion() << endl;
+    //cout << "Proxima Atencion: " << getProximaAtencion() << endl;
    // cout << "Estado: " << (getEstado() ? "Activo" : "Inactivo") << endl;
    // cout << "-------------------------" << endl;
     cout << "Estado: ";
     switch (estado) {
         case 1:
+            rlutil::setColor(rlutil::GREEN);       
             cout << "Activo" << endl;
+            rlutil::setColor(rlutil::WHITE);
             break;
         case 2:
+            rlutil::setColor(rlutil::RED);
             cout << "Inactivo" << endl;
+            rlutil::setColor(rlutil::WHITE);
             break;
         case 3:
+            rlutil::setColor(rlutil::BLACK);
             cout << "Vendido" << endl;
+            rlutil::setColor(rlutil::WHITE);
             break;
         default:
             cout << "Desconocido (" << estado << ")" << endl;

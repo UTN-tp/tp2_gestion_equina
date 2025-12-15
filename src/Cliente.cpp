@@ -67,10 +67,11 @@ void Cliente::setCantidadCaballos(int valor) {
 
         string direccion = InputManager::leerLinea("Ingrese la direccion del nuevo cliente. ", 100);
         cliente.setDireccion(direccion.c_str());
-
-
+        
+        /*
         int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad de caballos que posee el cliente. ");
         cliente.setCantidadCaballos(cantidadCaballos);
+        */
 
         cliente.setEstado(true);
         int idNuevoCliente = archivos.cantidadRegistrosCliente () +1;
@@ -160,11 +161,17 @@ void Cliente::setCantidadCaballos(int valor) {
 
     if (getEstado()){
 
-        cout << "El estado actual es: ACTIVO" << endl;
+        cout << "El estado actual es:";
+        rlutil::setColor(rlutil::GREEN);
+        cout << "ACTIVO" << endl;
+        rlutil::setColor(rlutil::WHITE);
     }
 
     else {
-        cout << "El estado actual es: INACTIVO" << endl;
+        cout << "El estado actual es:";
+        rlutil::setColor(rlutil::RED);
+        cout << "INACTIVO" << endl;
+        rlutil::setColor(rlutil::WHITE);
     }
 
    }
@@ -239,10 +246,14 @@ void Cliente::setCantidadCaballos(int valor) {
 
 
         if (cliente.getEstado()){
+            rlutil::setColor(rlutil::GREEN);
            cout << "El estado actual es ACTIVO." << endl;
+           rlutil::setColor(rlutil::WHITE);
         }
         else {
+            rlutil::setColor(rlutil::RED);
             cout << "El estado actual es INACTIVO." << endl;
+            rlutil::setColor(rlutil::WHITE);
 
         }
 
@@ -261,5 +272,31 @@ void Cliente::setCantidadCaballos(int valor) {
              cout << "Estado de Cliente modificado correctamente. El estado actual es: INACTIVO" << endl;
         }
     }
+
+    void Cliente::buscarClientePorEmail() {
+    Archivos archivos;
+
+    string email = InputManager::leerLinea("Ingrese email del cliente: ");
+    int pos = archivos.buscarClientePorEmail(email.c_str());
+
+    if (pos == -1) {
+        cout << "No se encontro ningun cliente con ese email.\n";
+        return;
+    }
+
+    Cliente cliente = archivos.leerRegistroCliente(pos);
+
+    cout << "\n--- CLIENTE ENCONTRADO ---\n";
+    cliente.mostrar();
+    cout << "--------------------------\n";
+
+    if (!InputManager::confirmar("Es este el cliente que busca? (s/n): "))
+        return;
+
+
+
+    cout << "Cliente confirmado.\n";
+}
+
 
 

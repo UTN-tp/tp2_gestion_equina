@@ -14,30 +14,75 @@ void CaballosManager::cargarCaballo() {
 
      int nuevoID = archivos.obtenerUltimoIDCaballo() + 1;
     c.setID(nuevoID);
+    
+     // AGREGO DES ACA
+     int idC, posCliente;
+    Cliente cliente;
 
+    // BUCLE PARA BUSCAR Y CONFIRMAR CLIENTE
+    while (true) {
+        idC = InputManager::leerInt("ID del cliente: ");
+
+        posCliente = archivos.buscarClientePorID(idC);
+
+        if (posCliente == -1) {
+            cout << "ERROR: No existe un cliente con ese ID." << endl;
+
+            if (!InputManager::confirmar("Desea intentar con otro ID? (s/n): ")) {
+                cout << "Carga cancelada." << endl;
+                return;
+            }
+            continue;
+        }
+
+        cliente = archivos.leerRegistroCliente(posCliente);
+
+        rlutil::setColor(rlutil::BLACK);
+        cout << "\n--- CLIENTE ENCONTRADO ---\n";
+        rlutil::setColor(rlutil::WHITE);
+        cliente.mostrar();
+        cout << "---------------------------\n";
+
+        if (InputManager::confirmar("Es este el cliente correcto? (s/n): ")) {
+            c.setIDCliente(idC);
+            break;
+        }
+
+        rlutil::cls();
+        cout << "vuelva a intentar con otro ID..\n";
+    }
+    // HASTA ACA
+
+
+    /*
     int idC = InputManager::leerInt("ID Cliente: ");
     c.setIDCliente(idC);
-
-     // **USO DEL NUEVO METODO DE BUSQUEDA POR ID**
+    
+    // **USO DEL NUEVO METODO DE BUSQUEDA POR ID**
     int posCliente = archivos.buscarClientePorID(idC);
-                                                                      // nuevo
-     
+    // nuevo
+    
     if (posCliente == -1) {
         cout << "ERROR: Cliente con ID " << idC << " no encontrado. Carga de caballo cancelada." << endl;
         return;
     }
-
-
+    
+    
     Cliente cliente = archivos.leerRegistroCliente(posCliente);
-
+    
     
     if (cliente.getID() != idC) {
         cout << "ERROR interno al leer el registro del cliente." << endl;
         return;
     }
-
     c.setIDCliente(idC); 
+    */
 
+    // AGREGO ESTO
+    rlutil::setColor(rlutil::BLACK);
+    cout << "\n--- CARGA DE DATOS DEL CABALLO ---\n";
+    rlutil::setColor(rlutil::WHITE);
+    // HASTA ACA
 
     string nombre = InputManager::leerString("Nombre: ");
     c.setNombre(nombre.c_str());
@@ -48,16 +93,17 @@ void CaballosManager::cargarCaballo() {
     string raza = InputManager::leerString("Raza: ");
     c.setRaza(raza.c_str());
 
-
+    /*
     Fecha fUltima;
     cout << "Fecha de ultima atencion: " << endl;
     fUltima.cargar();
     c.setUltimaAtencion(fUltima.toString().c_str());
-
+    
     Fecha fProxima;
     cout << "Fecha de proxima atencion: " << endl;
     fProxima.cargar();
     c.setProximaAtencion(fProxima.toString().c_str());
+    */
 
     c.setEstado(true);
     rlutil::cls();

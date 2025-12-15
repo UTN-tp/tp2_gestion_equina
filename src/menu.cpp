@@ -93,6 +93,7 @@ void menuGestionClientes() {
         cout << "3. Consultar Cliente por ID" << endl;
         cout << "4. Listar Todos los Clientes" << endl;
         cout << "5. Cambiar Estado del Cliente (Activo/Inactivo)" << endl;
+        cout << "6. Buscar cliente por Email" << endl;
         cout << "9. Volver al Menu Principal" << endl;
         cout << "--------------------------------" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -141,6 +142,11 @@ void menuGestionClientes() {
                         rlutil::anykey();
 
               break;
+              case 6:
+                rlutil::cls();
+                obj.buscarClientePorEmail();
+                rlutil::anykey();
+                break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
