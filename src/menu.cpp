@@ -36,7 +36,10 @@ void menuPrincipal() {
         cout << "6. Informacion Adicional" << endl;
         cout << "7. Configuracion" << endl;
         cout << "0. Salir del Programa" << endl;
+
+        rlutil::setColor(rlutil::BLACK);
         cout << "=====================================" << endl;
+        rlutil::setColor(rlutil::WHITE);
         opcion = InputManager::leerInt("Seleccione una opcion: ");
 
         switch (opcion) {
@@ -150,7 +153,6 @@ void menuGestionClientes() {
               break;
               case 6:
                 rlutil::cls();
-                cout << "holis" << endl;
                 obj.buscarClientePorEmail();
                 rlutil::anykey();
                 break;
