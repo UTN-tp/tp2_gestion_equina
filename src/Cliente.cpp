@@ -67,11 +67,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
         string direccion = InputManager::leerLinea("Ingrese la direccion del nuevo cliente. ", 100);
         cliente.setDireccion(direccion.c_str());
-        
-        /*
-        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad de caballos que posee el cliente. ");
-        cliente.setCantidadCaballos(cantidadCaballos);
-        */
+
 
         cliente.setEstado(true);
         int idNuevoCliente = archivos.cantidadRegistrosCliente () +1;
@@ -120,25 +116,32 @@ void Cliente::setCantidadCaballos(int valor) {
     if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
         return;
 
-        string nombre = InputManager::leerString("Ingrese el nuevo nombre. ");
+        string nombre = InputManager::leerString("Ingrese el nuevo nombre: ");
         cliente.setNombre(nombre.c_str());
 
 
-        string apellido = InputManager::leerString("Ingrese el nuevo apellido. ");
+        string apellido = InputManager::leerString("Ingrese el nuevo apellido: ");
         cliente.setApellido(apellido.c_str());
 
-        string email = InputManager::leerString("Ingrese el nuevo email. ");
-        cliente.setEmail(email.c_str());
+        string email = InputManager::leerString("Ingrese el nuevo email: ");
 
-        string telefono = InputManager::leerString("Ingrese el nuevo telefono. ");
+        //Validacion mail
+        if (archivos.existeEmailCliente(cliente.getEmail())) {
+            cout << "\nERROR: El email ingresado ya esta registrado. Carga cancelada.\n";
+            return;
+        }
+
+        else {
+            cliente.setEmail(email.c_str());
+
+        }
+
+        string telefono = InputManager::leerString("Ingrese el nuevo telefono: ");
         cliente.setTelefono(telefono.c_str());
 
-        string direccion = InputManager::leerLinea("Ingrese la nueva direccion. ");
+        string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ", 100);
         cliente.setDireccion(direccion.c_str());
 
-
-        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad actual de caballos que posee el cliente: ");
-        cliente.setCantidadCaballos(cantidadCaballos);
 
         archivos.modificarRegistroCliente(cliente, id-1);
         cout << "Cliente modificado correctamente." << endl;
@@ -276,7 +279,7 @@ void Cliente::setCantidadCaballos(int valor) {
     void Cliente::buscarClientePorEmail() {
     Archivos archivos;
 
-    string email = InputManager::leerLinea("Ingrese email del cliente: ");
+    string email = InputManager::leerLinea("Ingrese email del cliente: ", 60);
     int pos = archivos.buscarClientePorEmail(email.c_str());
 
     if (pos == -1) {

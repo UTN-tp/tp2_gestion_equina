@@ -472,6 +472,28 @@ void Archivos::listarTodosLosClientes() {
     fclose(pArchivo);
 }
 
+//BUSCAR CLIENTE POR MAIL
+
+int Archivos::buscarClientePorEmail(const char* emailBuscado) {
+    FILE* pArchivo = fopen("cliente.dat", "rb");
+    if (pArchivo == NULL) return -1;
+
+    Cliente aux;
+    int pos = 0;
+
+
+    while (fread(&aux, sizeof(Cliente), 1, pArchivo) == 1) {
+        if (strcmp(aux.getEmail(), emailBuscado) == 0) {
+            fclose(pArchivo);
+            return pos;
+
+        }
+        pos++;
+    }
+
+    fclose(pArchivo);
+    return -1;
+}
 
 // --- NUEVA FUNCION PARA VALIDAR EMAIL UNICO -----
 bool Archivos::existeEmailCliente(const char* emailNuevo) {

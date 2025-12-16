@@ -1,6 +1,7 @@
 #include "InputManager.h"
 #include <iostream>
 #include <limits>
+#include <vector> // se agrego
 #include "rlutil.h"
 
 using namespace std;
@@ -113,7 +114,7 @@ string InputManager::leerString(const char* mensaje) {
 
 string InputManager::leerLinea(const char* mensaje) {
     string s;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << mensaje;
     getline(cin, s);
@@ -145,7 +146,7 @@ int InputManager::seleccionarOpcion(const char* mensaje, const char* opciones[],
         }
          cout << "----------------\n";
 
-        // Llama a la funciÃ³n  leerIntEnRango
+        // Llama a la funci¢n  leerIntEnRango
         int opcion = leerIntEnRango(mensaje, 1, numOpciones);
         return opcion;
     }
@@ -174,7 +175,16 @@ string InputManager::leerLinea(const char* mensaje, int tamanio) {
     return s;
 }
 
-
-
+// agrego para seleccionar indice en configuracion solo esta funcion
+int InputManager::seleccionarIndice(
+    const char* titulo,
+    const vector<string>& opciones
+) {
+    cout << "\n" << titulo << "\n";
+    for (size_t i = 0; i < opciones.size(); i++) {
+        cout << i + 1 << ". " << opciones[i] << endl;
+    }
+    return leerIntEnRango("Seleccione opcion: ", 1, opciones.size()) - 1;
+}
 
 

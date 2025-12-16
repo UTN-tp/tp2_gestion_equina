@@ -150,6 +150,7 @@ void menuGestionClientes() {
               break;
               case 6:
                 rlutil::cls();
+                cout << "holis" << endl;
                 obj.buscarClientePorEmail();
                 rlutil::anykey();
                 break;
@@ -383,15 +384,14 @@ void menuGestionConfiguracion()
             cfg.importarDatos();
             rlutil::anykey();
             break;
-        case 3: {
-                string nombreBin, nombreCSV;
-                cout << "Archivo binario (ej: materiales.dat): ";
-                cin >> nombreBin;
-                cout << "Nombre CSV de salida (ej: materiales.csv): ";
-                cin >> nombreCSV;
-                cfg.generarCSV(nombreBin, nombreCSV);
+
+        case 3:  {
+                  rlutil::cls();
+                  cfg.generarCSV();
+                  rlutil::anykey();
                 break;
         }
+
         case 9:
             cout << "-> Volviendo al Menu Principal..." << endl;
             break;
