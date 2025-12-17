@@ -37,6 +37,7 @@ void Cliente::setCantidadCaballos(int valor) {
 }
 
 //Funciones propias de Cliente
+
 //Agregar cliente:
 
     void Cliente::agregarNuevoCliente(){
@@ -67,11 +68,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
         string direccion = InputManager::leerLinea("Ingrese la direccion del nuevo cliente. ", 100);
         cliente.setDireccion(direccion.c_str());
-        
-        /*
-        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad de caballos que posee el cliente. ");
-        cliente.setCantidadCaballos(cantidadCaballos);
-        */
+
 
         cliente.setEstado(true);
         int idNuevoCliente = archivos.cantidadRegistrosCliente () +1;
@@ -96,49 +93,67 @@ void Cliente::setCantidadCaballos(int valor) {
         cout << "Cliente agregado correctamente." << endl;
     }
 
-   //MODIFICAR
+   //MODIFICAR CLIENTE
 
    void Cliente::modificarDatosCliente (){
    int idEnArchivo;
 
-   Archivos archivos;
+        Archivos archivos;
 
-   int id = InputManager::leerInt("Ingrese ID del cliente: ");
+        int id = InputManager::leerInt("Ingrese ID del cliente: ");
 
-    Cliente cliente = archivos.leerRegistroCliente(id-1);
-    idEnArchivo = cliente.getID();
-
-
-    if (idEnArchivo == -1) {
-        cout << "Cliente no encontrado." << endl;
-        return;
-    }
+        Cliente cliente = archivos.leerRegistroCliente(id-1);
+        idEnArchivo = cliente.getID();
 
 
-    cliente.mostrar();
+        if (idEnArchivo == -1) {
 
-    if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
-        return;
+            rlutil::setColor(rlutil::RED);
+            cout << "Cliente no encontrado." << endl;
+            rlutil::setColor(rlutil::WHITE);
+            return;
+        }
 
-        string nombre = InputManager::leerString("Ingrese el nuevo nombre. ");
-        cliente.setNombre(nombre.c_str());
+
+        cliente.mostrar();
+
+        if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
+            return;
+
+            string nombre = InputManager::leerLinea("Ingrese el nuevo nombre: ", 40);
+            cliente.setNombre(nombre.c_str());
 
 
-        string apellido = InputManager::leerString("Ingrese el nuevo apellido. ");
-        cliente.setApellido(apellido.c_str());
+            string apellido = InputManager::leerLinea("Ingrese el nuevo apellido: ", 40);
+            cliente.setApellido(apellido.c_str());
 
-        string email = InputManager::leerString("Ingrese el nuevo email. ");
-        cliente.setEmail(email.c_str());
+            string nuevoEmail = InputManager::leerLinea("Ingrese el nuevo email: ", 60);
 
-        string telefono = InputManager::leerString("Ingrese el nuevo telefono. ");
+            string emailActual = cliente.getEmail ();
+
+        //Validacion mail
+            if (nuevoEmail != emailActual) {
+
+                if (archivos.existeEmailCliente(nuevoEmail.c_str())) {
+
+                    rlutil::setColor(rlutil::GREEN);
+                    cout << "\nERROR: El email ingresado ya esta registrado. Carga cancelada.\n";
+                    rlutil::setColor(rlutil::WHITE);
+                    return;
+                }
+
+            else {
+            cliente.setEmail(nuevoEmail.c_str());
+
+            }
+            }
+
+        string telefono = InputManager::leerLinea("Ingrese el nuevo telefono: ", 20);
         cliente.setTelefono(telefono.c_str());
 
-        string direccion = InputManager::leerLinea("Ingrese la nueva direccion. ");
+        string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ", 100);
         cliente.setDireccion(direccion.c_str());
 
-
-        int cantidadCaballos = InputManager::leerInt("Ingrese la cantidad actual de caballos que posee el cliente: ");
-        cliente.setCantidadCaballos(cantidadCaballos);
 
         archivos.modificarRegistroCliente(cliente, id-1);
         cout << "Cliente modificado correctamente." << endl;
@@ -146,7 +161,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
 
 
-   //MOSTRAR
+   //MOSTRAR CLIENTE
 
    void Cliente::mostrar() const {
 
@@ -218,7 +233,7 @@ void Cliente::setCantidadCaballos(int valor) {
 }
 
 
-    //CONSULTAR TODOS
+    //CONSULTAR TODOS LOS CLIENTES
     void Cliente::listarTodosLosClientes (){
         Archivos archivo;
 
@@ -227,7 +242,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
     }
 
-    //CAMBIAR ESTADO
+    //CAMBIAR ESTADO CLIENTE
     void Cliente::cambiarEstadoCliente(){
         int idEnArchivo;
 
@@ -256,6 +271,7 @@ void Cliente::setCantidadCaballos(int valor) {
             rlutil::setColor(rlutil::WHITE);
 
         }
+        //CONFIRMACION CAMBIAR ESTADO
 
     if (!InputManager::confirmar("Desea modificar el estado de este cliente? S/N: "))
         return;
@@ -273,29 +289,45 @@ void Cliente::setCantidadCaballos(int valor) {
         }
     }
 
+    //BUSCAR CLIENTE POR EMAIL
+
     void Cliente::buscarClientePorEmail() {
     Archivos archivos;
 
-    string email = InputManager::leerLinea("Ingrese email del cliente: ");
-    int pos = archivos.buscarClientePorEmail(email.c_str());
+        string email = InputManager::leerLinea("Ingrese email del cliente: ", 60);
+        int pos = archivos.buscarClientePorEmail(email.c_str());
 
-    if (pos == -1) {
-        cout << "No se encontro ningun cliente con ese email.\n";
-        return;
-    }
+        if (pos == -1) {
+            rlutil::setColor(rlutil::RED);
+            cout << "No se encontro ningun cliente con ese email.\n";
+            rlutil::setColor(rlutil::WHITE);
+            return;
+        }
 
-    Cliente cliente = archivos.leerRegistroCliente(pos);
+        Cliente cliente = archivos.leerRegistroCliente(pos);
 
-    cout << "\n--- CLIENTE ENCONTRADO ---\n";
-    cliente.mostrar();
-    cout << "--------------------------\n";
+        rlutil::setColor(rlutil::BLACK);
+        cout << "\n--- CLIENTE ENCONTRADO: ---\n";
+        rlutil::setColor(rlutil::WHITE);
 
-    if (!InputManager::confirmar("Es este el cliente que busca? (s/n): "))
-        return;
+        cliente.mostrar();
+        cout << "--------------------------\n";
+
+        if (!InputManager::confirmar("Es este el cliente que busca? (s/n): ")) {
+                rlutil::setColor(rlutil::BLACK);
+                cout << "\n--- POR FAVOR, REINTENTE LA BUSQUEDA ---\n";
+                rlutil::setColor(rlutil::WHITE);
+
+                this->buscarClientePorEmail();
+        }
 
 
+        else {
+           rlutil::setColor(rlutil::GREEN);
+            cout << "Busqueda exitosa.\n";
+            rlutil::setColor(rlutil::WHITE);
+        }
 
-    cout << "Cliente confirmado.\n";
 }
 
 

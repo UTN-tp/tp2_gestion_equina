@@ -1,6 +1,7 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 #include <string>
+#include <vector>
 
 class InputManager {
 public:
@@ -19,5 +20,7 @@ public:
 
     static int seleccionarOpcion(const char* mensaje, const char* opciones[], int numOpciones); // agregue para estado
     static bool confirmar(const char* mensaje);  // S/N
+    //  NUEVA FUNCION
+    static int seleccionarIndice(const char* titulo, const std::vector<std::string>& opciones); // esto para configuracion
 };
 #endif

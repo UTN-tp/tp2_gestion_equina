@@ -36,7 +36,10 @@ void menuPrincipal() {
         cout << "6. Informacion Adicional" << endl;
         cout << "7. Configuracion" << endl;
         cout << "0. Salir del Programa" << endl;
+
+        rlutil::setColor(rlutil::BLACK);
         cout << "=====================================" << endl;
+        rlutil::setColor(rlutil::WHITE);
         opcion = InputManager::leerInt("Seleccione una opcion: ");
 
         switch (opcion) {
@@ -383,15 +386,14 @@ void menuGestionConfiguracion()
             cfg.importarDatos();
             rlutil::anykey();
             break;
-        case 3: {
-                string nombreBin, nombreCSV;
-                cout << "Archivo binario (ej: materiales.dat): ";
-                cin >> nombreBin;
-                cout << "Nombre CSV de salida (ej: materiales.csv): ";
-                cin >> nombreCSV;
-                cfg.generarCSV(nombreBin, nombreCSV);
+
+        case 3:  {
+                  rlutil::cls();
+                  cfg.generarCSV();
+                  rlutil::anykey();
                 break;
         }
+
         case 9:
             cout << "-> Volviendo al Menu Principal..." << endl;
             break;
