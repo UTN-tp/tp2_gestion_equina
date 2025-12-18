@@ -95,40 +95,65 @@ void Cliente::setCantidadCaballos(int valor) {
 
    //MODIFICAR CLIENTE
 
-   void Cliente::modificarDatosCliente (){
+    void Cliente::modificarDatosCliente (){
    int idEnArchivo;
 
-        Archivos archivos;
+   Archivos archivos;
 
-        int id = InputManager::leerInt("Ingrese ID del cliente: ");
+   int id = InputManager::leerInt("Ingrese ID del cliente: ");
 
-        Cliente cliente = archivos.leerRegistroCliente(id-1);
-        idEnArchivo = cliente.getID();
+    Cliente cliente = archivos.leerRegistroCliente(id-1);
+    idEnArchivo = cliente.getID();
 
 
-        if (idEnArchivo == -1) {
+    if (idEnArchivo == -1) {
+        cout << "Cliente no encontrado." << endl;
+        return;
+    }
 
-            rlutil::setColor(rlutil::RED);
-            cout << "Cliente no encontrado." << endl;
-            rlutil::setColor(rlutil::WHITE);
-            return;
+
+    cliente.mostrar();
+
+    if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
+        return;
+    bool modificado = false;
+    int opcion;
+    do
+    {
+        rlutil::cls();
+        rlutil::setColor(rlutil::BLACK);
+        cout << "---SELECIONE DATO A MODIFICAR---\n";
+        rlutil::setColor(rlutil::WHITE);
+        cout << "---------------------------------\n";
+        cout << "1. Nombre" << endl;
+        cout << "2. Apellido" << endl;
+        cout << "3. Email" << endl;
+        cout << "4. Telefono" << endl;
+        cout << "5. Direccion" << endl;
+        cout << "9. volver atras" << endl;
+        opcion = InputManager::leerInt("Seleccione una opcion: ");
+
+        switch (opcion)
+        {
+        case 1:
+        {
+            string nombre = InputManager::leerString("Ingrese el nuevo nombre: ");
+            cliente.setNombre(nombre.c_str());
+            modificado = true;
+            break;
         }
 
-
-        cliente.mostrar();
-
-        if (!InputManager::confirmar("Desea modificar este cliente? S/N: "))
-            return;
-
-            string nombre = InputManager::leerLinea("Ingrese el nuevo nombre: ", 40);
-            cliente.setNombre(nombre.c_str());
-
-
-            string apellido = InputManager::leerLinea("Ingrese el nuevo apellido: ", 40);
+        case 2:
+        {
+            string apellido = InputManager::leerString("Ingrese el nuevo apellido: ");
             cliente.setApellido(apellido.c_str());
+            modificado = true;
+            break;
+        }
 
-            string nuevoEmail = InputManager::leerLinea("Ingrese el nuevo email: ", 60);
-
+        case 3:
+        {
+            string nuevoEmail = InputManager::leerString("Ingrese el nuevo email: ");
             string emailActual = cliente.getEmail ();
 
         //Validacion mail
@@ -148,16 +173,46 @@ void Cliente::setCantidadCaballos(int valor) {
             }
             }
 
-        string telefono = InputManager::leerLinea("Ingrese el nuevo telefono: ", 20);
-        cliente.setTelefono(telefono.c_str());
+            modificado = true;
+            break;
+        }
 
-        string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ", 100);
-        cliente.setDireccion(direccion.c_str());
+        case 4:
+        {
+            string telefono = InputManager::leerString("Ingrese el nuevo telefono: ");
+            cliente.setTelefono(telefono.c_str());
+            modificado = true;
+            break;
+        }
+
+        case 5:
+        {
+            string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ");
+            cliente.setDireccion(direccion.c_str());
+            modificado = true;
+            break;
+        }
+
+        case 9:
+            cout << "volver" << endl;
+            break;
 
 
+
+        }
+
+    }
+    while(opcion != 9);
+
+        
+        if(modificado){
         archivos.modificarRegistroCliente(cliente, id-1);
         cout << "Cliente modificado correctamente." << endl;
-    }
+        }
+
+
+
+   }
 
 
 
