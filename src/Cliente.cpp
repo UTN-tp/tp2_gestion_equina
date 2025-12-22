@@ -130,30 +130,35 @@ void Cliente::setCantidadCaballos(int valor) {
         cout << "3. Email" << endl;
         cout << "4. Telefono" << endl;
         cout << "5. Direccion" << endl;
-        cout << "9. volver atras" << endl;
+        cout << "9. Salir y guardar" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
 
         switch (opcion)
         {
         case 1:
         {
-            string nombre = InputManager::leerString("Ingrese el nuevo nombre: ");
+            string nombre = InputManager::leerLinea("Ingrese el nuevo nombre: ", 40);
             cliente.setNombre(nombre.c_str());
             modificado = true;
+            cout << "Cambios preguardados" << endl;
+            rlutil::anykey ();
+
             break;
         }
 
         case 2:
         {
-            string apellido = InputManager::leerString("Ingrese el nuevo apellido: ");
+            string apellido = InputManager::leerLinea("Ingrese el nuevo apellido: ", 40);
             cliente.setApellido(apellido.c_str());
             modificado = true;
+            cout << "Cambios preguardados" << endl;
+            rlutil::anykey ();
             break;
         }
 
         case 3:
         {
-            string nuevoEmail = InputManager::leerString("Ingrese el nuevo email: ");
+            string nuevoEmail = InputManager::leerLinea("Ingrese el nuevo email: ", 60);
             string emailActual = cliente.getEmail ();
 
         //Validacion mail
@@ -169,42 +174,46 @@ void Cliente::setCantidadCaballos(int valor) {
 
             else {
             cliente.setEmail(nuevoEmail.c_str());
+            cout << "Cambios preguardados" << endl;
+            rlutil::anykey ();
 
             }
             }
 
             modificado = true;
+
             break;
         }
 
         case 4:
         {
-            string telefono = InputManager::leerString("Ingrese el nuevo telefono: ");
+            string telefono = InputManager::leerLinea("Ingrese el nuevo telefono: ", 20);
             cliente.setTelefono(telefono.c_str());
             modificado = true;
+            cout << "Cambios preguardados" << endl;
+            rlutil::anykey ();
             break;
         }
 
         case 5:
         {
-            string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ");
+            string direccion = InputManager::leerLinea("Ingrese la nueva direccion: ", 100);
             cliente.setDireccion(direccion.c_str());
             modificado = true;
+            cout << "Cambios preguardados" << endl;
+            rlutil::anykey ();
             break;
         }
-
-        case 9:
-            cout << "volver" << endl;
-            break;
 
 
 
         }
 
     }
+
     while(opcion != 9);
 
-        
+
         if(modificado){
         archivos.modificarRegistroCliente(cliente, id-1);
         cout << "Cliente modificado correctamente." << endl;
@@ -213,6 +222,8 @@ void Cliente::setCantidadCaballos(int valor) {
 
 
    }
+
+
 
 
 
