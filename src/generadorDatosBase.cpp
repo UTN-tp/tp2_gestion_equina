@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Archivos.h"
 #include "Material.h"
-#include "generadorDatosBase.h"
+#include "GeneradorDatosBase.h"
 
 using namespace std;
 

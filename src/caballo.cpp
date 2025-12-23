@@ -112,7 +112,7 @@ void Caballo::mostrar() const {
     cout << "Estado: ";
     switch (estado) {
         case 1:
-            rlutil::setColor(rlutil::GREEN);       
+            rlutil::setColor(rlutil::GREEN);
             cout << "Activo" << endl;
             rlutil::setColor(rlutil::WHITE);
             break;
