@@ -94,8 +94,7 @@ void Cliente::setCantidadCaballos(int valor) {
     }
 
    //MODIFICAR CLIENTE
-
-    void Cliente::modificarDatosCliente (){
+void Cliente::modificarDatosCliente (){
    int idEnArchivo;
 
    Archivos archivos;
@@ -229,7 +228,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
    //MOSTRAR CLIENTE
 
-   void Cliente::mostrar() const {
+void Cliente::mostrar() const {
 
     cout << "--- Datos del Cliente ---" << endl;
     cout << "ID: " << getID() << endl;
@@ -259,7 +258,7 @@ void Cliente::setCantidadCaballos(int valor) {
 
    //CONSULTAR POR ID
 
-    void Cliente::consultarporId(){
+void Cliente::consultarporId(){
         int idEnArchivo;
 
         Archivos archivos;
@@ -309,14 +308,14 @@ void Cliente::setCantidadCaballos(int valor) {
     }
 
     //CAMBIAR ESTADO CLIENTE
-    void Cliente::cambiarEstadoCliente(){
+void Cliente::cambiarEstadoCliente(){
         int idEnArchivo;
 
         Archivos archivos;
 
-        int id = InputManager::leerInt("Ingrese ID del cliente: ");
+        int id = this->buscarClientePorEmail();
 
-        Cliente cliente = archivos.leerRegistroCliente(id-1);
+        Cliente cliente = archivos.leerRegistroCliente(id);
         idEnArchivo = cliente.getID();
 
 
@@ -357,43 +356,44 @@ void Cliente::setCantidadCaballos(int valor) {
 
     //BUSCAR CLIENTE POR EMAIL
 
-    void Cliente::buscarClientePorEmail() {
+int Cliente::buscarClientePorEmail(std::string email) {
     Archivos archivos;
 
-        string email = InputManager::leerLinea("Ingrese email del cliente: ", 60);
-        int pos = archivos.buscarClientePorEmail(email.c_str());
+    if (email.empty()) {
+        email = InputManager::leerLinea("Ingrese email del cliente: ", 60);
+    }
 
-        if (pos == -1) {
-            rlutil::setColor(rlutil::RED);
-            cout << "No se encontro ningun cliente con ese email.\n";
-            rlutil::setColor(rlutil::WHITE);
-            return;
-        }
+    int pos = archivos.buscarClientePorEmail(email.c_str());
 
-        Cliente cliente = archivos.leerRegistroCliente(pos);
+    if (pos == -1) {
+        rlutil::setColor(rlutil::RED);
+        cout << "No se encontro ningun cliente con ese email.\n";
+        rlutil::setColor(rlutil::WHITE);
+        return -1;
+    }
 
+    Cliente cliente = archivos.leerRegistroCliente(pos);
+
+    rlutil::setColor(rlutil::BLACK);
+    cout << "\n--- CLIENTE ENCONTRADO: ---\n";
+    rlutil::setColor(rlutil::WHITE);
+
+    cliente.mostrar();
+    cout << "--------------------------\n";
+
+    if (!InputManager::confirmar("Es este el cliente que busca? (s/n): ")) {
         rlutil::setColor(rlutil::BLACK);
-        cout << "\n--- CLIENTE ENCONTRADO: ---\n";
+        cout << "\n--- POR FAVOR, REINTENTE LA BUSQUEDA ---\n";
         rlutil::setColor(rlutil::WHITE);
 
-        cliente.mostrar();
-        cout << "--------------------------\n";
+        return buscarClientePorEmail(); // vuelve a intentar
+    }
 
-        if (!InputManager::confirmar("Es este el cliente que busca? (s/n): ")) {
-                rlutil::setColor(rlutil::BLACK);
-                cout << "\n--- POR FAVOR, REINTENTE LA BUSQUEDA ---\n";
-                rlutil::setColor(rlutil::WHITE);
+    rlutil::setColor(rlutil::GREEN);
+    cout << "Busqueda exitosa.\n";
+    rlutil::setColor(rlutil::WHITE);
 
-                this->buscarClientePorEmail();
-        }
-
-
-        else {
-           rlutil::setColor(rlutil::GREEN);
-            cout << "Busqueda exitosa.\n";
-            rlutil::setColor(rlutil::WHITE);
-        }
-
+    return pos;
 }
 
 

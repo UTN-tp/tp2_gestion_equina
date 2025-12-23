@@ -22,6 +22,9 @@ class Archivos
     bool modificarRegistroCaballo(const Caballo& caballo, int pos);// agrego
     bool modificarRegistroMaterial(const Material& material, int pos); //material: agrego
     bool modificarRegistroCliente(const Cliente cliente, int pos);
+    Caballo obtenerCaballoPorIdCliente(int idCliente);
+    int contarCaballosPorCliente(int idCliente);
+    void cargarCaballosPorCliente(int idCliente, Caballo* vec, int cant);
 
     // metodo de validacion de mail
     bool existeEmailCliente(const char* emailNuevo);
@@ -42,7 +45,7 @@ class Archivos
     int cantidadRegistrosTrabajo();
     int cantidadRegistrosUsuario();
     int obtenerUltimoIDCaballo();   // agrego 1
-
+    int obtenerUltimoIDMaterial();
     // VALIDACION AGENDA
     bool validarExistenciaCaballo(int idCaballo, Caballo &caballo);
 

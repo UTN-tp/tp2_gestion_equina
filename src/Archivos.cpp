@@ -361,7 +361,7 @@ int Archivos::buscarMaterialPorID(int idBuscado) {
     if (pArchivo == NULL) return false;
 
     fseek(pArchivo, sizeof(Caballo) * pos, SEEK_SET);
-    bool ok = fwrite(&caballo, sizeof(Caballo), 1, pArchivo);
+    bool ok = fwrite(&caballo, sizeof(Caballo), 1, pArchivo) == 1;
     fclose(pArchivo);
 
     return ok;
@@ -416,7 +416,60 @@ int Archivos::buscarMaterialPorID(int idBuscado) {
     }
 }
 
-// agrego  1
+int Archivos::contarCaballosPorCliente(int idCliente) {
+    FILE* pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) return 0;
+
+    Caballo aux;
+    int cont = 0;
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo)) {
+        if (aux.getIDCliente() == idCliente) {
+            cont++;
+        }
+    }
+
+    fclose(pArchivo);
+    return cont;
+}
+
+Caballo Archivos::obtenerCaballoPorIdCliente(int idCliente) {
+    Caballo caballoEncontrado;
+
+    FILE* pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) {
+        cout << "No se pudo abrir el archivo.\n";
+        return caballoEncontrado;
+    }
+
+    while (fread(&caballoEncontrado, sizeof(Caballo), 1, pArchivo)) {
+        if (caballoEncontrado.getIDCliente() == idCliente) {
+            fclose(pArchivo);
+            return caballoEncontrado;
+        }
+    }
+
+    fclose(pArchivo);
+    return caballoEncontrado;
+}
+
+void Archivos::cargarCaballosPorCliente(int idCliente, Caballo* vec, int cant) {
+    FILE* pArchivo = fopen("caballos.dat", "rb");
+    if (pArchivo == NULL) return;
+
+    Caballo aux;
+    int i = 0;
+
+    while (fread(&aux, sizeof(Caballo), 1, pArchivo) && i < cant) {
+        if (aux.getIDCliente() == idCliente) {
+            vec[i++] = aux;
+        }
+    }
+
+    fclose(pArchivo);
+}
+
+
 int Archivos::obtenerUltimoIDCaballo() {
     FILE* p = fopen("caballos.dat", "rb");
     if (p == nullptr) return 0;
@@ -433,7 +486,24 @@ int Archivos::obtenerUltimoIDCaballo() {
     fclose(p);
     return maxID;
 }
- // agrego 2
+
+int Archivos::obtenerUltimoIDMaterial() {
+    FILE* p = fopen("materiales.dat", "rb");
+    if (p == NULL) return 0;
+
+    Material m;
+    int maxID = 0;
+
+    while (fread(&m, sizeof(Material), 1, p) == 1) {
+        if (m.getEstado() && m.getID() > maxID) {
+            maxID = m.getID();
+        }
+    }
+
+    fclose(p);
+    return maxID;
+}
+
 void Archivos::listarTodosLosCaballos() {
     FILE* pArchivo = fopen("caballos.dat", "rb");
     if (pArchivo == NULL) {

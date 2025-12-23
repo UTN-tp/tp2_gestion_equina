@@ -10,73 +10,50 @@ using namespace std;
 void CaballosManager::cargarCaballo() {
 
 
-    Caballo c;
-
-     int nuevoID = archivos.obtenerUltimoIDCaballo() + 1;
-    c.setID(nuevoID);
-    
-     // AGREGO DES ACA
-     int idC, posCliente;
+    Caballo caballo;
     Cliente cliente;
 
-    // BUCLE PARA BUSCAR Y CONFIRMAR CLIENTE
-    while (true) {
-        idC = InputManager::leerInt("ID del cliente: ");
+    int nuevoID = archivos.obtenerUltimoIDCaballo();
+    caballo.setID(++nuevoID);
+    cout << caballo.getID() << endl;
+    int idCliente, posCliente;
 
-        posCliente = archivos.buscarClientePorID(idC);
+    string email = "";
 
-        if (posCliente == -1) {
-            cout << "ERROR: No existe un cliente con ese ID." << endl;
 
-            if (!InputManager::confirmar("Desea intentar con otro ID? (s/n): ")) {
+
+    if(idCliente == -1){
+        cout << "Cliente inexistente." << endl;
+        return;
+    }
+
+     while (true) {
+
+        email = InputManager::leerLinea("Ingrese E-mail",60);
+
+        idCliente = cliente.buscarClientePorEmail(email);
+
+        if (idCliente == -1) {
+            cout << "ERROR: No existe un cliente con ese Email." << endl;
+
+            if (!InputManager::confirmar("Desea intentar con otro Email? (s/n): ")) {
                 cout << "Carga cancelada." << endl;
                 return;
             }
             continue;
         }
-
-        cliente = archivos.leerRegistroCliente(posCliente);
-
-        rlutil::setColor(rlutil::BLACK);
-        cout << "\n--- CLIENTE ENCONTRADO ---\n";
-        rlutil::setColor(rlutil::WHITE);
-        cliente.mostrar();
-        cout << "---------------------------\n";
-
-        if (InputManager::confirmar("Es este el cliente correcto? (s/n): ")) {
-            c.setIDCliente(idC);
+        else
             break;
-        }
 
-        rlutil::cls();
-        cout << "vuelva a intentar con otro ID..\n";
     }
-    // HASTA ACA
 
 
-    /*
-    int idC = InputManager::leerInt("ID Cliente: ");
-    c.setIDCliente(idC);
-    
-    // **USO DEL NUEVO METODO DE BUSQUEDA POR ID**
-    int posCliente = archivos.buscarClientePorID(idC);
-    // nuevo
-    
-    if (posCliente == -1) {
-        cout << "ERROR: Cliente con ID " << idC << " no encontrado. Carga de caballo cancelada." << endl;
-        return;
-    }
-    
-    
-    Cliente cliente = archivos.leerRegistroCliente(posCliente);
-    
-    
-    if (cliente.getID() != idC) {
-        cout << "ERROR interno al leer el registro del cliente." << endl;
-        return;
-    }
-    c.setIDCliente(idC); 
-    */
+    cliente = archivos.leerRegistroCliente(idCliente);
+
+    caballo.setIDCliente(cliente.getID());
+
+    rlutil::setColor(rlutil::BLACK);
+
 
     // AGREGO ESTO
     rlutil::setColor(rlutil::BLACK);
@@ -85,32 +62,21 @@ void CaballosManager::cargarCaballo() {
     // HASTA ACA
 
     string nombre = InputManager::leerString("Nombre: ");
-    c.setNombre(nombre.c_str());
+    caballo.setNombre(nombre.c_str());
 
     int edad = InputManager::leerInt("Edad: ");
-    c.setEdad(edad);
+    caballo.setEdad(edad);
 
     string raza = InputManager::leerString("Raza: ");
-    c.setRaza(raza.c_str());
+    caballo.setRaza(raza.c_str());
 
-    /*
-    Fecha fUltima;
-    cout << "Fecha de ultima atencion: " << endl;
-    fUltima.cargar();
-    c.setUltimaAtencion(fUltima.toString().c_str());
-    
-    Fecha fProxima;
-    cout << "Fecha de proxima atencion: " << endl;
-    fProxima.cargar();
-    c.setProximaAtencion(fProxima.toString().c_str());
-    */
 
-    c.setEstado(true);
+    caballo.setEstado(true);
     rlutil::cls();
     rlutil::setColor(rlutil::BLACK);
     cout << "\n--- CONFIRMAR DATOS DEL CABALLO ---\n";
     rlutil::setColor(rlutil::WHITE);
-    c.mostrar();
+    caballo.mostrar();
     cout << "-----------------------------------\n";
 
     if (!InputManager::confirmar("Desea guardar este caballo? (s/n): ")) {
@@ -118,101 +84,185 @@ void CaballosManager::cargarCaballo() {
         return;
     }
 
-    archivos.guardarArchivoCaballo(c);
-    
-    
-    int nuevaCantidad = cliente.getCantidadCaballos() + 1;
-    cliente.setCantidadCaballos(nuevaCantidad); 
+    archivos.guardarArchivoCaballo(caballo);
 
-    
+
+    int nuevaCantidad = cliente.getCantidadCaballos() + 1;
+    cliente.setCantidadCaballos(nuevaCantidad);
+
+
     if (archivos.modificarRegistroCliente(cliente, posCliente)) {
         cout << "Caballo cargado correctamente y la cantidad del cliente fue actualizada." << endl;
     } else {
         cout << "Caballo cargado correctamente, pero hubo un ERROR al actualizar la cantidad de caballos del cliente." << endl;
     }
 
+
+
 }
 
 void CaballosManager::modificarCaballo() {
-    int id = InputManager::leerInt("Ingrese ID del caballo: ");
+  Cliente cliente;
+    int idCliente = cliente.buscarClientePorEmail();
 
-    int pos = archivos.buscarCaballoPorID(id);
-    if (pos < 0) {
-        rlutil::setColor(rlutil::RED);
-        cout << "Caballo no encontrado." << endl;
-        rlutil::setColor(rlutil::WHITE);
+     if(idCliente == -1)
+        return;
+
+    cliente = archivos.leerRegistroCliente(idCliente);
+
+
+
+    int cant = archivos.contarCaballosPorCliente(cliente.getID());
+    if (cant == 0) {
+        cout << "No hay caballos para este cliente.\n";
         return;
     }
 
-    Caballo c = archivos.leerRegistroCaballo(pos);
+    Caballo* caballos = new Caballo[cant];
 
-    c.mostrar();
-
-    if (!InputManager::confirmar("Desea modificar este caballo? S/N: "))
-        return;
-
-    string nuevoNombre = InputManager::leerString("Nuevo nombre: ");
-    c.setNombre(nuevoNombre.c_str());
-
-    archivos.modificarRegistroCaballo(c, pos);
-    rlutil::setColor(rlutil::GREEN);
-    cout << "Caballo modificado correctamente." << endl;
-    rlutil::setColor(rlutil::WHITE);
-}
+    archivos.cargarCaballosPorCliente(cliente.getID(), caballos, cant);
 
 
-void CaballosManager::consultarPorID() {
-    int id = InputManager::leerInt("Ingrese ID: ");
+    for (int i = 0; i < cant; i++) {
+        cout << i + 1 << ") ";
+        caballos[i].mostrar();
+        cout << "--------------------\n";
+    }
 
-    int pos = archivos.buscarCaballoPorID(id);
-    if (pos < 0) {
-        cout << "Caballo no encontrado." << endl;
+    int opcion;
+    cout << "Seleccione el caballo a modificar (1-" << cant << "): ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > cant) {
+        cout << "Opcion invalida.\n";
+        delete[] caballos;
         return;
     }
 
-    Caballo c = archivos.leerRegistroCaballo(pos);
-    c.mostrar();
+    Caballo& c = caballos[opcion - 1];
+
+    if (!InputManager::confirmar("Desea modificar este caballo? (S/N): ")) {
+        delete[] caballos;
+        return;
+    }
+
+    cout << "\n--- MODIFICACION DE DATOS ---\n";
+
+
+    if (InputManager::confirmar("Desea modificar el nombre? (S/N): ")) {
+        string nombre = InputManager::leerString("Nombre: ");
+        caballos[opcion - 1].setNombre(nombre.c_str());
+    }
+
+    if (InputManager::confirmar("Desea modificar la raza? (S/N): ")) {
+        string raza = InputManager::leerString("Raza: ");
+        caballos[opcion - 1].setRaza(raza.c_str());
+    }
+
+    if (InputManager::confirmar("Desea modificar la edad? (S/N): ")) {
+        int edad = InputManager::leerInt("Edad: ");
+        caballos[opcion - 1].setEdad(edad);
+    }
+
+    cout << "\n--- CABALLO MODIFICADO ---\n";
+    caballos[opcion - 1].mostrar();
+
+    int pos = archivos.buscarCaballoPorID(c.getID());
+
+    if (archivos.modificarRegistroCaballo(caballos[opcion - 1], pos)) {
+        cout << "modificado correctamente.\n";
+    } else {
+        cout << "ERROR al modificar el caballo.\n";
+    }
+
+    cout << "\nPresione ENTER para volver al menu...";
+    cin.ignore();
+    cin.get();
+
+
+    delete[] caballos;
 }
+
 
 
 void CaballosManager::listarPorCliente() {
-    int idC = InputManager::leerInt("ID Cliente: ");
 
-    archivos.listarCaballosPorCliente(idC);
+    Cliente cliente;
+
+    int idCliente = cliente.buscarClientePorEmail();
+
+   if(idCliente == -1)
+        return;
+
+    cliente = archivos.leerRegistroCliente(idCliente);
+
+    archivos.listarCaballosPorCliente(cliente.getID());
 }
 
 
 void CaballosManager::cambiarEstado() {
-    int id = InputManager::leerInt("ID del caballo: ");
 
-    int pos = archivos.buscarCaballoPorID(id);
-    if (pos < 0) {
-        cout << "Caballo no encontrado." << endl;
+    Cliente cliente;
+    int idCliente = cliente.buscarClientePorEmail();
+
+     if(idCliente == -1)
+        return;
+
+    cliente = archivos.leerRegistroCliente(idCliente);
+
+
+
+    int cant = archivos.contarCaballosPorCliente(cliente.getID());
+    if (cant == 0) {
+        cout << "No hay caballos para este cliente.\n";
         return;
     }
 
-    Caballo c = archivos.leerRegistroCaballo(pos);
-    c.mostrar();
+    Caballo* caballos = new Caballo[cant];
 
-    if(!InputManager::confirmar("Desea cambiar el estado de este caballo? (S/N): "))
+    archivos.cargarCaballosPorCliente(cliente.getID(), caballos, cant);
+
+
+    for (int i = 0; i < cant; i++) {
+        cout << i + 1 << ") ";
+        caballos[i].mostrar();
+        cout << "--------------------\n";
+    }
+
+    int opcion;
+    cout << "Seleccione el caballo a modificar (1-" << cant << "): ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > cant) {
+        cout << "Opcion invalida.\n";
+        delete[] caballos;
         return;
+    }
+
+
+
+    if (!InputManager::confirmar("Desea cambiar el estado de este caballo? (S/N): ")) {
+        delete[] caballos;
+        return;
+    }
 
     const char* estadosCaballo[] = {"Activo", "Inactivo", "Vendido"};
-    int numEstados = 3;
-    int nuevoEstado = InputManager::seleccionarOpcion("Seleccione la nueva opcion de estado (1-3): ", estadosCaballo, numEstados);
+    int nuevoEstado = InputManager::seleccionarOpcion(
+        "Seleccione la nueva opcion de estado (1-3): ",
+        estadosCaballo, 3
+    );
 
+    caballos[opcion-1].setEstado(nuevoEstado);
 
-    c.setEstado(nuevoEstado);
+    int pos = archivos.buscarCaballoPorID(caballos[opcion-1].getID());
 
-    rlutil::cls();
-    if (archivos.modificarRegistroCaballo(c, pos)) {
-        cout << "El estado del caballo ID " << id << " fue modificado correctamente." << endl;
-        // Mostrar el nombre del estado seleccionado para confirmación
-        cout << "Nuevo estado: " << estadosCaballo[nuevoEstado - 1] << endl;
+    if (archivos.modificarRegistroCaballo(caballos[opcion - 1], pos)) {
+        cout << "Estado modificado correctamente.\n";
     } else {
-        cout << "ERROR: No se pudo modificar el registro." << endl;
+        cout << "ERROR al modificar el estado.\n";
     }
 
+    delete[] caballos;
 }
  // agrego 2
 void CaballosManager::listarTodos() {
