@@ -17,7 +17,7 @@ public:
     void consultarporId();
     void cambiarEstadoCliente ();
     int buscarPorID(int idCliente);
-    void buscarClientePorEmail(); 
+    int buscarClientePorEmail(std::string email = "");
 
     //Getters/Setters:
     const char* getDireccion() const;

@@ -89,7 +89,7 @@ void menuPrincipal() {
 
 
 void menuGestionClientes() {
-    Cliente obj;
+    Cliente cliente;
 
     int opcion;
     do {
@@ -99,10 +99,9 @@ void menuGestionClientes() {
         rlutil::setColor(rlutil::WHITE);
         cout << "1. Cargar Nuevo Cliente" << endl;
         cout << "2. Modificar Datos de Cliente" << endl;
-        cout << "3. Consultar Cliente por ID" << endl;
+        cout << "3. Consultar Cliente por E-mail" << endl;
         cout << "4. Listar Todos los Clientes" << endl;
         cout << "5. Cambiar Estado del Cliente (Activo/Inactivo)" << endl;
-        cout << "6. Buscar cliente por Email" << endl;
         cout << "9. Volver al Menu Principal" << endl;
         cout << "--------------------------------" << endl;
         opcion = InputManager::leerInt("Seleccione una opcion: ");
@@ -111,7 +110,7 @@ void menuGestionClientes() {
 
                  if (InputManager::confirmar("Cargar un nuevo cliente? (s/n): ")) {
                     rlutil::cls();
-                    obj.agregarNuevoCliente ();
+                    cliente.agregarNuevoCliente();
                  }
                  cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                  rlutil::anykey();
@@ -120,7 +119,7 @@ void menuGestionClientes() {
             case 2:
                   if (InputManager::confirmar("Modificar un cliente? (s/n): ")) {
                     rlutil::cls();
-                    obj.modificarDatosCliente();
+                    cliente.modificarDatosCliente();
                   }
                  cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                  rlutil::anykey();
@@ -129,7 +128,7 @@ void menuGestionClientes() {
             case 3:
 
                     rlutil::cls();
-                    obj.consultarporId();
+                    cliente.buscarClientePorEmail();
                  cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                  rlutil::anykey();
 
@@ -137,7 +136,7 @@ void menuGestionClientes() {
             case 4:
                     if (InputManager::confirmar("Listar todos los clientes? (s/n): ")){
                         rlutil::cls();
-                        obj.listarTodosLosClientes();
+                        cliente.listarTodosLosClientes();
                     }
                         cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                         rlutil::anykey();
@@ -145,17 +144,12 @@ void menuGestionClientes() {
               break;
             case 5:
                         rlutil::cls();
-                        obj.cambiarEstadoCliente();
+                        cliente.cambiarEstadoCliente();
 
                         cout << "Haga clic en cualquier tecla para volver al menu" << endl;
                         rlutil::anykey();
 
               break;
-              case 6:
-                rlutil::cls();
-                obj.buscarClientePorEmail();
-                rlutil::anykey();
-                break;
             case 9:
                 cout << "-> Volviendo al Menu Principal..." << endl;
                 break;
@@ -177,10 +171,9 @@ void menuGestionCaballos() {
         rlutil::setColor(rlutil::WHITE);
         cout << "1. Cargar Nuevo Caballo (Asociado a Cliente)" << endl;
         cout << "2. Modificar Datos de Caballo" << endl;
-        cout << "3. Consultar Caballo por ID" << endl;
-        cout << "4. Listar Caballos de un Cliente" << endl;
-        cout << "5. Listar todos los caballos" << endl;
-        cout << "6. Cambiar Estado del Caballo (Activo/Inactivo/Vendido)" << endl;
+        cout << "3. Listar Caballos de un Cliente" << endl;
+        cout << "4. Listar todos los caballos" << endl;
+        cout << "5. Cambiar Estado del Caballo (Activo/Inactivo/Vendido)" << endl;
         cout << "9. Volver al Menu Principal" << endl;
         cout << "--------------------------------" << endl;
         //cout << "Seleccione una opcion: ";
@@ -199,18 +192,14 @@ void menuGestionCaballos() {
                 manager.modificarCaballo();
             break;
             case 3:
-                 manager.consultarPorID();
-                 rlutil::anykey();
-            break;
-            case 4:
                  manager.listarPorCliente();
                  rlutil::anykey();
             break;
-            case 5:
+            case 4:
                   manager.listarTodos();
                   rlutil::anykey();
             break;
-            case 6:
+            case 5:
                  manager.cambiarEstado();
                  rlutil::anykey();
                 break;
@@ -225,7 +214,7 @@ void menuGestionCaballos() {
 
 void menuGestionAgenda() {
     int opcion;
-    Agenda obj;
+    Agenda agenda;
     do {
         rlutil::cls();
         rlutil::setColor(rlutil::BLACK);
@@ -241,19 +230,19 @@ void menuGestionAgenda() {
 
         switch (opcion) {
             case 1:
-                obj.registrarNuevoTrabajo();
+                agenda.registrarNuevoTrabajo();
                 rlutil::anykey();
             break;
             case 2:
-                obj.proximosTrabajos();
+                agenda.proximosTrabajos();
                 rlutil::anykey();
             break;
             case 3:
-                obj.historialTrabajosRealizados();
+                agenda.historialTrabajosRealizados();
                 rlutil::anykey();
             break;
             case 4:
-                obj.buscarTrabajo();
+                agenda.buscarTrabajo();
                 rlutil::anykey();
             break;
             case 9:
