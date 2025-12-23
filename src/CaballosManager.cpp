@@ -34,9 +34,9 @@ void CaballosManager::cargarCaballo() {
         idCliente = cliente.buscarClientePorEmail(email);
 
         if (idCliente == -1) {
-            cout << "ERROR: No existe un cliente con ese ID." << endl;
+            cout << "ERROR: No existe un cliente con ese Email." << endl;
 
-            if (!InputManager::confirmar("Desea intentar con otro ID? (s/n): ")) {
+            if (!InputManager::confirmar("Desea intentar con otro Email? (s/n): ")) {
                 cout << "Carga cancelada." << endl;
                 return;
             }

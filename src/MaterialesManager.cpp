@@ -1,44 +1,42 @@
 #include "MaterialesManager.h"
 #include "Archivos.h"
+#include "InputManager.h"
 #include <iostream>
 #include <cstring>
 #include <iomanip>
 using namespace std;
 
-void MaterialesManager::cargarNuevoMaterial(){
+void MaterialesManager::cargarNuevoMaterial() {
     Material m;
 
-    int nuevoID = archivos.cantidadRegistrosMaterial() + 1;
-    m.setID(nuevoID);
+    int maxID = 0;
+    int cant = archivos.cantidadRegistrosMaterial();
+    for (int i = 0; i < cant; i++) {
+        Material aux = archivos.leerRegistroMaterial(i);
+        if (aux.getID() > maxID) maxID = aux.getID();
+    }
+    m.setID(maxID + 1);
 
-    cout << "Nombre de material: ";
-    char nombreMaterial[40];
-    cin.getline(nombreMaterial, 40);
-    m.setNombre(nombreMaterial);
+    string nombre = InputManager::leerLinea("Nombre de material: ", 40);
+    m.setNombre(nombre.c_str());
 
-    char tipoMaterial[30];
-    cout << "Tipo de material: ";
-    cin.getline(tipoMaterial, 30);
-    m.setTipo(tipoMaterial);
+    string tipo = InputManager::leerLinea("Tipo de material: ", 30);
+    m.setTipo(tipo.c_str());
 
-    cout << "Stock: ";
-    int stock;
-     cin >> stock;
+    int stock = InputManager::leerInt("Stock: ");
     m.setStock(stock);
 
-    float precio;
-    cout << "Precio: ";
-    cin >> precio;
+    float precio = InputManager::leerFloat("Precio: ");
     m.setPrecio(precio);
 
     m.setEstado(true);
 
-    if (archivos.guardarArchivoMaterial(m) == true ){
-        cout << "Material registrado correctamente." << endl;
-    }
-    else {
-        cout << "No se pudo registrar el material." << endl;
-    }
+
+
+    if (archivos.guardarArchivoMaterial(m))
+        cout << "Material registrado correctamente.\n";
+    else
+        cout << "No se pudo registrar el material.\n";
 }
 
 void MaterialesManager::modificarStockMaterial(){
@@ -64,52 +62,103 @@ void MaterialesManager::modificarStockMaterial(){
     cout << "Stock modificado correctamente.\n";
 }
 
-void MaterialesManager::registrarMaterialesUsados(){
+void MaterialesManager::registrarMaterialesUsados() {
+    int idTrabajo, posTrabajo = -1;
+    Trabajo trab;
 
-    MaterialesUsados mu;
+    cout << "--- Registro de Materiales por Trabajo ---" << endl;
+    idTrabajo = InputManager::leerInt("Ingrese ID del trabajo: ");
+
+    // 1. Buscar el Trabajo en el archivo de trabajos
+    int cantT = archivos.cantidadRegistrosTrabajo();
+    for (int i = 0; i < cantT; i++) {
+        Trabajo aux = archivos.leerRegistroTrabajo(i);
+        if (aux.getID() == idTrabajo) {
+            trab = aux;
+            posTrabajo = i;
+            break;
+        }
+    }
+
+    if (posTrabajo == -1) {
+        cout << "Error: El trabajo con ID " << idTrabajo << " no existe en los registros de trabajos realizados." << endl;
+        return;
+    }
+
+
+    cout << "\n========================================" << endl;
+    cout << "DETALLES DEL TRABAJO:" << endl;
+    trab.mostrar(); // Muestra IDs de cliente, caballo y monto
+
+
+    int posCab = archivos.buscarCaballoPorID(trab.getIdCaballo());
+    if (posCab != -1) {
+        Caballo c = archivos.leerRegistroCaballo(posCab);
+        cout << "Nombre del Caballo: " << c.getNombre() << endl;
+    } else {
+        cout << "Caballo: No se pudo encontrar el nombre para el ID " << trab.getIdCaballo() << endl;
+    }
+
+
+    int posCli = archivos.buscarClientePorID(trab.getIdCliente());
+    if (posCli != -1) {
+        Cliente cl = archivos.leerRegistroCliente(posCli);
+        cout << "Cliente: " << cl.getNombre() << " " << cl.getApellido() << endl;
+    }
+    cout << "========================================\n" << endl;
+
+    if (!InputManager::confirmar("Es correcto este trabajo? (S/N): ")) {
+        return;
+    }
+
+
+    bool continuarCargando = true;
     Fecha fechaActual;
-    int idTrabajo, idMaterial, cantidad;
-
-    cout << "Ingrese la fecha actual: ";
+    cout << "Ingrese la fecha de uso de los materiales:" << endl;
     fechaActual.cargar();
-    mu.setFechaUso(fechaActual);
 
-    cout << "Ingrese ID del trabajo: ";
-    cin >> idTrabajo;
-    mu.setIDTrabajo(idTrabajo);
+    while (continuarCargando) {
 
-    cout << "Ingrese ID del material utilizado: ";
-    cin >> idMaterial;
-    mu.setIDMaterial(idMaterial);
+        cout << "\n--- Lista de Materiales Disponibles ---" << endl;
+        consultarStockActual();
 
-    cout << "Ingrese cantidad usada: ";
-    cin >> cantidad;
-    mu.setCantidad(cantidad);
+        int idMat = InputManager::leerInt("\nIngrese ID del material a cargar: ");
+        int posMat = archivos.buscarMaterialPorID(idMat);
 
+        if (posMat < 0) {
+            cout << "Error: El ID de material no existe." << endl;
+        } else {
+            Material m = archivos.leerRegistroMaterial(posMat);
 
-    // Verificar si el material existe
-    int pos = archivos.buscarMaterialPorID(idMaterial);
-    if (pos < 0) {
-        cout << "Material no encontrado.\n";
-        return;
+            cout << "Seleccionado: " << m.getNombre() << " | Stock: " << m.getStock() << endl;
+            int cantUsada = InputManager::leerInt("Ingrese cantidad usada: ");
+
+            if (cantUsada <= 0) {
+                cout << "La cantidad debe ser mayor a cero." << endl;
+            } else if (m.getStock() < cantUsada) {
+                cout << "Error: Stock insuficiente (Disponible: " << m.getStock() << ")." << endl;
+            } else {
+                if (InputManager::confirmar("Confirmar registro de este material? (S/N): ")) {
+                    // Actualizar Stock
+                    m.setStock(m.getStock() - cantUsada);
+                    archivos.modificarRegistroMaterial(m, posMat);
+
+                    // Registrar Uso
+                    MaterialesUsados mu;
+                    mu.setIDMaterialUsado(archivos.cantidadRegistrosMaterialesUsados() + 1);
+                    mu.setIDTrabajo(idTrabajo);
+                    mu.setIDMaterial(idMat);
+                    mu.setCantidad(cantUsada);
+                    mu.setFechaUso(fechaActual);
+
+                    if (archivos.guardarArchivoMaterialesUsados(mu)) {
+                        cout << "Material cargado exitosamente!" << endl;
+                    }
+                }
+            }
+        }
+        continuarCargando = InputManager::confirmar("\nDesea cargar otro material para este trabajo? (S/N): ");
     }
-
-    Material m = archivos.leerRegistroMaterial(pos);
-    if (m.getStock() < cantidad) {
-        cout << "No hay suficiente stock disponible.\n";
-        return;
-    }
-
-    // Descontar del stock
-    m.setStock(m.getStock() - cantidad);
-    archivos.modificarRegistroMaterial(m, pos);
-
-    // Registrar en archivo de materiales usados
-    mu.setIDMaterialUsado(archivos.cantidadRegistrosMaterialesUsados() + 1);
-    archivos.guardarArchivoMaterialesUsados(mu);
-
-    cout << "Material registrado como usado y stock actualizado.\n";
-
 }
 
 void MaterialesManager::consultarStockActual() {
@@ -123,6 +172,7 @@ void MaterialesManager::consultarStockActual() {
 
     for (int i = 0; i < cantidad; i++) {
         Material m = archivos.leerRegistroMaterial(i);
+        if (!m.getEstado() || m.getID() <= 0) continue; // agrego
         if (m.getEstado()) {      // se muestra solo materiales activos
             cout << left << setw(5) << m.getID();
             cout << setw(20) << m.getNombre();
@@ -148,6 +198,7 @@ void MaterialesManager::consultarPeriodoConsumo(){
 
     for (int i = 0; i < cantidad; i++) {
         MaterialesUsados mu = arc.leerRegistroMaterialesUsados(i);
+        if (mu.getIDMaterialUsado() <= 0) continue; // agrego
         Fecha f = mu.getFechaUso();
 
         if ( !f.fechaMenor(inicio) && !fin.fechaMenor(f) ) {

@@ -45,7 +45,7 @@ class Archivos
     int cantidadRegistrosTrabajo();
     int cantidadRegistrosUsuario();
     int obtenerUltimoIDCaballo();   // agrego 1
-
+    int obtenerUltimoIDMaterial();
     // VALIDACION AGENDA
     bool validarExistenciaCaballo(int idCaballo, Caballo &caballo);
 

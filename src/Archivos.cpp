@@ -487,6 +487,23 @@ int Archivos::obtenerUltimoIDCaballo() {
     return maxID;
 }
 
+int Archivos::obtenerUltimoIDMaterial() {
+    FILE* p = fopen("materiales.dat", "rb");
+    if (p == NULL) return 0;
+
+    Material m;
+    int maxID = 0;
+
+    while (fread(&m, sizeof(Material), 1, p) == 1) {
+        if (m.getEstado() && m.getID() > maxID) {
+            maxID = m.getID();
+        }
+    }
+
+    fclose(p);
+    return maxID;
+}
+
 void Archivos::listarTodosLosCaballos() {
     FILE* pArchivo = fopen("caballos.dat", "rb");
     if (pArchivo == NULL) {

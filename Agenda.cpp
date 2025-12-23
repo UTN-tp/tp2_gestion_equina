@@ -184,7 +184,7 @@ void Agenda::registrarNuevoTrabajo(){
      trabajo.setID(nuevoIDTrabajo);
 
      trabajo.setIdCliente(clienteTemp.getID());
-
+     trabajo.setIdCaballo(idCaballoIngresado);  // agrego
      // Pedir monto
      float monto = InputManager::leerFloat("Monto del trabajo: $ ");
      trabajo.setCosto(monto);
